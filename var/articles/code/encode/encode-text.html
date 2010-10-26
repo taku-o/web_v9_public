@@ -1,0 +1,57 @@
+.. vim:set expandtab ff=unix ft=rest nowrap :
+
+..  文字列のエンコードを変換する
+
+..  
+
+.. |BR| raw:: html
+
+    <br />
+
+.. |yen|    unicode:: U+000A5 .. YEN SIGN
+
+.. role:: raw-html(raw)
+    :format: html
+
+.. contents::
+
+================================================================================
+文字列のエンコードを変換する
+================================================================================
+
+- iconvを使用して変換
+
+.. parsed-literal::
+    :class: program
+
+    :let text = .....
+    :let from = "utf-8"
+    :let to   = "euc-jp"
+    :let encoded = iconv(text, from, to)
+    :echo encoded
+    "# => utf-8の文字列をeuc-jpの文字列に変換して出力
+
+- vimエディタ内部で使用しているエンコーディングは「&encoding」で取れるので、次の方法で指定エンコーディングのテキストを読める形式にできる
+
+.. parsed-literal::
+    :class: program
+
+    :let text = .....
+    :let from = "utf-8"
+    :let encoded = iconv(text, from, &encodings)
+    :echo encoded
+    "# => utf-8の文字をvimエディタ内部で使用しているエンコーディングの文字に変換して出力
+
+- あるテキストを指定エンコーディングの文字列に変換する
+
+.. parsed-literal::
+    :class: program
+
+    :let text = .....
+    :let to   = "utf-8"
+    :let encoded = iconv(text, &encoding, to)
+    :echo encoded
+    "# => utf-8のエンコーディングの文字列に変換して出力
+
+
+

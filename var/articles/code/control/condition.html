@@ -1,0 +1,119 @@
+.. vim:set expandtab ff=unix ft=rest nowrap :
+
+..  条件判定
+
+..  
+
+.. |BR| raw:: html
+
+    <br />
+
+.. |yen|    unicode:: U+000A5 .. YEN SIGN
+
+.. role:: raw-html(raw)
+    :format: html
+
+.. contents::
+
+================================================================================
+条件判定
+================================================================================
+
+- 0以外の場合に、マッチする（true）と判定される。
+
+.. parsed-literal::
+    :class: program
+
+    :if 1
+        :echo "TRUE"
+    :else
+        :echo "FALSE"
+    :endif
+    "# => TRUE
+    :if 0
+        :echo "TRUE"
+    :else
+        :echo "FALSE"
+    :endif
+    "# => FALSE
+
+- 文字列は判定の材料としては使えない。
+
+.. parsed-literal::
+    :class: program
+
+    :let var = "text"
+    :if var
+        :echo "TRUE"
+    :else
+        :echo "FALSE"
+    :endif
+    "# => FALSE
+    :if exists("var")
+        :echo "TRUE"
+    :else
+        :echo "FALSE"
+    :endif
+    "# => TRUE
+
+- 「!」で結果をひっくり返せる。
+
+.. parsed-literal::
+    :class: program
+
+    :let var = 1
+    :if var
+        :echo "TRUE"
+    :else
+        :echo "FALSE"
+    :endif
+    "# => TRUE
+    :if ! var
+        :echo "TRUE"
+    :else
+        :echo "FALSE"
+    :endif
+    ""# => FALSE
+
+- 「&&」でAND
+
+.. parsed-literal::
+    :class: program
+
+    :let var = 500
+    :if var > 200 && var < 800
+        :echo "TRUE"
+    :else
+        :echo "FALSE"
+    :endif
+    "# => TRUE
+    
+    :if var > 200 && var > 800
+        :echo "TRUE"
+    :else
+        :echo "FALSE"
+    :endif
+    ""# => FALSE
+
+- 「||」でOR
+
+.. parsed-literal::
+    :class: program
+
+    :let var = 500
+    :if var < 200 || var > 400
+        :echo "TRUE"
+    :else
+        :echo "FALSE"
+    :endif
+    "# => TRUE
+    
+    :if var < 200 || var > 800
+        :echo "TRUE"
+    :else
+        :echo "FALSE"
+    :endif
+    ""# => FALSE
+
+
+

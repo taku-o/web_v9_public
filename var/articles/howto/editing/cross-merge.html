@@ -1,0 +1,177 @@
+.. vim:set expandtab ff=unix ft=rest :
+
+..  2つのテキスト集合を、1行ずつ、交互に組み合わせる。
+
+..  2つのテキスト集合があるとして、それぞれの集合から1行ずつ抜き出して、
+    それらが交互に並ぶように加工する方法を紹介します。
+    (Windows, Mac)
+
+.. |BR| raw:: html
+
+    <br />
+
+.. |yen|    unicode:: U+000A5 .. YEN SIGN
+
+.. role:: raw-html(raw)
+    :format: html
+
+.. contents::
+
+================================================================================
+概要
+================================================================================
+
+2つのテキスト集合があるとして、それぞれの集合から1行ずつ抜き出して、 |BR|
+それらが交互に並ぶように加工する方法を紹介します。
+
+この説明では何をするのかわかりづらいと思うので、
+詳細はドキュメント中の例をご覧下さい。
+
+
+
+================================================================================
+編集例の紹介
+================================================================================
+
+例えば、下図（↓）のような、2つのテキストの集合があるとして、
+
+.. parsed-literal::
+    :class: program
+
+    jp.nanasi.up.a1 = 1
+    jp.nanasi.up.a2 = 2
+    jp.nanasi.up.a3 = 3
+    jp.nanasi.up.a4 = 4
+    jp.nanasi.up.a5 = 5
+    jp.nanasi.up.a6 = 6
+    jp.nanasi.up.a7 = 7
+
+    bottom.jp.nanasi.z1 = 1
+    bottom.jp.nanasi.z2 = 2
+    bottom.jp.nanasi.z3 = 3
+    bottom.jp.nanasi.z4 = 4
+    bottom.jp.nanasi.z5 = 5
+    bottom.jp.nanasi.z6 = 6
+    bottom.jp.nanasi.z7 = 7
+
+このテキストの集合2つを、1行ずつ、交互に組み合わせる方法を説明します。
+
+.. parsed-literal::
+    :class: program
+
+    jp.nanasi.up.a1 = 1
+    bottom.jp.nanasi.z1 = 1
+    jp.nanasi.up.a2 = 2
+    bottom.jp.nanasi.z2 = 2
+    jp.nanasi.up.a3 = 3
+    bottom.jp.nanasi.z3 = 3
+    jp.nanasi.up.a4 = 4
+    bottom.jp.nanasi.z4 = 4
+    jp.nanasi.up.a5 = 5
+    bottom.jp.nanasi.z5 = 5
+    jp.nanasi.up.a6 = 6
+    bottom.jp.nanasi.z6 = 6
+    jp.nanasi.up.a7 = 7
+    bottom.jp.nanasi.z7 = 7
+
+
+この例のような編集を行いたいケースというのは、割とあることだと思います。
+
+
+
+================================================================================
+編集方法
+================================================================================
+
+2つのテキスト集合のうち、下側のテキスト集合を選択する。
+--------------------------------------------------------------------------------
+
+2つのテキスト集合のうち、下側のテキスト集合を、ビジュアルモードかコマンドラインで選択します。 |BR|
+（この記事ではビジュアルモードで選択したものと仮定して話を進めます。）
+
+.. raw:: html
+
+    <pre class="program">
+    jp.nanasi.up.a1 = 1
+    jp.nanasi.up.a2 = 2
+    jp.nanasi.up.a3 = 3
+    jp.nanasi.up.a4 = 4
+    jp.nanasi.up.a5 = 5
+    jp.nanasi.up.a6 = 6
+    jp.nanasi.up.a7 = 7
+
+    <span class="code_high">bottom.jp.nanasi.z1 = 1</span>
+    <span class="code_high">bottom.jp.nanasi.z2 = 2</span>
+    <span class="code_high">bottom.jp.nanasi.z3 = 3</span>
+    <span class="code_high">bottom.jp.nanasi.z4 = 4</span>
+    <span class="code_high">bottom.jp.nanasi.z5 = 5</span>
+    <span class="code_high">bottom.jp.nanasi.z6 = 6</span>
+    <span class="code_high">bottom.jp.nanasi.z7 = 7</span>
+    </pre>
+
+
+下側のテキスト集合を1行ずつ、上のテキスト集合にコピーする。
+--------------------------------------------------------------------------------
+
+今回の例では、上と下のテキスト集合の間に空行が1行あり、上側のテキスト集合が7行あるので、 |BR|
+各行をそれぞれ、カレント行より8行分、上にコピーしましょう。
+
+各行ごとの処理は「:global/^/」で実現し、 |BR|
+カレント行より上の行へのコピーは「copy -N」行で実現します。
+
+.. parsed-literal::
+    :class: console
+
+    :'<,'>g/^/copy -8
+
+.. note::
+
+    「copy」コマンドの代わりに「t」コマンドを利用しても良い。 |BR|
+    「t」コマンドの方が、入力量が少なく済む。
+
+    .. parsed-literal::
+        :class: console
+
+        **" copyコマンドの代わりに、**
+        :'<,'>g/^/copy -8
+        
+        **" tコマンドを使っても良い。**
+        :'<,'>g/^/t -8
+
+
+後始末する。
+--------------------------------------------------------------------------------
+
+コマンド実行後は下図のような状態になるので、 |BR|
+最後に後始末として、不要になった下側のテキスト集合を削除しましょう。 |BR|
+これで完成となります。
+
+.. raw:: html
+
+    <pre class="program">
+    jp.nanasi.up.a1 = 1
+    bottom.jp.nanasi.z1 = 1
+    jp.nanasi.up.a2 = 2
+    bottom.jp.nanasi.z2 = 2
+    jp.nanasi.up.a3 = 3
+    bottom.jp.nanasi.z3 = 3
+    jp.nanasi.up.a4 = 4
+    bottom.jp.nanasi.z4 = 4
+    jp.nanasi.up.a5 = 5
+    bottom.jp.nanasi.z5 = 5
+    jp.nanasi.up.a6 = 6
+    bottom.jp.nanasi.z6 = 6
+    jp.nanasi.up.a7 = 7
+    bottom.jp.nanasi.z7 = 7
+
+    <del>bottom.jp.nanasi.z1 = 1</del>
+    <del>bottom.jp.nanasi.z2 = 2</del>
+    <del>bottom.jp.nanasi.z3 = 3</del>
+    <del>bottom.jp.nanasi.z4 = 4</del>
+    <del>bottom.jp.nanasi.z5 = 5</del>
+    <del>bottom.jp.nanasi.z6 = 6</del>
+    <del>bottom.jp.nanasi.z7 = 7</del>
+    </pre>
+
+
+

@@ -1,0 +1,63 @@
+.. vim:set expandtab ff=unix ft=rest nowrap :
+
+.. オブジェクトから、オブジェクトの文字列表現を生成する
+
+..  
+
+.. |BR| raw:: html
+
+    <br />
+
+.. |yen|    unicode:: U+000A5 .. YEN SIGN
+
+.. role:: raw-html(raw)
+    :format: html
+
+.. contents::
+
+================================================================================
+オブジェクトから、オブジェクトの文字列表現を生成する
+================================================================================
+
+- オブジェクトの文字列表現を生成し、プロパティファイルに書き出す
+
+.. parsed-literal::
+    :class: program
+
+    " プロパティファイル'filename'に、
+    " オブジェクト'values'の文字列表現を記録するファンクション
+    :function! Store(filename, values)
+        
+        " string()で文字列表現生成
+        :let l:stored = string(a:values)
+        
+        " writefile()で記録
+        :call writefile([l:stored], a:filename)
+        
+    :endfunction
+    
+    
+    " ファイルに保存するオブジェクトを用意
+    :let var = {}
+    :let var.key1 = "value1"
+    :let var.key2 = 4
+    :let var.key3 = [ 4, 5, 6, 7 ]
+    :echo var
+    "# => {'key1': 'value1', 'key2': 4, 'key3': [4, 5, 6, 7]}
+    
+    
+    " プロパティファイルに、オブジェクトの文字列表現を記録
+    :let filename = $HOME . "/store.properties"
+    :call Store(filename, var)
+
+
+- プロパティファイル"$HOME/store.properties"には、オブジェクトの文字列表現が保存される。この文字列表現は、eval()で復元可能。
+
+.. parsed-literal::
+    :class: program
+
+    {'key1': 'value1', 'key2': 4, 'key3': [4, 5, 6, 7]}
+
+
+
+

@@ -1,0 +1,55 @@
+.. vim:set expandtab ff=unix ft=rest nowrap :
+
+..  ディクショナリベースのオブジェクト
+
+..  
+
+.. |BR| raw:: html
+
+    <br />
+
+.. |yen|    unicode:: U+000A5 .. YEN SIGN
+
+.. role:: raw-html(raw)
+    :format: html
+
+.. contents::
+
+================================================================================
+ディクショナリベースのオブジェクト
+================================================================================
+
+- ディクショナリにファンクションを紐付ける。
+
+.. parsed-literal::
+    :class: program
+
+    :let object = {}
+    
+    :function! object.setVar(var) dict
+        :let self.var = a:var
+    :endfunction
+    
+    :function! object.getVar() dict
+        :return self.var
+    :endfunction
+
+- ディクショナリのファンクションを実行する。
+
+.. parsed-literal::
+    :class: program
+
+    :let object = {}
+    :function! object.setVar(var) dict
+        :let self.var = a:var
+    :endfunction
+    :function! object.getVar() dict
+        :return self.var
+    :endfunction
+    
+    :call object.setVar("AAAAA")
+    :echo object.getVar()
+    "# => AAAAA
+
+
+

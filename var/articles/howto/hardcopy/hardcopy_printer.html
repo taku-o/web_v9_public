@@ -1,0 +1,220 @@
+.. vim:set expandtab ff=unix ft=rest :
+
+..  vimエディタの印刷機能を使用する #4 （プリンタ設定）
+
+..  vimエディタの印刷機能に関する説明です。
+    この記事ではvimエディタの印刷機能のうち、プリンター関連の設定について解説します。
+    (Windows)
+
+.. |BR| raw:: html
+
+    <br />
+
+.. |yen|    unicode:: U+000A5 .. YEN SIGN
+
+.. role:: raw-html(raw)
+    :format: html
+
+.. contents::
+
+================================================================================
+概要
+================================================================================
+
+vimエディタの印刷機能に関する説明です。 |BR|
+この記事ではvimエディタの印刷機能のうち、プリンター関連の設定について解説します。
+
+
+
+================================================================================
+紙の印刷方向
+================================================================================
+
+「printoptions」オプションに、
+「portrait:y」を設定すると、紙の向きを縦方向で印刷し、
+「portrait:y」を設定すると紙の向き横方向で印刷します。 |BR|
+「portrait」の設定例は次の通りです。
+
+.. parsed-literal::
+    :class: program
+
+    **" 縦方向に印刷**
+    :set printoptions=portrait:y
+
+.. image:: /dist/img/howto/hardcopy/portrait_y.jpg
+    :alt:  縦方向に印刷
+
+.. parsed-literal::
+    :class: program
+
+    **" 横方向に印刷**
+    :set printoptions=portrait:n
+
+.. image:: /dist/img/howto/hardcopy/portrait_n.jpg
+    :alt:  横方向に印刷
+
+
+
+================================================================================
+複数部数印刷時の印刷の順序
+================================================================================
+
+複数部数を印刷時に、それぞれのページをどの順番で印刷するかは、 |BR|
+「printoptions」オプションの「collate」の設定でコントロールできます。
+
+部単位で印刷する場合は「collate:y」と設定し、
+
+.. parsed-literal::
+    :class: program
+
+    **" 部単位で印刷する**
+    :set printoptions=collate:y
+    
+    **" （1ページ目、1ページ目、1ページ目、2ページ目、2ページ目、2ページ目、3ページ目、、、）**
+
+ページごとに印刷する場合は「collate:n」と設定してください。
+
+.. parsed-literal::
+    :class: program
+
+    **" ページごとに印刷する**
+    :set printoptions=collate:n
+    
+    **" （1ページ目、1ページ目、1ページ目、2ページ目、2ページ目、2ページ目、3ページ目、、、）**
+
+.. note::
+
+    プリンタダイアログを使用して印刷する場合は、
+    この「collate」の設定は使用されません。
+
+
+
+================================================================================
+印刷ジョブ
+================================================================================
+
+複数ページを印刷時に、1回で印刷しきるか、複数回のジョブに分けて印刷するかを、
+「printoptions」オプションの「jobsplit」で設定できます。 |BR|
+1回のジョブで印刷する場合は（デフォルト）、
+
+.. parsed-literal::
+    :class: program
+
+    **" 印刷ジョブを分けない**
+    :set printoptions=jobsplit:n
+
+複数回に分けて、印刷する場合は、
+
+.. parsed-literal::
+    :class: program
+
+    **" 印刷ジョブを分ける**
+    :set printoptions=jobsplit:y
+
+と、設定してください。
+
+
+
+================================================================================
+用紙サイズ
+================================================================================
+
+印刷時の用紙サイズは「printoptions」オプションの「paper」で設定します。 |BR|
+選択可能な用紙サイズの種類は、10x14、A3、A4、A5、B4、B5、executive、folio、ledger、legal、letter、quarto、statement、tabloid です。 |BR|
+「paper」の設定例は次のようになります。
+
+.. parsed-literal::
+    :class: program
+
+    **" 10x14**
+    :set printoptions+=paper:10x14
+    **" A3**
+    :set printoptions+=paper:A3
+    **" A4**
+    :set printoptions+=paper:A4
+    **" A5**
+    :set printoptions+=paper:A5
+    **" B4**
+    :set printoptions+=paper:B4
+    **" B5**
+    :set printoptions+=paper:B5
+    **" executive**
+    :set printoptions+=paper:executive
+    **" folio**
+    :set printoptions+=paper:folio
+    **" ledger**
+    :set printoptions+=paper:ledger
+    **" legal**
+    :set printoptions+=paper:legal
+    **" letter**
+    :set printoptions+=paper:letter
+    **" quarto**
+    :set printoptions+=paper:quarto
+    **" statement**
+    :set printoptions+=paper:statement
+    **" tabloid**
+    :set printoptions+=paper:tabloid
+
+未設定時は、デフォルトのA4サイズが使用されます。
+
+
+
+================================================================================
+片面印刷、両面印刷
+================================================================================
+
+「printoptions」オプションの「duplex」で片面印刷、両面印刷の設定を指定できます。 |BR|
+用意されている設定は「片面印刷」「両面印刷（長辺綴じ）」「両面印刷（短辺綴じ）」の3種類です。
+
+片面印刷。
+
+.. parsed-literal::
+    :class: program
+
+    **" 片面印刷(デフォルト)**
+    :set printoptions=duplex:off
+
+両面印刷、長辺綴じ。長辺綴じは用紙の長い辺を基点とする綴じ方。
+
+.. image:: /dist/img/howto/hardcopy/duplex_long.jpg
+    :alt:  duplex:long
+
+.. parsed-literal::
+    :class: program
+
+    **" 両面印刷 綴じ位置が紙の長い辺**
+    :set printoptions=duplex:long
+
+両面印刷、短辺綴じ。短辺綴じは用紙の短い辺を基点とする綴じ方。
+
+.. image:: /dist/img/howto/hardcopy/duplex_short.jpg
+    :alt:  duplex:short
+
+.. parsed-literal::
+    :class: program
+
+    **" 両面印刷 綴じ位置が紙の短い辺**
+    :set printoptions=duplex:short
+
+.. note::
+
+    両面印刷するには、両面印刷に対応したプリンタが必要です。
+
+
+
+================================================================================
+ページリンク
+================================================================================
+
+#. `vimエディタの印刷機能を使用する #1 （印刷機能の基本）`__
+#. `vimエディタの印刷機能を使用する #2 （ヘッダー、余白、改行位置の設定）`__
+#. `vimエディタの印刷機能を使用する #3 （描画に関する設定）`__
+#. - `vimエディタの印刷機能を使用する #4 （プリンタ設定）`__
+
+__ /articles/howto/hardcopy/hardcopy.html
+__ /articles/howto/hardcopy/hardcopy_page.html
+__ /articles/howto/hardcopy/hardcopy_draw.html
+__ /articles/howto/hardcopy/hardcopy_printer.html
+
+
+

@@ -1,0 +1,33 @@
+.. vim:set expandtab ff=unix ft=rest nowrap :
+
+..  カーソル下のテキストの取得
+
+..  
+
+.. |BR| raw:: html
+
+    <br />
+
+.. |yen|    unicode:: U+000A5 .. YEN SIGN
+
+.. role:: raw-html(raw)
+    :format: html
+
+.. contents::
+
+================================================================================
+カーソル下のテキストの取得
+================================================================================
+
+.. parsed-literal::
+    :class: program
+
+    :echo expand("<cfile>")
+    "# => カーソル下のファイル名を出力
+    
+    :echo expand("<cword>")
+    :echo expand("<cWORD>")
+    "# => カーソル下のテキストを出力
+
+
+

@@ -1,0 +1,95 @@
+.. vim:set expandtab ff=unix ft=rest nowrap :
+
+..  1ファイルで構成されるプラグインのテンプレート
+
+..  
+
+.. |BR| raw:: html
+
+    <br />
+
+.. |yen|    unicode:: U+000A5 .. YEN SIGN
+
+.. role:: raw-html(raw)
+    :format: html
+
+.. contents::
+
+================================================================================
+1ファイルで構成されるプラグインのテンプレート
+================================================================================
+
+1ファイルのみで構成されるvimエディタのプラグインは、
+大抵、次のようなつくりになっている。
+
+.. parsed-literal::
+    :class: program
+
+    " プラグインが2回読み込まれることを防止するコード。
+    " プラグイン作成中は外しておいた方が作成が楽。
+    :if exists("loaded_XXXXX")
+        :finish
+    :endif
+    :let loaded_XXXXX = 1
+    
+    " ここで設定を逃がして、後でリカバリします。
+    :let s:save_cpo = &cpo
+    :set cpo&vim
+    
+    
+    " プラグインのオプションを読み込む。
+    " プラグインの挙動をユーザにカスタマイズさせる場合の書き方。
+    :if !exists("g:XXXXX_option1")
+        :let g:XXXXX_option1 = 1
+    :endif
+    :if !exists("g:XXXXX_option2")
+        :let g:XXXXX_option2 = "default value"
+    :endif
+    
+    
+    " 既存の設定を変えてしまうプラグインの場合は、
+    " 最初に初期設定を変数に逃がしておく。
+    :let setting = &guioptions
+    
+    
+    " プラグインで必要とされる数だけファンクションを用意する。
+    :function FuncXXXXX1()
+        :echo "FuncXXXXX1"
+    :endfunction
+    :function FuncXXXXX2()
+        :echo "FuncXXXXX2"
+    :endfunction
+    
+    
+    " コマンド、マッピング、autocmdなど、
+    " プラグインの処理のトリガーとなる処理を定義する。
+    :command FuncXXXXX1 :call FuncXXXXX1
+    :command FuncXXXXX2 :call FuncXXXXX2
+    
+    
+    " 逃がしていたユーザの設定を修復
+    :let &cpo = s:save_cpo
+
+たとえば、「:Hello」コマンドを実行すると「Hello World」と表示する、
+最小のvimエディタプラグイン「echo_hello.vim」を作成するには、
+次のようなコードを書けばよい。
+
+.. parsed-literal::
+    :class: program
+
+    :if exists("g:loaded_hello")
+        :finish
+    :endif
+    :let g:loaded_hello = 1
+    :let s:save_cpo = &cpo
+    :set cpo&vim
+    
+    :function Hello()
+        :echo "Hello World"
+    :endfunction
+    
+    :command Hello :call Hello()
+    :let &cpo = s:save_cpo
+
+
+

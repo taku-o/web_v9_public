@@ -1,0 +1,43 @@
+.. vim:set expandtab ff=unix ft=rest nowrap :
+
+..  ユーザの設定ディレクトリの位置を取得する
+
+..  
+
+.. |BR| raw:: html
+
+    <br />
+
+.. |yen|    unicode:: U+000A5 .. YEN SIGN
+
+.. role:: raw-html(raw)
+    :format: html
+
+.. contents::
+
+================================================================================
+ユーザの設定ディレクトリの位置を取得する
+================================================================================
+
+- 決め打ちで設定ファイルディレクトリを取得。
+
+.. parsed-literal::
+    :class: program
+
+    :if has('win32')
+        :let user_dir = $HOME . "/vimfiles"
+    :else
+        :let user_dir = $HOME . "/.vim"
+    :endif
+
+- 「runtimepath」にスクリプトを置き、そのスクリプトでディレクトリを取得。
+
+.. parsed-literal::
+    :class: program
+
+    :let scriptdir = expand('<sfile>:p:h')
+    :echo scriptdir
+    "# => スクリプトのディレクトリを出力
+
+
+

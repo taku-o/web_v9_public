@@ -1,0 +1,240 @@
+.. vim:set expandtab ff=unix ft=rest :
+
+..  vimエディタ・スターターマニュアル #4 （テキスト編集）
+
+..  vimエディタをはじめて扱う人が、だましだましvimエディタでの作業を開始できるようにするための、チュートリアルよりも小さな、しかし必要な情報は盛り込んだ、最小のユーザマニュアルを目指して作成したドキュメントです。
+    このページでは、
+    一行コピー、一行カット、ペースト～
+    指定範囲のコピー、カット～
+    アンドゥ、リドゥ～
+    ファイルの保存
+    までを扱います。
+    (Windows, Mac)
+
+.. |BR| raw:: html
+
+    <br />
+
+.. |yen| unicode:: U+000A5 .. YEN SIGN
+
+.. role:: raw-html(raw)
+    :format: html
+
+.. contents::
+
+================================================================================
+一行コピー、一行カット、ペースト
+================================================================================
+
+テキストの一行コピー、ペースト
+-------------------------------------------------------------------------------
+
+テキストを一行コピーするには、ノーマルモードで :raw-html:`<kbd>yy</kbd>` と入力します。 |BR|
+このコピーしたテキストをペーストするには、ノーマルモードで :raw-html:`<kbd>p</kbd>` と押します。
+
+.. csv-table::
+    :header: キー, 説明
+
+    yy, カーソルのある行のテキストをコピー
+    p, コピーしたテキストをペースト
+
+ノーマルモードで :raw-html:`<kbd>yy</kbd>` と入力すると、その行のテキストをコピーします。
+
+.. image:: /dist/img/howto/user-manual/edit_yy.jpg
+    :alt:  カーソルの行のテキストをコピー
+    :class: image-border
+
+↓ :raw-html:`<kbd>p</kbd>` を押すと、そのコピーしたテキストをペーストできます。
+
+.. image:: /dist/img/howto/user-manual/edit_yyp.jpg
+    :alt:  ペースト
+    :class: image-border
+
+
+テキストの一行カット、ペースト
+-------------------------------------------------------------------------------
+
+テキストを一行コピーする :raw-html:`<kbd>yy</kbd>` の代わりに :raw-html:`<kbd>dd</kbd>` を使用すると、
+テキストの一行カットを実行できます。 |BR|
+ここでカットしたテキストも :raw-html:`<kbd>p</kbd>` でペーストできます。
+
+.. csv-table::
+    :header: キー, 説明
+
+    dd, カーソルのある行のテキストをカット
+    p, カットしたテキストをペースト
+
+.. image:: /dist/img/howto/user-manual/edit_yy.jpg
+    :alt:  最初の状態
+    :class: image-border
+
+↓ ノーマルモードで :raw-html:`<kbd>dd</kbd>` と入力すると、その行のテキストをカットします。
+
+.. image:: /dist/img/howto/user-manual/edit_dd.jpg
+    :alt:  カーソルの行のテキストをカット
+    :class: image-border
+
+↓ カットしたテキストは :raw-html:`<kbd>p</kbd>` でペーストできます。
+
+.. image:: /dist/img/howto/user-manual/edit_ddp.jpg
+    :alt:  ペースト
+    :class: image-border
+
+
+
+================================================================================
+指定範囲のコピー、カット
+================================================================================
+
+指定範囲のコピー
+-------------------------------------------------------------------------------
+
+:raw-html:`<kbd>y</kbd>` キーと、
+:raw-html:`<kbd>w</kbd>` :raw-html:`<kbd>b</kbd>` :raw-html:`<kbd>0</kbd>` :raw-html:`<kbd>^</kbd>` :raw-html:`<kbd>$</kbd>`
+を組み合わせると、もう少し短い範囲でのコピーができます。 |BR|
+:raw-html:`<kbd>w</kbd>` :raw-html:`<kbd>b</kbd>` :raw-html:`<kbd>0</kbd>` :raw-html:`<kbd>^</kbd>` :raw-html:`<kbd>$</kbd>`
+との組合せでコピーできる範囲と、 |BR|
+ノーマルモードで
+:raw-html:`<kbd>w</kbd>` :raw-html:`<kbd>b</kbd>` :raw-html:`<kbd>0</kbd>` :raw-html:`<kbd>^</kbd>` :raw-html:`<kbd>$</kbd>`
+を押した時にカーソルが移動する範囲は同じになります。
+
+この操作でコピーしたテキストは :raw-html:`<kbd>p</kbd>` で、カーソル位置にペーストできます。
+
+.. csv-table::
+    :header: キー入力, コピー範囲
+
+    yw, カーソル位置から、前方に一単語分のテキストをコピー
+    yb, カーソル位置から、後方に一単語分のテキストをコピー
+    y0, カーソル位置から、その行の先頭位置までのテキストをコピー
+    y^, カーソル位置から、その行のテキストの先頭位置までのテキストをコピー
+    y$, カーソル位置から、その行の最後までのテキストをコピー
+
+ノーマルモードで :raw-html:`<kbd>y$</kbd>` を押すと、カーソル位置から、
+その行の最後までの範囲のテキストをコピーします。
+
+.. image:: /dist/img/howto/user-manual/edit_ydol.jpg
+    :alt:  y$ でテキストをコピー
+    :class: image-border
+
+↓ :raw-html:`<kbd>p</kbd>` を押すと、コピーしたテキストをペーストできます。
+
+.. image:: /dist/img/howto/user-manual/edit_ydol_p.jpg
+    :alt:  ペースト
+    :class: image-border
+
+
+指定範囲のカット
+-------------------------------------------------------------------------------
+
+この操作も :raw-html:`<kbd>y</kbd>` の代わりに :raw-html:`<kbd>d</kbd>` を使用することで、カットの操作が出来ます。
+
+.. csv-table::
+    :header: キー入力, カット範囲
+
+    dw, カーソル位置から、前方に一単語分のテキストをカット
+    db, カーソル位置から、後方に一単語分のテキストをカット
+    d0, カーソル位置から、その行の先頭位置までのテキストをカット
+    d^, カーソル位置から、その行のテキストの先頭位置までのテキストをカット
+    d$, カーソル位置から、その行の最後までのテキストをカット
+
+ノーマルモードで :raw-html:`<kbd>ds</kbd>` を押すと、カーソル位置から、
+その行の最後までの範囲のテキストをカットします。
+
+.. image:: /dist/img/howto/user-manual/edit_ddol.jpg
+    :alt:  「d$」でテキストをカット
+    :class: image-border
+
+↓ カットしたテキストをペーストするには、 :raw-html:`<kbd>p</kbd>` を使用します。
+
+.. image:: /dist/img/howto/user-manual/edit_ddol_p.jpg
+    :alt:  ペースト
+    :class: image-border
+
+
+
+================================================================================
+アンドゥ、リドゥ
+================================================================================
+
+入力や、コピー、ペーストなどの編集に失敗した時は、
+ノーマルモードで :raw-html:`<kbd>u</kbd>` を押すことで失敗前の状態に戻せます。 |BR|
+これは通常のエディタでいうアンドゥの機能で、 :raw-html:`<kbd>u</kbd>` を押すたびに一つ前の状態に戻ります。
+
+アンドゥで編集した状態を戻しすぎてしまった場合は、 :raw-html:`<kbd>Control-r</kbd>` でリドゥできます。
+
+.. csv-table::
+    :header: キー, 説明
+
+    u, アンドゥ
+    <C-r>, リドゥ
+
+
+
+================================================================================
+ファイルの保存
+================================================================================
+
+編集したファイルを保存するには、コマンドラインモードで :raw-html:`<kbd>:write</kbd>` コマンドを実行します。 |BR|
+ファイルを保存後、エディタを閉じるには、同じくコマンドラインモードで :raw-html:`<kbd>:quit</kbd>` コマンドを実行します。
+
+.. image:: /dist/img/howto/user-manual/commandline_mode_input_command.jpg
+    :alt:  コマンド入力、実行
+
+.. csv-table::
+    :header: コマンド, コマンドの実行によって呼び出される機能
+
+    :w[rite], 編集したファイルの保存
+    :q[uit], 編集中のファイルを閉じる
+
+.. note::
+
+    コマンドラインモードからノーマルモードに戻るには :raw-html:`<kbd>ESC</kbd>` キーを、 |BR|
+    ノーマルモードからコマンドラインモードにモードを変更するには :raw-html:`<kbd>:</kbd>` キーを |BR|
+    押します。
+
+
+編集を保存せずに終了
+-------------------------------------------------------------------------------
+
+ファイルの編集を終了する :raw-html:`<kbd>:quit</kbd>` コマンドをファイルの編集を保存する前に呼び出しても、 |BR|
+コマンドがエラーとなり、エディタを終了できません。
+
+.. image:: /dist/img/howto/user-manual/quit_error.jpg
+    :alt:  「:quit」コマンドがエラー
+
+ファイルを保存せずにファイルの編集を終了するには、 |BR|
+:raw-html:`<kbd>!</kbd>` を後につけて、 :raw-html:`<kbd>:quit</kbd>` コマンドを実行します。
+
+.. image:: /dist/img/howto/user-manual/quit_force.jpg
+    :alt:  ファイルを保存せずに終了。
+
+.. csv-table::
+    :header: コマンド, 説明
+
+    :q[uit]!, 編集中のファイルを閉じる。（強制的）
+
+
+
+================================================================================
+ページリンク
+================================================================================
+
+#. `vimエディタ・スターターマニュアル #1 （ドキュメントの表記）`__
+#. `vimエディタ・スターターマニュアル #2 （モードの切替）`__
+#. `vimエディタ・スターターマニュアル #3 （カーソルの移動）`__
+#. - `vimエディタ・スターターマニュアル #4 （テキスト編集）`__
+#. `vimエディタ・スターターマニュアル #5 （検索、置換）`__
+#. `vimエディタ・スターターマニュアル #6 （複数のバッファの管理）`__
+#. `vimエディタ・スターターマニュアル #7 （ホームディレクトリのファイル構成）`__
+#. `vimエディタ・スターターマニュアル #8 （設定ファイル）`__
+
+__ /articles/howto/user-manual/user-manual-description.html
+__ /articles/howto/user-manual/user-manual-mode.html
+__ /articles/howto/user-manual/user-manual-motion.html
+__ /articles/howto/user-manual/user-manual-editing.html
+__ /articles/howto/user-manual/user-manual-search.html
+__ /articles/howto/user-manual/user-manual-buffer.html
+__ /articles/howto/user-manual/user-manual-user-dir.html
+__ /articles/howto/user-manual/user-manual-config.html
+
+

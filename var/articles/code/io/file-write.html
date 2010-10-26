@@ -1,0 +1,72 @@
+.. vim:set expandtab ff=unix ft=rest nowrap :
+
+..  ファイルに書き出す
+
+..  
+
+.. |BR| raw:: html
+
+    <br />
+
+.. |yen|    unicode:: U+000A5 .. YEN SIGN
+
+.. role:: raw-html(raw)
+    :format: html
+
+.. contents::
+
+================================================================================
+ファイルに書き出す
+================================================================================
+
+- 「:redir」コマンドを使用してファイルに出力する
+
+.. parsed-literal::
+    :class: program
+
+    :let outputfile = "$HOME/test.txt"
+    :execute ":redir! > " . outputfile
+        :silent! echon "line 1" . "\\n"
+        :silent! echon "line 2" . "\\n"
+        :silent! echon "line 3" . "\\n"
+        :silent! echon "line 4" . "\\n"
+        :silent! echon "line 5" . "\\n"
+    :redir END
+    "# => $HOME/test.txtに出力
+
+- バッファのテキストをファイルに出力する。
+
+.. parsed-literal::
+    :class: program
+
+    :let outputfile = "$HOME/test.txt"
+    :execute ":write! " . outputfile
+    "# => $HOME/test.txtにバッファのテキストを出力
+
+- 「:redir」コマンドによる追加書き込み
+
+.. parsed-literal::
+    :class: program
+
+    :let outputfile = "$HOME/test.txt"
+    :execute ":redir! >> " . outputfile
+        :silent! echon "line 1" . "\\n"
+        :silent! echon "line 2" . "\\n"
+        :silent! echon "line 3" . "\\n"
+        :silent! echon "line 4" . "\\n"
+        :silent! echon "line 5" . "\\n"
+    :redir END
+    "# => $HOME/test.txtに追記
+
+- 「writefile()」ファンクションを使用してファイルに出力する
+
+.. parsed-literal::
+    :class: program
+
+    :let outputfile = "$HOME/test.txt"
+    :let lines = [ "line 1", "line 2", "line 3", "line 4" ]
+    :call writefile(lines, outputfile)
+    "# => $HOME/test.txtに出力
+
+
+

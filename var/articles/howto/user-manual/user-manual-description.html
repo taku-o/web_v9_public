@@ -1,0 +1,130 @@
+.. vim:set expandtab ff=unix ft=rest :
+
+..  vimエディタ・スターターマニュアル #1 （ドキュメントの表記）
+
+..  vimエディタをはじめて扱う人が、だましだましvimエディタでの作業を開始できるようにするための、チュートリアルよりも小さな、しかし必要な情報は盛り込んだ、最小のユーザマニュアルを目指して作成したドキュメントです。
+    このページでは、
+    ドキュメントの表記について
+    扱います。
+    (Windows, Mac)
+
+.. |BR| raw:: html
+
+    <br />
+
+.. |yen| unicode:: U+000A5 .. YEN SIGN
+
+.. role:: raw-html(raw)
+    :format: html
+
+.. contents::
+
+================================================================================
+ドキュメントの表記について
+================================================================================
+
+同時押し
+-------------------------------------------------------------------------------
+
+このドキュメントで出てくる次の表記は、複数のキーの同時押しを表現しています。
+
+.. csv-table::
+    :header: 表記, 説明
+
+    <S-...>, :raw-html:`<kbd>Shift</kbd>` キーとの同時押し
+    <C-...>, :raw-html:`<kbd>Control</kbd>` キーとの同時押し
+    <M-...>, :raw-html:`<kbd>Alt</kbd>` キー、もしくは :raw-html:`<kbd>Meta</kbd>` キーとの同時押し
+    <A-...>, :raw-html:`<kbd>Alt</kbd>` キー、もしくは :raw-html:`<kbd>Meta</kbd>` キーとの同時押し
+    <D-...>, :raw-html:`<kbd>Command</kbd>` キーとの同時押し（Mac OSX環境）
+
+例えば、「<C-r>」と表記された場合は、 |BR|
+:raw-html:`<kbd>Control</kbd>` キーと :raw-html:`<kbd>r</kbd>` キーを同時押しすることを表現している、 |BR|
+とお考えください。
+
+.. parsed-literal::
+    :class: console
+
+    ** Controlキーを押しながら、rキーを押す**
+    <C-r>
+
+
+制御文字、ファンクションキーの表記
+-------------------------------------------------------------------------------
+
+このドキュメントでは、制御文字、ファンクションキーは、次のように表記されています。
+
+.. csv-table::
+    :header: 表記, キー
+
+    <ESC>, :raw-html:`<kbd>ESC</kbd>` キー
+    <Tab>, :raw-html:`<kbd>Tab</kbd>` キー
+    <CR>, :raw-html:`<kbd>Enter</kbd>` キー、 :raw-html:`<kbd>Return</kbd>` キーどちらか
+    <Enter>, :raw-html:`<kbd>Enter</kbd>` キー
+    <F1>, :raw-html:`<kbd>F1</kbd>` キー
+    <F2>, :raw-html:`<kbd>F2</kbd>` キー
+    <F3>, :raw-html:`<kbd>F3</kbd>` キー
+    <F...>, 「F...」キー
+
+
+コマンド入力の省略
+-------------------------------------------------------------------------------
+
+vimエディタには、コマンドと呼ばれる機能があります。 |BR|
+vimエディタのコマンドの説明で、次のようにコマンド入力の一部に[ ]が付いていた場合、 |BR|
+[ ]内の部分のコマンド入力は省略しても良いことを表現しています。
+
+.. parsed-literal::
+    :class: console
+
+    **" コマンドの説明の例。**
+    :e[dit]
+
+例えば、上のコマンド説明の例 :raw-html:`<kbd>:e[dit]</kbd>` の場合（↑）、
+
+- :edit
+- :e
+
+のどちらを入力しても、vimエディタの :raw-html:`<kbd>:edit</kbd>` コマンドを実行できる、ということになります。
+
+
+状況にあわせて読み替える値
+-------------------------------------------------------------------------------
+
+vimエディタのコマンドの説明で、次のようにコマンド入力の一部に{ }が付いていた場合、 |BR|
+{ }内の部分のコマンド入力を、{ }内の説明に応じて、読み替えてください。
+
+.. parsed-literal::
+    :class: console
+
+    **" コマンドの説明の例。**
+    :edit {読み込むファイル}
+
+例えば、上のコマンド説明の例「:edit {読み込むファイル}」の場合（↑）、 |BR|
+{読み込むファイル}を、実際に読み込むファイルの名称と置き換えます。
+
+
+
+================================================================================
+ページリンク
+================================================================================
+
+#. - `vimエディタ・スターターマニュアル #1 （ドキュメントの表記）`__
+#. `vimエディタ・スターターマニュアル #2 （モードの切替）`__
+#. `vimエディタ・スターターマニュアル #3 （カーソルの移動）`__
+#. `vimエディタ・スターターマニュアル #4 （テキスト編集）`__
+#. `vimエディタ・スターターマニュアル #5 （検索、置換）`__
+#. `vimエディタ・スターターマニュアル #6 （複数のバッファの管理）`__
+#. `vimエディタ・スターターマニュアル #7 （ホームディレクトリのファイル構成）`__
+#. `vimエディタ・スターターマニュアル #8 （設定ファイル）`__
+
+__ /articles/howto/user-manual/user-manual-description.html
+__ /articles/howto/user-manual/user-manual-mode.html
+__ /articles/howto/user-manual/user-manual-motion.html
+__ /articles/howto/user-manual/user-manual-editing.html
+__ /articles/howto/user-manual/user-manual-search.html
+__ /articles/howto/user-manual/user-manual-buffer.html
+__ /articles/howto/user-manual/user-manual-user-dir.html
+__ /articles/howto/user-manual/user-manual-config.html
+
+
+

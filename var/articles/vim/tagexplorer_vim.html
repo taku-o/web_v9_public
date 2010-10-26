@@ -1,0 +1,158 @@
+.. vim:set expandtab ff=unix ft=rest :
+
+..  tagexplorer.vim : ソースファイルの変数、メソッド、クラス名をファイル別に一覧表示
+
+..  ctagsの機能を利用して編集中のファイルを解析して、
+    Java, C++, Perl, PHP, Python, Rubyの変数、メソッドを別のウィンドウに表示する、
+    クラスブラウザ機能を提供するスクリプトです。
+    (Windows, Mac)
+
+.. |BR| raw:: html
+
+    <br />
+
+.. |yen|    unicode:: U+000A5 .. YEN SIGN
+
+.. role:: raw-html(raw)
+    :format: html
+
+.. contents::
+
+================================================================================
+概要
+================================================================================
+
+tagexplorer.vim : Tag explorer for various programming language files |BR|
+http://www.vim.org/scripts/script.php?script_id=483
+
+クラスブラウザの機能を提供します。 |BR|
+その種類により、タグをグループ化し、左側のウィンドウにフォールド形式のツリーで表示します。
+右ウィンドウのファイルを、そのウィンドウで切り替えつつ、編集できます。
+`taglist.vim`__ と違い、複数のファイルの変数、メソッドを同時に参照できます。
+このスクリプトはJava, C++, Perl, PHP, Python, Rubyなど、複数の言語で使用できます。
+
+__ /articles/vim/taglist_vim.html
+
+.. image:: /dist/img/vim/tagexplorer.jpg
+    :alt:  デフォルトの状態
+
+↑この状態から、
+参照したいファイルのクラスブラウズを行います。
+
+.. image:: /dist/img/vim/tagexplorer_open.jpg
+    :alt:  クラスブラウズ
+
+また、ファイルエクスプローラーとしても機能します。
+
+.. image:: /dist/img/vim/tagexplorer_filer.jpg
+    :alt:  ファイルエクスプローラー
+
+
+
+================================================================================
+インストール方法
+================================================================================
+
+このスクリプトは、Exuberant Ctagsが必要なので、
+インストールされていないのであれば、インストールしてください。
+
+_vimrc、もしくは.vimrcファイルに下記の設定を追加します。
+
+.. parsed-literal::
+    :class: program
+
+    :set tags=tags
+
+`vim online`__ から、
+スクリプトをダウンロードしたら、 |BR|
+$VIMRUNTIME/pluginなどの |BR|
+プラグインディレクトリに、コピーしてください。
+
+__ http://www.vim.org/scripts/script.php?script_id=483
+
+.. csv-table::
+    :header: "ファイル", "URL"
+
+    Exuberant Ctags, http://ctags.sourceforge.net/
+    tagexplorer.vim, http://www.vim.org/scripts/script.php?script_id=483
+
+
+
+================================================================================
+使用方法
+================================================================================
+
+タグファイルはあらかじめ、生成しておきます。
+
+.. parsed-literal::
+    :class: console
+
+    :TagExplorer
+
+を入力するたびに、TagExplorerの表示 ←→ 非表示が入れ替わります。
+
+.. image:: /dist/img/vim/tagexplorer.jpg
+    :alt:  tagexplorer
+
+指定のファイルの上にカーソルを持っていき、
+
+.. parsed-literal::
+    :class: console
+
+    o
+
+で、ファイルの情報を表示します。
+
+.. image:: /dist/img/vim/tagexplorer_open.jpg
+    :alt:  クラスブラウズ
+
+そのファイルの情報を隠す時は、
+次のコマンドを入力します。
+
+.. parsed-literal::
+    :class: console
+
+    c
+
+以下は、用意されているコマンドです。
+
+.. csv-table::
+    :header: コマンド, 効果
+
+    "o", "カーソル下のクラスブラウズをします。"
+    "c", "カーソルの下のファイルの情報を閉じます。-と違い、メソッド、変数上にカーソルがあっても閉じる。"
+    "u", "タグファイルを更新します。"
+    "<Enter>", "カーソル下のファイルを開きます。"
+    "O", "カーソル下のファイルを別のウィンドウで開きます。"
+    "<Space>", "TagExplorerのメソッド、フィールドの上で押すと、そのメソッド、フィールドの情報を表示します。"1
+    "\-", "クラスブラウズしたファイルの情報を閉じます。"
+    "\+", "-、cで閉じられたフォールドを開きます。"
+    "s", "メソッド、フィールドを名前でソートします。"
+    "g", "ディレクトリを移動します。"
+    "q", "TagExplorerを閉じます。"
+
+
+これらのコマンド群は、
+
+.. parsed-literal::
+    :class: console
+
+    ?
+
+を入力しても確認できます。
+
+.. image:: /dist/img/vim/tagexplorer_help.jpg
+    :alt:  tagexplorer
+
+
+
+================================================================================
+注意事項など
+================================================================================
+
+このTagExplorerは、カレントディレクトリのファイル群をブラウズしますが、
+そのカレントディレクトリは、TagExplorerのウィンドウと、編集しているウィンドウで異なることがあります。
+注意してください。
+
+
+

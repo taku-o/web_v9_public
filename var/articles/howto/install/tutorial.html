@@ -1,0 +1,98 @@
+.. vim:set expandtab ff=unix ft=rest :
+
+..  チュートリアルでvimエディタの使い方を覚えよう
+
+..  vimエディタにはエディタの使い方を習得するためのチュートリアルが用意されており、
+    30分ほどでvimエディタの簡単な使い方を学ぶことができます。
+    (Mac)
+
+.. |BR| raw:: html
+
+    <br />
+
+.. |yen|    unicode:: U+000A5 .. YEN SIGN
+
+.. role:: raw-html(raw)
+   :format: html
+
+.. contents::
+
+================================================================================
+チュートリアルで学ぼう
+================================================================================
+
+vimエディタにはエディタの使い方を習得するためのチュートリアルが用意されています。
+30分ほどでvimの簡単な使い方を学べます。 |BR|
+このチュートリアルを使ってvimエディタの使い方を覚えましょう。
+
+vimエディタを起動してください。
+
+.. image:: /dist/img/howto/vim6_install_to_panther/open_application.jpg
+    :alt:  gvim最初の画面
+
+vimエディタが立ちあがったら :raw-html:`<kbd>:Tutorial</kbd>` と入力してから :raw-html:`<kbd>Enter</kbd>` キーを押すと、
+チュートリアルが始まります。 |BR|
+うまく :raw-html:`<kbd>:Tutorial</kbd>` と入力できていると、次のようになります。
+
+.. image:: /dist/img/howto/tutorial/m_tutorial_command.jpg
+    :alt:  :Tutorial入力後
+
+.. image:: /dist/img/howto/tutorial/m_tutorial_command_focus.jpg
+    :alt:  :Tutorial入力後 フォーカス
+
+入力を失敗したり、よくわからない状態になってしまったら、 |BR|
+:raw-html:`<kbd>ESC</kbd>` キーを押してから、もう一度 :raw-html:`<kbd>:Tutorial</kbd>` と入力してください。
+
+.. image:: /dist/img/howto/tutorial/m_tutorial.jpg
+    :alt:  チュートリアル画面
+
+チュートリアルに入れたのであれば、このチュートリアルを実際にやってみてください。 |BR|
+これでvimエディタの基本的な使い方が理解できます。
+
+
+:Tutorialでチュートリアルが実行できなかった人へ
+-------------------------------------------------------------------------------
+
+:raw-html:`<kbd>:Tutorial</kbd>` でチュートリアルを実行できなかった場合は、
+チュートリアル用のファイルを直接、vimエディタで開いてしまいましょう。 |BR|
+チュートリアル用のファイルは、
+
+.. parsed-literal::
+    :class: console
+
+    gvimをインストールしたディレクトリ → runtimeディレクトリ → tutorディレクトリ
+
+にあります。 |BR|
+このディレクトリの「tutor.ja.euc」ファイルが日本語用のチュートリアルです。
+
+.. image:: /dist/img/howto/tutorial/m_tutordir.jpg
+    :alt:  チュートリアルファイルの場所
+
+作業前に、まず、オリジナルのチュートリアルファイルの複製を作ります。 |BR|
+:raw-html:`<kbd>Control</kbd>` キーを押しながら、「tutor.ja.euc」ファイルを選択して、
+表示されたダイアログから複製を選択してください。 |BR|
+「tutor.ja.eucのコピー.euc」という名前のファイルが複製したファイルです。
+
+.. image:: /dist/img/howto/tutorial/m_tutorialclone.jpg
+    :alt:  オリジナルファイルの複製
+
+複製して新しくできた方のファイルを、vimエディタで開いてください。
+
+
+================================================================================
+注意事項など
+================================================================================
+
+Windows版vimエディタでも同様の作業でチュートリアルを実行可能です。
+
+また、チュートリアル用のファイルを開いた時に文字化けが発生する場合は、
+「tutor.ja.euc」の代わりに「tutor.ja.sjis」「tutor.ja.utf-8」のどちらかをを
+使用してみてください。
+
+.. note::
+
+    この文字化けを修復する方法はありますが、
+    ここでは想定読者のレベルを考慮して、その方法は取り扱いません。
+
+
+

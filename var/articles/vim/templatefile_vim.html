@@ -1,0 +1,250 @@
+.. vim:set expandtab ff=unix ft=rest :
+
+..  template file loader : ファイル新規作成時に用意されたテンプレートを読み込む
+
+..  ファイルの新規作成時に、
+    あらかじめ用意しておいたファイルをテンプレートとして
+    使用するかしないかを選択することのできるスクリプトです。
+    (Windows, Mac)
+
+.. |BR| raw:: html
+
+    <br />
+
+.. |yen|    unicode:: U+000A5 .. YEN SIGN
+
+.. role:: raw-html(raw)
+    :format: html
+
+.. contents::
+
+================================================================================
+概要
+================================================================================
+
+template file loader : Loads a template file and does customizable processing when editing a new file. |BR|
+http://www.vim.org/script.php?script_id=198
+
+.. note::
+
+    `最新のバージョンは1.6`__ です。
+    1.5のバグがフィックスされています。
+
+__ http://www.platon.sk/cvs/sk/cvs.php/vimconfig/vim/plugin/templatefile.vim
+
+Javaに限った話ではなく、プログラミングをしていれば、同じ作業を繰り返すことはとても多くなります。 |BR|
+このスクリプトは、新規ファイル作成時のテンプレート機能を提供するものです。
+
+vimエディタでは、_vimrc設定ファイルに次のような1文を加えれば、Javaソースの新規作成時に
+$VIM/templates/skeleton.javaファイルを元にテンプレートを作成してくれますが、
+
+.. parsed-literal::
+    :class: program
+
+    :autocmd BufNewFile \*.java 0r $VIM/templates/skeleton.java
+
+このtemplatefile.vimスクリプトは、この方法では処理しきれない
+テンプレート用ディレクトリのテンプレート自動適用、キーワード展開、
+テンプレート使用未使用の選択手段の機能を提供します。
+
+.. image:: /dist/img/vim/templatefile.jpg
+
+
+
+================================================================================
+インストール方法
+================================================================================
+
+.. note::
+
+    1.5のバグはフィックスされています。
+    `最新のバージョンは1.6`__ です。
+
+__ http://www.platon.sk/cvs/sk/cvs.php/vimconfig/vim/plugin/templatefile.vim
+
+.. csv-table::
+    :header: "ファイル", "URL"
+
+    templatefile.vim, http://www.platon.sk/cvs/sk/cvs.php/vimconfig/vim/plugin/templatefile.vim
+
+templatefile.vimファイルは、
+$VIMRUNTIME/plugin/
+ディレクトリに入れます。
+
+テンプレートファイルを用意します。
+Java言語用であれば、skel.javaという名前で
+$VIM/templates/
+ディレクトリに入れてください。
+
+.. parsed-literal::
+    :class: program
+
+    **// テンプレートファイル skel.javaの例**
+    /\*\* 
+     \* 
+     \* 
+     \* @author author
+     \* @version $Revision: 1.8 $
+     \*/
+    public class @FILE@ {
+        /\*\*
+         \* 本クラスのインスタンスを生成します。
+         \*/
+        public @FILE@(){}
+    }
+
+最後に、_vimrc設定ファイルに
+次の一文を書き加えてください。
+
+.. parsed-literal::
+    :class: program
+
+    :let g:load_templates="ask"
+
+
+
+================================================================================
+使用方法
+================================================================================
+
+新規にJavaのファイルを作成してみましょう。
+コンソールからでも、既に立ち上げてあるvimエディタからでも構いません。 |BR|
+試しにViewTemplate.javaというファイルを作ってみます。
+
+.. image:: /dist/img/vim/template_confirm.jpg
+    :alt:  確認ダイアログ
+
+このようなダイアログが立ちあがり(Windows98の場合)、 |BR|
+ダイアログのYESボタンを押すと、次のソースが自動的に生成されます。 |BR|
+NOボタンと、右端のボタンを押した時はテンプレートは使用されません。
+
+.. parsed-literal::
+    :class: program
+
+    **// ViewTemplate.java**
+    /\*\* 
+     \* 
+     \* 
+     \* @author author
+     \* @version $Revision: 1.8 $
+     \*/
+    public class ViewTemplate {
+        /\*\*
+         \* 本クラスのインスタンスを生成します。
+         \*/
+        public ViewTemplate(){}
+    }
+
+このtemplatefile.vimスクリプトは、
+テンプレート用ディレクトリに、
+skel.\*という名前で、作成ファイルと拡張子の同じファイルがあった場合、
+そのファイルをテンプレートファイルとして認識し、
+キーワード展開して、新規ファイルに張りつけます。
+
+
+
+================================================================================
+テンプレートのカスタマイズ
+================================================================================
+
+テンプレートで使用できるキーワードは、デフォルトでは下の6つです。
+下記の表のキーワードがテンプレートで使用されていると、
+そのキーワードは変換されます。
+
+.. csv-table::
+    :header: キーワード, 置き換えられるもの
+
+    @DATE@, × 変換されない。
+    @YEAR@, 年の表示。(例 2002)
+    @LASTDIR@, × Windowsでは正しく機能しない。
+    @FILE@, 拡張子抜きのファイル名 (例 ViewTemplate)
+    @FILE_EXT@, ファイル名 (例 ViewTemplate.java)
+    @INCLUDE_GAURD@, @FILE@の英大文字バージョン (例 VIEWTEMPLATE)
+
+置換機能が足りない場合は、
+スクリプトの拡張(改造)を行ってしまいましょう。
+
+templatefile.vimの54行目～67行目に、キーワードの変換を行っている個所があります。
+ここに自分の好きなキーワード変換処理を付け加えます。
+
+.. parsed-literal::
+    :class: program
+
+    **" templatefile.vimの54行目～67行目 キーワード変換処理部**
+    let date = strftime("%c")
+    let year = strftime("%Y")
+    let cwd = getcwd()
+    let lastdir = substitute(cwd, ".\*/", "", "g")
+    let myfile = expand("%:t:r")
+    let myfile_ext = expand("%")
+    let inc_gaurd = substitute(myfile, "\\\\.", "_", "g")
+    let inc_gaurd = toupper(inc_gaurd)
+    silent! execute "%s/@DATE@/" .  date . "/g"
+    silent! execute "%s/@YEAR@/" .  year . "/g"
+    silent! execute "%s/@LASTDIR@/" .  lastdir . "/g"
+    silent! execute "%s/@FILE@/" .  myfile . "/g"
+    silent! execute "%s/@FILE_EXT@/" .  myfile_ext . "/g"
+    silent! execute "%s/@INCLUDE_GAURD@/" . inc_gaurd . "/g"
+
+例えば、「@DATE@」キーワードを変えてしまいます。
+
+.. parsed-literal::
+    :class: program
+
+    **" 変更例 templatefile.vimの54行目**
+    let date = strftime("%c")
+
+.. parsed-literal::
+    :class: program
+
+    **" 変更例 templatefile.vimの54行目 (変更後)**
+    " let date = strftime("%c")
+    let date = strftime("%y %m %d %X")
+
+また、変換キーワード「@KEYWORD@」を増やしたい時は、
+次の行を追加します。
+
+.. parsed-literal::
+    :class: program
+
+    **" 変更例 キーワード@KEYWORD@の追加**
+    let keyword = "変換メッセージ"
+    silent! execute "%s/@KEYWORD@/" . keyword . "/g"
+
+この様にして、キーワードを増やしてしまいます。
+テンプレートに必要な分だけ追加しましょう。
+このキーワードは、新規作成時にテンプレートから置きかえられます。
+
+これらのキーワードを使用して、テンプレートの作成を行います。
+
+
+
+================================================================================
+テンプレートファイルのダウンロード
+================================================================================
+
+テンプレートの雛型をいくつか用意しました。
+`ダウンロード`__ して、適当に改変してご利用ください。
+
+__ http://indefero.taku-o.net/index.php/p/download/source/file/master/templates.zip
+
+
+.. csv-table::
+    :header: ファイル, テンプレート種類
+
+    skel.java, Java用テンプレート
+    skel.sdoc, SmartDoc用テンプレート
+    skel.rlx, Relaxer用テンプレート
+    skel.rxm, Relaxer用テンプレート
+
+
+
+================================================================================
+注意事項など
+================================================================================
+
+テンプレートがあると、新規ファイルを開くたびに確認を求められてしまいます(とても面倒なことに)。 |BR|
+また、このスクリプトは、Mac OSX 10.2版gvimでの挙動が怪しいようです。
+
+
+

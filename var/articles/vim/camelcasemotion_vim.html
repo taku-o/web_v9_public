@@ -1,0 +1,405 @@
+.. vim:set expandtab ff=unix ft=rest :
+
+..  camelcasemotion : キャメルケース、アンダースコア区切りの語を操作するプラグイン
+
+..  camelcasemotion.vimプラグインは、プログラムの変数名などで多く使用される、
+    キャメルケース、アンダースコア区切りの命名規則の語を扱うための機能をVimエディタに追加するプラグインです。
+    (Windows, Mac)
+
+.. |BR| raw:: html
+
+    <br />
+
+.. |yen|    unicode:: U+000A5 .. YEN SIGN
+
+.. role:: raw-html(raw)
+    :format: html
+
+.. contents::
+
+================================================================================
+概要
+================================================================================
+
+camelcasemotion : Mappings for motion through CamelCaseWords and underscore_notation. |BR|
+http://www.vim.org/script.php?script_id=1905
+
+camelcasemotion.vimプラグインは、プログラムの変数名などで多く使用される、
+キャメルケース、アンダースコア区切りの命名規則の語を扱うための機能をVimエディタに追加するプラグインです。
+
+.. csv-table::
+    :header: キャメルケースの語の例, アンダースコア区切りの語の例1, アンダースコア区切りの語の例2
+
+    HogeFooVar, HOGE_FOO_VAR, hoge_foo_var
+
+このプラグインを利用すると、例えば、
+
+.. parsed-literal::
+    :class: console
+
+    HogeFooVar
+    HOGE_FOO_VAR
+
+といった語がある場合に、
+
+.. raw:: html
+
+    <pre class="console literal-block">
+    <span class="code_high">H</span>ogeFooVar
+      ↓
+    Hoge<span class="code_high">F</span>ooVar
+      ↓
+    HogeFoo<span class="code_high">V</span>ar
+
+    <span class="code_high">H</span>OGE_FOO_VAR
+      ↓
+    HOGE_<span class="code_high">F</span>OO_VAR
+      ↓
+    HOGE_FOO_<span class="code_high">V</span>AR
+    </pre>
+
+のようにカーソル移動したり、テキスト編集を行えます。
+
+camelcasemotion.vimプラグインは、この他に、キャメルケース、アンダースコア区切りの語を操作するテキストオブジェクトの機能をもっており、
+語の一部範囲のみを対象とした、コピー、カット、ビジュアルモード選択などのテキスト編集作業を行えます。
+
+.. raw:: html
+
+    <pre class="console literal-block">" 例えば、下の範囲のテキストを編集操作できる。
+    Hoge<span class="code_high">Foo</span>Var
+    HOGE_<span class="code_high">FOO_</span>VAR
+    </pre>
+
+
+
+================================================================================
+インストール方法
+================================================================================
+
+camelcasemotion.vimプラグインをインストールするには、 `プラグインファイル`__ をVim公式サイトよりダウンロードし、 |BR|
+そのファイルをpluginディレクトリにコピーしてください。
+
+__ http://www.vim.org/scripts/script.php?script_id=1905
+
+.. csv-table::
+    :header: "ファイル", "URL"
+
+    "camelcasemotion.vim", "http://www.vim.org/scripts/script.php?script_id=1905"
+
+
+
+================================================================================
+使い方
+================================================================================
+
+camelcasemotion.vimプラグインをインストールすると追加される「,w」「,b」「,e」、
+この3つの命令を使用して、テキスト操作を行います。 |BR|
+「,w」「,b」「,e」は、それぞれ、Vimエディタ標準のモーション「w」「b」「e」に近い挙動になっています。
+
+カーソル移動
+--------------------------------------------------------------------------------
+
+ノーマルモード、ビジュアルモードで「,w」「,e」「,b」と入力すると、
+入力したキーに対応した位置にカーソルが移動します。 |BR|
+例として、次のような文があるとして、
+
+.. parsed-literal::
+    :class: console
+
+    @PropertyResource public String hoge_foo_var ;
+
+「,w」を押下した場合、
+
+.. raw:: html
+
+    <pre class="console literal-block">
+    <span class="code_high">@</span>PropertyResource public String hoge_foo_var ;
+    @<span class="code_high">P</span>ropertyResource public String hoge_foo_var ;
+    @Property<span class="code_high">R</span>esource public String hoge_foo_var ;
+    @PropertyResource <span class="code_high">p</span>ublic String hoge_foo_var ;
+    @PropertyResource public <span class="code_high">S</span>tring hoge_foo_var ;
+    @PropertyResource public String <span class="code_high">h</span>oge_foo_var ;
+    @PropertyResource public String hoge_<span class="code_high">f</span>oo_var ;
+    @PropertyResource public String hoge_foo_<span class="code_high">v</span>ar ;
+    @PropertyResource public String hoge_foo_var <span class="code_high">;</span>
+    </pre>
+
+「,b」を押下した場合、
+
+.. raw:: html
+
+    <pre class="console literal-block">
+    @PropertyResource public String hoge_foo_var <span class="code_high">;</span>
+    @PropertyResource public String hoge_<span class="code_high">f</span>oo_var ;
+    @PropertyResource public String <span class="code_high">h</span>oge_foo_var ;
+    @PropertyResource public <span class="code_high">S</span>tring hoge_foo_var ;
+    @PropertyResource <span class="code_high">p</span>ublic String hoge_foo_var ;
+    @Property<span class="code_high">R</span>esource public String hoge_foo_var ;
+    @<span class="code_high">P</span>ropertyResource public String hoge_foo_var ;
+    <span class="code_high">@</span>PropertyResource public String hoge_foo_var ;
+    </pre>
+
+「,e」を押下した場合、
+
+.. raw:: html
+
+    <pre class="console literal-block">
+    <span class="code_high">@</span>PropertyResource public String hoge_foo_var ;
+    @Propert<span class="code_high">y</span>Resource public String hoge_foo_var ;
+    @PropertyResourc<span class="code_high">e</span> public String hoge_foo_var ;
+    @PropertyResource publi<span class="code_high">c</span> String hoge_foo_var ;
+    @PropertyResource public Strin<span class="code_high">g</span> hoge_foo_var ;
+    @PropertyResource public String hog<span class="code_high">e</span>_foo_var ;
+    @PropertyResource public String hoge_fo<span class="code_high">o</span>_var ;
+    @PropertyResource public String hoge_foo_va<span class="code_high">r</span> ;
+    @PropertyResource public String hoge_foo_var <span class="code_high">;</span>
+    </pre>
+
+と、上の図が示すように、語の区切り位置を解析して、カーソルが移動していきます。
+
+このcamelcasemotion.vimプラグインのモーション機能は、Vimエディタの回数指定の繰り返し機能を利用して、
+「6,w」のように実行することもできます。
+
+.. parsed-literal::
+    :class: console
+
+    6,w
+
+.. raw:: html
+
+    <pre class="console literal-block">
+    <span class="code_high">@</span>PropertyResource public String hoge_foo_var ;
+      ↓ 6単位分 移動
+    @PropertyResource public String hoge_<span class="code_high">f</span>oo_var ;
+    </pre>
+
+
+テキスト編集
+--------------------------------------------------------------------------------
+
+camelcasemotion.vimプラグインで定義された「,w」「,b」「,e」コマンドを、 |BR|
+Vimエディタの編集機能と組み合わせることもできます。
+
+.. raw:: html
+
+    <pre class="console literal-block">
+    Carieer<span class="code_high">M</span>emberProfileDetails
+     ↓ 例１。Mの位置で、「d,w」と実行。
+    CarieerProfileDetails
+    
+    CARIEER_<span class="code_high">M</span>EMBER_PROFILE_DETAILS
+     ↓ 例２。Mの位置で「d,w」と実行。
+    CARIEER_PROFILE_DETAILS
+    </pre>
+
+.. raw:: html
+
+    <pre class="console literal-block">
+    CarieerMember<span class="code_high">P</span>rofileDetails
+     ↓ 例３。「d,b」と実行。
+    CarieerProfileDetails
+    
+    CARIEER_MEMBER_<span class="code_high">P</span>ROFILE_DETAILS
+     ↓ 例４。「d,b」と実行。
+    CARIEER_PROFILE_DETAILS
+    </pre>
+
+.. raw:: html
+
+    <pre class="console literal-block">
+    Carieer<span class="code_high">M</span>emberProfileDetails
+     ↓ 例５。「d,e」と実行。
+    CarieerProfileDetails
+    
+    CARIEER_<span class="code_high">M</span>EMBER_PROFILE_DETAILS
+     ↓ 例６。「d,e」と実行。
+    CARIEER__PROFILE_DETAILS
+    </pre>
+
+テキスト編集でも、回数を指定しての繰り返し実行が可能です。 |BR|
+カーソルが単語の範囲を超える場合、「,w」「,b」「,e」は、それぞれ「w」「b」「e」のように動作します。
+
+.. raw:: html
+
+    <pre class="console literal-block">
+    " 例文
+    Carieer<span class="code_high">M</span>emberProfileDetails is the user data type.
+    
+    " 例文に「5d,w」と実行した場合
+    Carieer<span class="code_high">u</span>ser data type.
+    
+    " 例文に「5d,e」と実行した場合
+    Carieer<span class="code_high"> </span>user data type.
+    </pre>
+
+.. note::
+
+    この章の操作例では、見た目に分かりやすい、削除の「d」コマンドを使用していますが、 |BR|
+    他の編集コマンドでも動作します。
+
+
+テキストオブジェクト
+--------------------------------------------------------------------------------
+
+キャメルケースの語、アンダースコア区切りの語の、カーソルの位置にある語の一部分を指定して、
+テキストオブジェクトのような編集操作を行えます。
+使用できるテキストオブジェクトは、「i,w」「i,b」「i,e」です。
+
+例としては、mの位置にカーソルがある時に、
+
+.. raw:: html
+
+    <pre class="console literal-block">
+    CarieerMe<span class="code_high">m</span>berProfileDetails
+    CARIEER_ME<span class="code_high">M</span>BER_PROFILE_DETAILS
+    </pre>
+
+
+テキストオブジェクト「i,w」で、
+
+.. raw:: html
+
+    <pre class="console literal-block">
+    Carieer<span class="code_high">Member</span>ProfileDetails
+    CARIEER_<span class="code_high">MEMBER_</span>PROFILE_DETAILS
+    </pre>
+
+テキストオブジェクト「i,b」で、
+
+.. raw:: html
+
+    <pre class="console literal-block">
+    Carieer<span class="code_high">Member</span>ProfileDetails
+    CARIEER_<span class="code_high">MEMBER</span>_PROFILE_DETAILS
+    </pre>
+
+テキストオブジェクト「i,e」で、
+
+.. raw:: html
+
+    <pre class="console literal-block">
+    Carieer<span class="code_high">Member</span>ProfileDetails
+    CARIEER_<span class="code_high">MEMBER</span>_PROFILE_DETAILS
+    </pre>
+
+図の中の、ハイライトされた範囲のテキストを操作できます。
+
+camelcasemotion.vimプラグインで利用できる、テキストオブジェクトの操作をまとめたのが、次の表です。
+
+.. csv-table::
+    :header: テキストオブジェクト, 削除, 置換, 選択
+
+    "i,w", "di,w", "ci,w", "vi,w"
+    "i,b", "di,b", "ci,b", "vi,e"
+    "i,e", "di,e", "ci,e", "vi,b"
+
+.. note::
+
+    テキストオブジェクトについて良く分らない場合は、カーソルを下の位置に移動して、
+
+    .. raw:: html
+
+        <pre class="console literal-block">
+        CARIEER_ME<span class="code_high">M</span>BER_PROFILE_DETAILS
+        </pre>
+
+    ノーマルモードで、「di,w」と入力してみてください。
+
+    .. parsed-literal::
+        :class: console
+
+        di,w
+
+    テキストオブジェクトは、ある範囲のテキストを、ひとかたまりの単位として扱う機能です。
+
+
+
+================================================================================
+マッピングの設定
+================================================================================
+
+モーションのマッピングの設定
+--------------------------------------------------------------------------------
+
+camelcasemotion.vimプラグインで「,w」「,b」「,e」に割り当てられているモーションの機能を、 |BR|
+それ以外のマッピングで利用したい場合は、次のような設定をVimエディタの設定ファイルに追加してください。
+
+.. parsed-literal::
+    :class: program
+
+    " 設定のフォーマット
+    :map <silent> {マッピング} <Plug>CamelCaseMotion_w
+    :map <silent> {マッピング} <Plug>CamelCaseMotion_b
+    :map <silent> {マッピング} <Plug>CamelCaseMotion_e
+
+例えば、下記例のように設定すれば、Altキーと矢印キーで、もしくは、オプションキーと矢印キーで、 |BR|
+キャメルケースと、アンダースコア区切りの単語を操作できるようになります。
+
+.. parsed-literal::
+    :class: program
+
+    " 設定例1
+    :map <silent> <M-Right> <Plug>CamelCaseMotion_w
+    :map <silent> <M-Left> <Plug>CamelCaseMotion_b
+
+または、次のように設定して、標準の「w」「b」「e」を、
+camelcasemotion.vimプラグインの機能で置き換えるのも良いでしょう。
+
+.. parsed-literal::
+    :class: program
+
+    " 設定例2
+    :map <silent> w <Plug>CamelCaseMotion_w
+    :map <silent> b <Plug>CamelCaseMotion_b
+    :map <silent> e <Plug>CamelCaseMotion_e 
+
+.. csv-table::
+    :header: 設定, 説明
+
+    <Plug>CamelCaseMotion_w, "「,w」に割り当てられている機能を、別のマッピングで利用する場合に指定する。"
+    <Plug>CamelCaseMotion_e, "「,e」に割り当てられている機能を、別のマッピングで利用する場合に指定する。"
+    <Plug>CamelCaseMotion_b, "「,b」に割り当てられている機能を、別のマッピングで利用する場合に指定する。"
+
+
+テキストオブジェクト機能のマッピングの設定
+--------------------------------------------------------------------------------
+
+camelcasemotion.vimプラグインのテキストオブジェクト機能のマッピングを標準設定のキー以外にマッピングするには、 |BR|
+次のフォーマットで、設定をVimエディタの設定ファイルに追加します。
+
+.. parsed-literal::
+    :class: program
+
+    " 設定のフォーマット
+    :omap <silent> {マッピング} <Plug>CamelCaseMotion_iw
+    :vmap <silent> {マッピング} <Plug>CamelCaseMotion_iw
+    :omap <silent> {マッピング} <Plug>CamelCaseMotion_ib
+    :vmap <silent> {マッピング} <Plug>CamelCaseMotion_ib
+    :omap <silent> {マッピング} <Plug>CamelCaseMotion_ie
+    :vmap <silent> {マッピング} <Plug>CamelCaseMotion_ie
+
+例としては、下のように設定します。
+
+.. parsed-literal::
+    :class: program
+
+    " 設定例
+    :omap <silent> iw <Plug>CamelCaseMotion_iw
+    :vmap <silent> iw <Plug>CamelCaseMotion_iw
+    :omap <silent> ib <Plug>CamelCaseMotion_ib
+    :vmap <silent> ib <Plug>CamelCaseMotion_ib
+    :omap <silent> ie <Plug>CamelCaseMotion_ie
+    :vmap <silent> ie <Plug>CamelCaseMotion_ie
+
+このように設定すると、「HogeFooVar」という語中の「Foo」を削除するのに、それまで「Foo」の位置にカーソルを置いて、
+「di,w」と入力していたのが、「diw」の入力でも「Foo」の部分を削除できるようになります。
+
+.. raw:: html
+
+    <pre class="console literal-block">
+    Hoge<span class="code_high">Foo</span>Var
+    </pre>
+
+
+
+

@@ -1,0 +1,254 @@
+.. vim:set expandtab ff=unix ft=rest :
+
+..  vimエディタの印刷機能を使用する #2 （ヘッダー、余白、改行位置の設定）
+
+..  vimエディタの印刷機能に関する説明です。
+    この記事ではvimエディタの印刷機能のうち、ヘッダー、ページ余白、改行位置の設定について解説します。
+    (Windows)
+
+.. |BR| raw:: html
+
+    <br />
+
+.. |yen|    unicode:: U+000A5 .. YEN SIGN
+
+.. role:: raw-html(raw)
+    :format: html
+
+.. contents::
+
+================================================================================
+概要
+================================================================================
+
+vimエディタの印刷機能に関する説明です。 |BR|
+この記事ではvimエディタの印刷機能のうち、ヘッダー、ページ余白、改行位置の設定について解説します。
+
+
+
+================================================================================
+ヘッダーを設定する
+================================================================================
+
+ヘッダーの設定方法
+--------------------------------------------------------------------------------
+
+ヘッダー部分にプリントする文面は「printheader」オプションで指定できます。 |BR|
+「printheader」オプションの書式は「statusline」オプションの書き方と同じです。
+
+.. csv-table::
+    :header: オプション, 説明, 初期設定
+
+    "printheader", "ヘッダー部分の印刷設定オプション", "%<%f%h%m%=Page\\ %N"
+
+「printheader」オプションの設定をvimエディタの設定ファイルに書き込むか、印刷前にオプションを設定すると、 |BR|
+ヘッダーの印刷に設定が反映されます。
+
+.. parsed-literal::
+    :class: console
+
+    **" 「printheader」オプションを設定する**
+    :set printheader=%<%f%h%m%=Page\\ %N
+    
+    **" ↓ オプション設定後、印刷する**
+    :hardcopy
+
+.. note::
+
+    「printheader」オプションの書き方については、
+    「statusline」のヘルプの項を参照してください。
+
+    .. parsed-literal::
+        :class: console
+
+        :help statusline
+
+
+ヘッダーの左右の印刷位置
+--------------------------------------------------------------------------------
+
+「printheader」オプションの設定に「%=」を含めると、
+「%=」の位置でヘッダーのテキストの印刷位置が左右に分かれます。 |BR|
+例えば、「%=」を右端に配置すれば左寄せで、
+
+.. raw:: html
+
+    <pre class="program literal-block"><strong>" 「ファイル名 ページ番号」を左寄せで印刷</strong>
+    :set printheader=%t\ %N<span class="code_high">%=</span></pre>
+
+「%=」を左端に配置すれば右寄せで、
+
+.. raw:: html
+
+    <pre class="program literal-block"><strong>" 「ファイル名 ページ番号」を右寄せで印刷</strong>
+    :set printheader=<span class="code_high">%=</span>%t\ %N</pre>
+
+「%=」を中央に配置すれば、「%=」の位置では左右に分けて、ヘッダーを印刷します。
+
+.. raw:: html
+
+    <pre class="program literal-block"><strong>" 「ファイル名」を左に、「ページ番号」を右に印刷</strong>
+    :set printheader=%t<span class="code_high">%=</span>%N</pre>
+
+
+
+「printheader」オプションの設定例
+--------------------------------------------------------------------------------
+
+「printheader」オプションの設定例をあげておきます。
+下記の例は「MS Word 2000」で用意されているヘッダーを参考にしました。
+
+.. parsed-literal::
+    :class: program
+
+    **" -ページ-**
+    :set printheader=-%N-
+    
+    **" ファイル名**
+    :set printheader=%t
+    
+    **" ファイル名（パス含む）**
+    :set printheader=%F
+    
+    **" 最終印刷日時**
+    :set printheader=%{strftime('%Y/%m/%d\\ %H:%M')}
+    
+    **" 最終保存者、作成者**
+    :set printheader=山田\\ 太郎
+    
+    **" 作成者 ページ 日付**
+    :set printheader=山田\\ 太郎\\ %N\\ %{strftime('%Y/%m/%d')}
+    
+    **" 社外秘 ページ 日付**
+    :set printheader=社外秘\\ %N\\ %{strftime('%Y/%m/%d')}
+
+総ページ数を計算する確実な方法はありません。 |BR|
+次に紹介する方法では、フォントサイズなどの要因で総ページ数が変わってきてしまいます。 |BR|
+改ページ文字である程度、ページ数をコントロールすることは可能です。
+
+.. parsed-literal::
+    :class: program
+
+    **" ページ / 総ページ数**
+    :set printheader=%N\\ /\\ %{line('$')/73+1}
+
+作成日時はvimスクリプト単独では取得不可能です。
+
+.. parsed-literal::
+    :class: program
+
+    **" 作成日時**
+
+.. note::
+
+    「printheader」オプションの設定で、
+    半角スペース、「"」を使用する場合は、
+    「\\」でエスケープする必要があります。
+
+    .. parsed-literal::
+        :class: program
+
+        **" 最終保存者、作成者**
+        :set printheader=山田\\ 太郎
+
+
+ヘッダーを印刷しない、ヘッダーの高さを調節する
+--------------------------------------------------------------------------------
+
+ヘッダーを印刷する領域（高さ）は「printoptions」オプションの「header」で設定できます。 |BR|
+デフォルトでは2行の高さに設定されており、 |BR|
+この設定を変更することで、本文とヘッダー間のスペースを調節したり、 |BR|
+あるいは、ヘッダーを印刷しないようにできます。
+
+.. parsed-literal::
+    :class: program
+
+    **" ヘッダーを印刷しない**
+    :set printoptions=header:0
+    
+    **" ヘッダー、本文の間に行を入れない**
+    :set printoptions=header:1
+    
+    **" ヘッダー、本文の間に2行の空間を入れる**
+    :set printoptions=header:3
+
+
+
+================================================================================
+ページ余白の幅を設定する
+================================================================================
+
+印刷時のページ余白は「printoptions」オプションに、
+「top」「bottom」「left」「right」を指定することで設定します。
+
+.. parsed-literal::
+    :class: program
+
+    **" 左余白 10in**
+    **" 右余白 5in**
+    **" 上余白 5in**
+    **" 下余白 5in**
+    :set printoptions=left:10in,right:5in,top:5in,bottom:5in
+
+各オプションの間はカンマで区切ります。
+サイズの指定で使用可能な単位は「in」「pt」「mm」「pc」です。
+
+.. csv-table:: 余白位置
+    :header: 指定, 説明, デフォルト値
+
+    top,    上余白, 10pc
+    bottom, 下余白, 5pc
+    left,   左余白, 5pc
+    right,  右余白, 5pc
+
+.. csv-table:: 余白のサイズ指定単位
+    :header: 単位, 説明
+
+    in, インチ
+    pt, 1/72インチ
+    mm, ミリメートル
+    pc, 用紙サイズに対する割合
+
+
+
+================================================================================
+ページの改行位置
+================================================================================
+
+「printoptions」オプションに「formfeed:y」をセットすると、 |BR|
+改ページ文字を入れた位置で、改ページが行われるようになります。
+
+.. parsed-literal::
+    :class: program
+
+    **" 改ページ文字の位置で改行する**
+    :set printoptions+=formfeed:y
+
+改ページ文字の入力方法は、 :raw-html:`<kbd>Control-v</kbd>` を押してから :raw-html:`<kbd>Control-l</kbd>` です。
+
+.. parsed-literal::
+    :class: console
+
+    <C-v><C-l>
+
+.. image:: /dist/img/howto/hardcopy/hardcopy_ctrlvctrll.jpg
+    :alt:  改ページ文字
+
+
+
+================================================================================
+ページリンク
+================================================================================
+
+#. `vimエディタの印刷機能を使用する #1 （印刷機能の基本）`__
+#. - `vimエディタの印刷機能を使用する #2 （ヘッダー、余白、改行位置の設定）`__
+#. `vimエディタの印刷機能を使用する #3 （描画に関する設定）`__
+#. `vimエディタの印刷機能を使用する #4 （プリンタ設定）`__
+
+__ /articles/howto/hardcopy/hardcopy.html
+__ /articles/howto/hardcopy/hardcopy_page.html
+__ /articles/howto/hardcopy/hardcopy_draw.html
+__ /articles/howto/hardcopy/hardcopy_printer.html
+
+
+

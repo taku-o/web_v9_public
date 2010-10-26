@@ -1,0 +1,41 @@
+.. vim:set expandtab ff=unix ft=rest nowrap :
+
+..  vimスクリプトの読込を停止する
+
+..  
+
+.. |BR| raw:: html
+
+    <br />
+
+.. |yen|    unicode:: U+000A5 .. YEN SIGN
+
+.. role:: raw-html(raw)
+    :format: html
+
+.. contents::
+
+================================================================================
+vimスクリプトの読込を停止する
+================================================================================
+
+vimスクリプトで、ある地点よりそれ以降の処理を実行させたくない場合は「:finish」を使用する。
+処理の停止はそのスクリプトの中のみで有効で、「:finish」していない他のスクリプトが実行されなくなる、
+ということはない。
+
+.. parsed-literal::
+    :class: program
+
+    :echo "Command NO 1"
+    :echo "Command NO 2"
+    :finish
+    " ここより下の処理は実行されない
+    "
+    :echo "Command NO 3"
+    :echo "Command NO 4"
+    :echo "Command NO 5"
+    
+    "# => Command NO 1
+    "# => Command NO 2
+
+

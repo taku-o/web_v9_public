@@ -1,0 +1,42 @@
+.. vim:set expandtab ff=unix ft=rest nowrap :
+
+..  autocmdを定義する
+
+..  
+
+.. |BR| raw:: html
+
+    <br />
+
+.. |yen|    unicode:: U+000A5 .. YEN SIGN
+
+.. role:: raw-html(raw)
+    :format: html
+
+.. contents::
+
+================================================================================
+autocmdを定義する
+================================================================================
+
+- autocmdからexコマンドを呼び出す
+
+.. parsed-literal::
+    :class: program
+
+    :autocmd BufRead \*.txt :echo "Hello World"
+    
+    :autocmd InsertEnter \*.txt :echo "Insert mode is started."
+
+- autocmdからファンクションを呼び出す
+
+.. parsed-literal::
+    :class: program
+
+    :function! SimpleFunction()
+        :echo "SimpleFunction() is called."
+    :endfunction
+    :autocmd InsertEnter \*.txt :call SimpleFunction()
+
+
+

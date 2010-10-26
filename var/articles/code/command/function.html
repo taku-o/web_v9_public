@@ -1,0 +1,74 @@
+.. vim:set expandtab ff=unix ft=rest nowrap :
+
+..  ファンクションを定義する
+
+..  
+
+.. |BR| raw:: html
+
+    <br />
+
+.. |yen|    unicode:: U+000A5 .. YEN SIGN
+
+.. role:: raw-html(raw)
+    :format: html
+
+.. contents::
+
+================================================================================
+ファンクションを定義する
+================================================================================
+
+- 単純なファンクション定義サンプル
+
+.. parsed-literal::
+    :class: program
+
+    :function! SimpleFunction()
+        :return "SimpleFunction() is called."
+    :endfunction
+    :echo SimpleFunction()
+    "# => SimpleFunction() is called.
+
+- パラメータを受け取るファンクション
+
+.. parsed-literal::
+    :class: program
+
+    :function! ArgsFunction(var1, var2)
+        :echo "ArgsFunction() is called."
+        :echo "paramter 1 : " . a:var1
+        :echo "paramter 2 : " . a:var2
+        :sleep 2
+    :endfunction
+    :call ArgsFunction("AAA", "BBB")
+    "# => ArgsFunction() is called.
+    "# => paramter 1 : AAA
+    "# => paramter 2 : BBB
+
+- 可変長のパラメータを受け取るファンクション
+
+.. parsed-literal::
+    :class: program
+
+    :function! MArgsFunction(...)
+        :echo "MArgsFunction() is called."
+        :echo "paramter 1 : " . a:1
+        :echo "paramter 2 : " . a:2
+        :echo "paramter 3 : " . a:3
+        :echo "paramter 4 : " . a:4
+        :echo "paramter 5 : " . a:5
+        :echo "paramter count : " . len(a:000)
+        :sleep 2
+    :endfunction
+    :call MArgsFunction("AAA", "BBB", "CCC", "DDD", "EEE")
+    "# => MArgsFunction() is called.
+    "# => paramter 1 : AAA
+    "# => paramter 2 : BBB
+    "# => paramter 3 : CCC
+    "# => paramter 4 : DDD
+    "# => paramter 5 : EEE
+    "# => paramter count : 5
+
+
+

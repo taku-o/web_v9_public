@@ -1,0 +1,45 @@
+.. vim:set expandtab ff=unix ft=rest nowrap :
+
+..  if文
+
+..  
+
+.. |BR| raw:: html
+
+    <br />
+
+.. |yen|    unicode:: U+000A5 .. YEN SIGN
+
+.. role:: raw-html(raw)
+    :format: html
+
+.. contents::
+
+================================================================================
+if文
+================================================================================
+
+.. parsed-literal::
+    :class: program
+
+    :let var = 500
+    :if var > 200
+        :echo "var is over 200"
+    :endif
+    "# => var is over 200
+    
+    :let var = "CCC"
+    :if var == "AAA"
+        :echo "var is AAA"
+    :elseif var == "BBB"
+        :echo "var is BBB"
+    :elseif var == "CCC"
+        :echo "var is CCC"
+    :else
+        :echo "var is neither AAA or BBB or CCC"
+    :endif
+    "# => var is CCC
+
+
+
+

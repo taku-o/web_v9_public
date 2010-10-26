@@ -1,0 +1,200 @@
+.. vim:set expandtab ff=unix ft=rest :
+
+..  ambsearch.vim : f, F, t, Tで、あいまい検索を可能に
+
+..  f, F, t, Tによる文字の検索の機能を
+    入力字以外にもマッチ(あいまい検索) するように拡張するプラグインです。
+    このプラグインを使用することにより、
+    カーソルの移動、削除、コピー時の操作をより簡易にできるようにします。
+    (Windows, Mac)
+
+.. |BR| raw:: html
+
+    <br />
+
+.. |yen|    unicode:: U+000A5 .. YEN SIGN
+
+.. role:: raw-html(raw)
+    :format: html
+
+.. contents::
+
+===============================================================================
+概要
+===============================================================================
+
+ambsearch.vim - Ambiguous character search |BR|
+
+`http://www.kaoriya.net/testdir/ambsearch-200#####.tar.bz2`__
+
+__ http://www.kaoriya.net/testdir/
+
+f, F, t, Tによる文字の検索の機能を
+入力文字以外にもマッチ(あいまい検索) するように拡張するプラグインです。
+このプラグインを使用することにより、
+カーソルの移動、削除、コピー時の操作をより簡易にできるようにします。
+
+
+プラグインの動作の例
+-------------------------------------------------------------------------------
+
+例を挙げます。 |BR|
+下のような文があり、初期のカーソル位置が行頭にあるとして、
+
+.. raw:: html
+
+    <pre class="program"><u>初期のカーソル位置は行頭</u>
+    <span class="code_high">"</span> タブをスペースに展開しない (expandtab:展開する)</pre>
+
+「 **fn** 」を実行すると、 |BR|
+通常、「n」の位置にカーソルが移動しますが、
+
+.. raw:: html
+
+    <pre class="program"><u>このプラグインを使わない場合のカーソル移動位置</u>
+    " タブをスペースに展開しない (expa<span class="code_high">n</span>dtab:展開する)</pre>
+
+このプラグインで平仮名にもマッチするように設定しておくと、 |BR|
+「n」の入力に対し「に」がマッチして、 |BR|
+「に」の箇所にカーソルが移動するようになります。
+
+.. raw:: html
+
+    <pre class="program"><u>このプラグインを使った場合のカーソル移動位置</u>
+    " タブをスペース<span class="code_high">に</span>展開しない (expandtab:展開する)</pre>
+
+↓
+
+.. raw:: html
+
+    <pre class="program"><u>連続してfnを実行。その1</u>
+    " タブをスペースに展開し<span class="code_high">な</span>い (expandtab:展開する)</pre>
+
+↓
+
+.. raw:: html
+
+    <pre class="program"><u>連続してfnを実行。その2</u>
+    " タブをスペースに展開しない (expa<span class="code_high">n</span>dtab:展開する)</pre>
+
+
+
+===============================================================================
+インストール方法
+===============================================================================
+
+`Kaoriya`__ から、
+ambsearch-200#####.tar.bz2という名前のファイルをダウンロードしてください。 |BR|
+ファイル名の「#」は数字です。
+
+__ http://www.kaoriya.net/testdir/
+
+ダウンロードしたファイルは、圧縮ファイルになっているので解凍ツールで解凍し、
+作成されたディレクトリを適当なディレクトリにコピーしてください。
+
+vimエディタの設定ファイルに、
+先ほど配置したディレクトリ内のambsearch.vimファイルを
+:sourceコマンドで読み込むように設定すれば、
+このプラグインが使用できるようになります。
+
+.. parsed-literal::
+    :class: console
+
+    **" Windowsの場合の_vimrc設定ファイルの設定例。下のような設定を加える。**
+    " ambsearch.vimを読み込む
+    :source $HOME/vimfiles/macros/ambsearch-20040211/ambsearch.vim
+
+.. parsed-literal::
+    :class: console
+
+    **" Mac OSXの場合の.vimrc設定ファイルの設定例。下のような設定を加える。**
+    " ambsearch.vimを読み込む
+    :source $HOME/.vim/macros/ambsearch-20040211/ambsearch.vim
+
+.. csv-table::
+    :header: "ファイル", "URL"
+
+    "ambsearch.vim", "`http://www.kaoriya.net/testdir/ambsearch-200#####.tar.bz2`__"
+
+__ http://www.kaoriya.net/testdir/
+
+===============================================================================
+設定
+===============================================================================
+
+このプラグインには、あらかじめ、いくつかの設定用データファイルが添付しています。 |BR|
+デフォルトでは「default」の設定が使用されます。 |BR|
+(設定用データファイルは、ambsearchディレクトリに入っています。)
+
+.. csv-table::
+    :header: "用意されている設定", "マッチする文字"
+
+    "default", "数字、記号、アルファベットが全角文字にマッチ。小文字アルファベットがひらがなにマッチ。"
+    "greek", "アルファベットがそれぞれに対応する文字にマッチ。"
+    "hankana", "記号、小文字アルファベットが半角文字にマッチ。"
+    "jyouyou", "大文字アルファベットが漢字にマッチ。"
+    "katakana", "小文字アルファベットがカタカナにマッチ。"
+    "kyouiku", "大文字アルファベットが漢字にマッチ。"
+    "math", "+が±、-が±、<が≦、=が≠≦≧、>が≧にマッチ。"
+
+
+デフォルトの設定データファイルを使用しないようにする
+-------------------------------------------------------------------------------
+
+もし、デフォルトの設定を読み込まないようにする場合には、
+vimの設定ファイルの **ambsearch.vimを読み込む前** の行で、
+「ambsearch_default_disable」に「1」をセットするようにしてください。
+
+.. parsed-literal::
+    :class: console
+
+    **" 設定例**
+    " ambsearch.vimを読み込む前にセット。デフォルトを読み込まない。
+    :let g:ambsearch_default_disable = 1
+
+
+他の設定データファイルを使用する
+-------------------------------------------------------------------------------
+
+他の設定データを使用したい場合には、
+vimの設定ファイルの **ambsearch.vimを読み込んだ後** の行に、
+
+.. parsed-literal::
+    :class: console
+
+    :call AmbsearchLoad("読み込みたい設定")
+
+と書き加えてください。
+
+.. parsed-literal::
+    :class: console
+
+    **" 設定例**
+    " 読み込みたい設定を指定する。複数指定可能。
+    :call AmbsearchLoad("katakana")
+    :call AmbsearchLoad("math")
+
+
+設定のまとめ
+-------------------------------------------------------------------------------
+
+例えば、デフォルトの設定ファイルを読み込まないで、
+「katakana」、「math」の設定ファイルを読み込みたい場合の設定ファイルの例は、
+下のようになります。
+
+.. parsed-literal::
+    :class: console
+
+    " ambsearch.vimを読み込む前にセット。デフォルトを読み込まない。
+    :let g:ambsearch_default_disable = 1
+
+    " ambsearch.vimを読み込む
+    :source $HOME/vimfiles/macros/ambsearch-20040211/ambsearch.vim
+
+    " 読み込みたい設定を指定する。複数指定可能。
+    :call AmbsearchLoad("katakana")
+    :call AmbsearchLoad("math")
+
+
+
+

@@ -1,0 +1,66 @@
+.. vim:set expandtab ff=unix ft=rest nowrap :
+
+..  vimスクリプトの中で日本語を使用する
+
+..  
+
+.. |BR| raw:: html
+
+    <br />
+
+.. |yen|    unicode:: U+000A5 .. YEN SIGN
+
+.. role:: raw-html(raw)
+    :format: html
+
+.. contents::
+
+================================================================================
+vimスクリプトの中で日本語を使用する
+================================================================================
+
+- スクリプト内で使用する日本語のエンコーディングを「:scriptencoding」で指定する。
+
+.. parsed-literal::
+    :class: program
+
+    :scriptencoding cp932
+    
+    :if exists("g:loaded_hello")
+        :finish
+    :endif
+    :let g:loaded_hello = 1
+    :let s:save_cpo = &cpo
+    :set cpo&vim
+    
+    :function Hello()
+        " ここで使用している日本語のエンコーディングに合わせる。
+        :echo "日本語メッセージ"
+    :endfunction
+    
+    :command Hello :call Hello()
+    :let &cpo = s:save_cpo
+
+- スクリプト内でcp932を使用する場合
+
+.. parsed-literal::
+    :class: program
+
+    :scriptencoding cp932
+
+- スクリプト内でeuc-jpを使用する場合
+
+.. parsed-literal::
+    :class: program
+
+    :scriptencoding euc-jp
+
+- スクリプト内でutf-8を使用する場合
+
+.. parsed-literal::
+    :class: program
+
+    :scriptencoding utf-8
+
+
+

@@ -1,0 +1,162 @@
+.. vim:set expandtab ff=unix ft=rest :
+
+..  commentout.vim : ソースをコメントアウト ←→ コメントアウト解除
+
+..  Visual Modeで選択した範囲のソースを
+    コメントアウトしたり、逆にコメントを外したり出来るスクリプトです。
+    (Windows, Mac)
+
+.. |BR| raw:: html
+
+    <br />
+
+.. |yen|    unicode:: U+000A5 .. YEN SIGN
+
+.. role:: raw-html(raw)
+    :format: html
+
+.. contents::
+
+================================================================================
+概要
+================================================================================
+
+vim online Tip #271: easy (un)commenting out of source code |BR|
+http://www.vim.org/tip_view.php?tip_id=271
+
+Visual Modeで指定した範囲のソースにコメントを付けたり、外したりするスクリプトです。
+
+
+
+================================================================================
+インストール方法
+================================================================================
+
+`vim onlineのTip #271`__ を参考にして、
+スクリプトを製作しました。
+
+__ http://www.vim.org/tip_view.php?tip_id=271
+
+
+中身は以下のようになっています。
+
+.. parsed-literal::
+    :class: program
+
+    **" commentout.vim**
+    " lhs comments
+    vmap ,# :s/^/#/<CR>:nohlsearch<CR>
+    vmap ,/ :s/^/\\/\\//<CR>:nohlsearch<CR>
+    vmap ,> :s/^/> /<CR>:nohlsearch<CR>
+    vmap ," :s/^/\\"/<CR>:nohlsearch<CR>
+    vmap ,% :s/^/%/<CR>:nohlsearch<CR>
+    vmap ,! :s/^/!/<CR>:nohlsearch<CR>
+    vmap ,; :s/^/;/<CR>:nohlsearch<CR>
+    vmap ,- :s/^/--/<CR>:nohlsearch<CR>
+    vmap ,c :s/^\\/\\/\\\\|^--\\\\|^> \\\\|^[#"%!;]//<CR>:nohlsearch<CR>
+
+    " wrapping comments
+    vmap ,\* :s/^\\(.\*\\)$/\\/\\\* \\1 \\\*\\//<CR>:nohlsearch<CR>
+    vmap ,( :s/^\\(.\*\\)$/\\(\\\* \\1 \\\*\\)/<CR>:nohlsearch<CR>
+    vmap ,< :s/^\\(.\*\\)$/<!-- \\1 -->/<CR>:nohlsearch<CR>
+    vmap ,d :s/^\\([/(]\\\*\\\\|<!--\\) \\(.\*\\) \\(\\\*[/)]\\\\|-->\\)$/\\2/<CR>:nohlsearch<CR>
+
+    " block comments
+    vmap ,b v`<I<CR><esc>k0i/\*<ESC>`>j0i\*/<CR><esc><ESC>
+    vmap ,h v`<I<CR><esc>k0i<!--<ESC>`>j0i--><CR><esc><ESC>
+
+`スクリプトダウンロード`__ し、|BR|
+このスクリプトを$VIMRUNTIME/plugin/に入れてください。
+
+__ http://indefero.taku-o.net/index.php/p/download/source/file/master/commentout.vim
+
+
+================================================================================
+使用方法
+================================================================================
+
+サンプルのJavaソースコードです。
+
+.. image:: /dist/img/vim/commentout_default.jpg
+
+コメントアウトしたい範囲をVisual Modeで選択します。
+マウスで選択しても良いでしょう。
+
+.. image:: /dist/img/vim/commentout_select.jpg
+
+選択したら、 **素早く(重要)** 、
+
+.. parsed-literal::
+    :class: console
+
+    ,/
+
+と入力すると、
+
+.. image:: /dist/img/vim/commentout_1line.jpg
+
+と選択した範囲がコメントアウトされます。
+
+.. parsed-literal::
+    :class: console
+
+    ,b
+
+で、複数行コメントアウトすることもできます。
+
+.. image:: /dist/img/vim/commentout_block.jpg
+
+
+
+================================================================================
+コマンド一覧
+================================================================================
+
+一行コメント
+
+.. csv-table::
+    :header: "コマンド", "コメントの種類"
+    :quote: '
+
+    ',/', 'Java, C++の一行コメント'
+    ',#', 'shell, perl, 他'
+    ',>', 'email, quote'
+    ',"', 'vimスクリプト'
+    ',%', 'latex, prolog'
+    ',!', 'assembly'
+    ',;', 'scheme'
+    ',-', 'SQL'
+    ',c', '上記の種類のコメントを削除するコマンドです。'
+
+
+複数行コメント
+
+.. csv-table::
+    :header: "コマンド", "コメントの種類"
+
+    ",*", "Java, C++の複数行コメント"
+    ",(", "Standard ML"
+    ",<", "HTML"
+    ",d", "上記の種類のコメントを削除するコマンドです。"
+
+
+複数行一括コメント
+
+.. csv-table::
+    :header: "コマンド", "コメントの種類"
+
+    ",b", "Java, C++の複数行コメント"
+    ",h", "HTML, XMLの複数行コメント"
+
+
+
+================================================================================
+注意事項など
+================================================================================
+
+キーマップが悪さをする場合には、
+自分でスクリプトを編集し直してください。
+
+
+
+

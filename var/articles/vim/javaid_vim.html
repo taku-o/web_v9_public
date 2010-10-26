@@ -1,0 +1,184 @@
+.. vim:set expandtab ff=unix ft=rest :
+
+..  javaid.vim : java.vimによるJava言語のシンタックスハイライトを拡張
+
+..  Java言語用Syntaxハイライト。
+    このSyntaxハイライトファイルを使用すると、
+    デフォルトのJava言語用Syntaxハイライトではハイライトされないキーワードまでも
+    をハイライトすることができます。
+    (Windowns, Mac)
+
+.. |BR| raw:: html
+
+    <br />
+
+.. |yen|    unicode:: U+000A5 .. YEN SIGN
+
+.. role:: raw-html(raw)
+    :format: html
+
+.. contents::
+
+================================================================================
+概要
+================================================================================
+
+javaid.vim |BR|
+http://www.fleiner.com/vim/download.html
+
+Java言語用Syntaxハイライトファイル。 |BR|
+Java 2 SDK 1.3 までの基本クラスのクラス名をハイライト表示してくれるスクリプトです。 |BR|
+大文字、小文字を区別します。 |BR|
+このスクリプトは、gvim6.0 に標準では含まれていません。
+
+.. image:: /dist/img/vim/javaid.jpg
+
+このスクリプトを使うと、Javaソースが、この様にハイライトされます。
+
+
+
+================================================================================
+インストール方法
+================================================================================
+
+まず、$VIMRUNTIME/syntax に java.vimファイルが
+存在することを確認してください。
+
+バージョンが古かったり、無い時は |BR|
+`配布サイト`__ から
+ダウンロードして入手します。
+
+__ http://www.fleiner.com/vim/download.html
+
+次に javaid.vim を
+$VIMRUNTIME/syntax にコピーしてください。
+
+最後に、_vimrc もしくは .vimrc ファイルに
+下の設定を書きこむと、全ての標準Javaクラスのハイライトが有効になります。
+
+.. parsed-literal::
+    :class: program
+
+    :let java_highlight_all=1
+
+
+特定の package のクラスのみをハイライトする時は、
+次の設定を書きこみます。
+
+.. parsed-literal::
+    :class: program
+
+    :let java_highlight_java_beans=1
+
+.. csv-table:: ハイライトされるパッケージとキーワード名の対応表
+    :header: "キーワード", "ハイライトされるパッケージ"
+
+    "java_highlight_all", "全てのクラスがハイライトされる。"
+    "java_highlight_java_beans", "java.beans"
+    "java_highlight_java_beans_beancontext", "java.beans.beancontext"
+    "java_highlight_java_io", "java.io"
+    "java_highlight_java_lang_ref", "java.lang.ref"
+    "java_highlight_java_lang_reflect", "java.lang.reflect"
+    "java_highlight_java_lang_math", "java.lang.math"
+    "java_highlight_java_net", "java.net"
+    "java_highlight_java_security", "java.security"
+    "java_highlight_java_security_acl", "java.security.acl"
+    "java_highlight_java_security_cert", "java.security.cert"
+    "java_highlight_java_security_interfaces", "java.security.interfaces"
+    "java_highlight_java_security_spec", "java.security.spec"
+    "java_highlight_java_text", "java.text"
+    "java_highlight_java_util", "java.util"
+    "java_highlight_java_util_jar", "java.util.jar"
+    "java_highlight_java_util_zip", "java.util.zip"
+    "java_highlight_javax_crypto", "javax.crypto"
+    "java_highlight_java_awt", "java.awt"
+    "java_highlight_java_awt_color", "java.awt.color"
+    "java_highlight_java_awt_datatransfer", "java.awt.datatransfer"
+    "java_highlight_java_awt_dnd", "java.awt.dnd"
+    "java_highlight_java_awt_dnd_peer", "java.awt.dnd.peer"
+    "java_highlight_java_awt_event", "java.awt.event"
+    "java_highlight_java_awt_font", "java.awt.font"
+    "java_highlight_java_awt_geom", "java.awt.geom"
+    "java_highlight_java_awt_im", "java.awt.im"
+    "java_highlight_java_awt_image", "java.awt.image"
+    "java_highlight_java_awt_image_renderable", "java.awt.image.renderable"
+    "java_highlight_java_awt_peer", "java.awt.peer"
+    "java_highlight_java_awt_print", "java.awt.print"
+    "java_highlight_javax_accessibility", "javax.accessibility"
+    "java_highlight_javax_swing", "javax.swing"
+    "java_highlight_javax_swing_border", "javax.swing.border"
+    "java_highlight_javax_swing_colorchooser", "javax.swing.colorchooser"
+    "java_highlight_javax_swing_event", "javax.swing.event"
+    "java_highlight_javax_swing_filechooser", "javax.swing.filechooser"
+    "java_highlight_javax_swing_plaf", "javax.swing.plaf"
+    "java_highlight_javax_swing_table", "javax.swing.table"
+    "java_highlight_javax_swing_text", "javax.swing.text"
+    "java_highlight_javax_swing_text_html", "javax.swing.text.html"
+    "java_highlight_javax_swing_text_html_parser", "javax.swing.text.html.parser"
+    "java_highlight_javax_swing_text_rtf", "javax.swing.text.rtf"
+    "java_highlight_javax_swing_tree", "javax.swing.tree"
+    "java_highlight_javax_swing_undo", "javax.swing.undo"
+    "java_highlight_java_rmi", "java.rmi"
+    "java_highlight_java_rmi_activation", "java.rmi.activation"
+    "java_highlight_java_rmi_dgc", "java.rmi.dgc"
+    "java_highlight_java_rmi_registry", "java.rmi.registry"
+    "java_highlight_java_rmi_server", "java.rmi.server"
+    "java_highlight_java_sql", "java.sql"
+    "java_highlight_javax_ejb", "javax.ejb"
+    "java_highlight_javax_ejb_deployment", "javax.ejb.deployment"
+    "java_highlight_javax_jms", "javax.jms"
+    "java_highlight_javax_naming", "javax.naming"
+    "java_highlight_javax_naming_directory", "javax.naming.directory"
+    "java_highlight_javax_naming_spi", "javax.naming.spi"
+    "java_highlight_javax_servlet", "javax.servlet"
+    "java_highlight_javax_servlet_http", "javax.servlet.http"
+    "java_highlight_javax_sql", "javax.sql"
+    "java_highlight_javax_transaction", "javax.transaction"
+    "java_highlight_javax_transaction_xa", "javax.transaction.xa"
+    "java_highlight_org_omg_corba", "org.omg.corba"
+    "java_highlight_org_omg_corba_dynanypackage", "org.omg.corba.dynanypackage"
+    "java_highlight_org_omg_corba_orbpackage", "org.omg.corba.orbpackage"
+    "java_highlight_org_omg_corba_portable", "org.omg.corba.portable"
+    "java_highlight_org_omg_corba_typecodepackage", "org.omg.corba.typecodepackage"
+    "java_highlight_org_omg_cosnaming", "org.omg.cosnaming"
+    "java_highlight_org_omg_cosnaming_namingcontextpackage", "org.omg.cosnaming.namingcontextpackage"
+
+
+.. csv-table::
+    :header: "ファイル", "URL"
+
+    "java.vim", "http://www.fleiner.com/vim/download.html"
+    "javaid.vim", "http://www.fleiner.com/vim/download.html"
+
+
+
+================================================================================
+使用方法
+================================================================================
+
+.javaファイルを開けば、Syntaxハイライトは有効になります。
+
+
+
+================================================================================
+注意事項など
+================================================================================
+
+これに含まれていない package の Syntax ハイライトがほしい時は、 |BR|
+このスクリプトを参考にして、自分で作ってください。 |BR|
+個人的にはメソッド用が欲しいところです。
+
+
+
+================================================================================
+ページリンク
+================================================================================
+
+#. `java.vim : Java言語のシンタックスファイル`__
+#. - `javaid.vim : java.vimによるJava言語のシンタックスハイライトを拡張`__
+
+__ /articles/vim/java_vim.html
+__ /articles/vim/javaid_vim.html
+
+
+

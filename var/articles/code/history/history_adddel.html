@@ -1,0 +1,82 @@
+.. vim:set expandtab ff=unix ft=rest nowrap :
+
+..  履歴の追加・削除
+
+..  
+
+.. |BR| raw:: html
+
+    <br />
+
+.. |yen|    unicode:: U+000A5 .. YEN SIGN
+
+.. role:: raw-html(raw)
+    :format: html
+
+.. contents::
+
+================================================================================
+履歴を追加する
+================================================================================
+
+.. parsed-literal::
+    :class: program
+
+    " コマンドラインの履歴を追加。
+    " 「:」「cmd」、どちらでも良い。
+    call histadd(':', 'saveas history.html')
+    call histadd('cmd', 'saveas history.html')
+
+    " 検索の履歴を追加。
+    " 「/」「search」、どちらでも良い。
+    call histadd('/', 'search_words')
+    call histadd('search', 'search_words')
+
+    " 式の履歴を追加。
+    " 「=」「expr」、どちらでも良い。
+    call histadd('=', 'Rand(10)')
+    call histadd('expr', 'Rand(10)')
+
+    " input()の履歴を追加。
+    " 「@」「input」、どちらでも良い。
+    call histadd('@', 'Yes, I do.')
+    call histadd('input', 'Yes, I do.')
+
+
+input()の履歴は、input()で表示されるプロンプトへの入力履歴
+
+.. parsed-literal::
+    :class: program
+
+    " プロンプトに入力すると、履歴が追加される
+    call input('Is this a reference page ?')
+
+
+
+================================================================================
+履歴を削除する
+================================================================================
+
+.. parsed-literal::
+    :class: program
+
+    " コマンドラインの履歴を削除。
+    " インデックス指定。数字が大きくなるほど最新。マイナス値で最新側から指定。
+    call histdel(':', -1)
+    " 正規表現。部分一致で削除。
+    call histdel(':', '^help')
+
+    " 検索の履歴を削除。
+    call histdel('/', -1)
+    call histdel('/', '^search_')
+
+    " 式の履歴を削除。
+    cal histdel('=', -1)
+    cal histdel('=', '^Rand')
+
+    " input()の履歴を削除。
+    call histdel('@', -1)
+    call histdel('@', 'Yes, I do.')
+
+
+

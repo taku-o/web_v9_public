@@ -1,0 +1,35 @@
+.. vim:set expandtab ff=unix ft=rest nowrap :
+
+..  ディクショナリの一括変換
+
+..  
+
+.. |BR| raw:: html
+
+    <br />
+
+.. |yen|    unicode:: U+000A5 .. YEN SIGN
+
+.. role:: raw-html(raw)
+    :format: html
+
+.. contents::
+
+================================================================================
+ディクショナリの一括変換
+================================================================================
+
+- ディクショナリの各キーは「v:key」に、各値は「v:val」に入る。
+
+.. parsed-literal::
+    :class: program
+
+    :let var_dict = { "one":"item 1", "two":"item 2", "three":"item 3", "four":"item 4" }
+    :echo map(var_dict, "'key is ' . v:key . ' value is ' . v:val")
+    "# => {'four': 'key is four value is item 4', 'one': 'key is one value is item 1', 'two': 'key is two value is item 2', 'three': 'key is three value is item 3'}
+    
+    :let var_dict = { "one":"item 1", "two":"item 2", "three":"item 3", "four":"item 4" }
+    :echo map(var_dict, "v:key =~ '^t' ? 'XXXX' : v:val")
+    "# => {'four': 'item 4', 'one': 'item 1', 'two': 'XXXX', 'three': 'XXXX'}
+
+

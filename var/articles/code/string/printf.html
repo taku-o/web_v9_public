@@ -1,0 +1,32 @@
+.. vim:set expandtab ff=unix ft=rest nowrap :
+
+..  書式文字列を使う
+
+..  
+
+.. |BR| raw:: html
+
+    <br />
+
+.. |yen|    unicode:: U+000A5 .. YEN SIGN
+
+.. role:: raw-html(raw)
+    :format: html
+
+.. contents::
+
+================================================================================
+書式文字列を使う
+================================================================================
+
+.. parsed-literal::
+    :class: program
+
+    :echo printf("this is %s and %s", "AAA", "BBB")
+    "# => this is AAA and BBB
+    
+    :echo printf("No. %04d", "5")
+    "# => No. 0005
+
+
+

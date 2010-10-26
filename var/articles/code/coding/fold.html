@@ -1,0 +1,85 @@
+.. vim:set expandtab ff=unix ft=rest nowrap :
+
+..  フォールディングを設定して、コードの見通しを良くする
+
+..  
+
+.. |BR| raw:: html
+
+    <br />
+
+.. |yen|    unicode:: U+000A5 .. YEN SIGN
+
+.. role:: raw-html(raw)
+    :format: html
+
+.. contents::
+
+================================================================================
+フォールディングを設定して、コードの見通しを良くする
+================================================================================
+
+モードラインで「foldmethod=marker」を指定する
+---------------------------------------------------------------------------
+
+スクリプトの上端か下端に、
+「foldmethod=marker」を指定するモードラインを定義する。
+
+.. parsed-literal::
+    :class: program
+
+    " vim: foldmethod=marker :
+
+
+折りたたみ箇所を指定する。
+---------------------------------------------------------------------------
+
+- 指定範囲を折りたたむ
+
+.. parsed-literal::
+    :class: program
+
+    "{{{
+    :somecode1
+    :somecode2
+    :somecode3
+    :somecode4
+    "}}}
+
+- ファンクションを折りたたむ
+
+.. parsed-literal::
+    :class: program
+
+    :function! SimpleFunction() "{{{
+        :return "SimpleFunction() is called."
+    :endfunction
+    "}}}
+
+- autocmdのグループを折りたたむ
+
+.. parsed-literal::
+    :class: program
+
+    :augroup Head "{{{
+        :autocmd!
+        :execute ":autocmd BufReadCmd   head" .s:spc. "\*,head" .s:spc. "\*/\* HeadRead  <afile>"
+        :execute ":autocmd FileReadCmd  head" .s:spc. "\*,head" .s:spc. "\*/\* HeadRead  <afile>"
+        :execute ":autocmd BufWriteCmd  head" .s:spc. "\*,head" .s:spc. "\*/\* HeadWrite <afile>"
+        :execute ":autocmd FileWriteCmd head" .s:spc. "\*,head" .s:spc. "\*/\* HeadWrite <afile>"
+    :augroup END
+    "}}}
+
+- スクリプト中のコメントや説明を折りたたむ。
+
+.. parsed-literal::
+    :class: program
+
+    " このファンクションは・・・ "{{{
+    " という処理を行っています。
+    " 引数1:・・・・・
+    " 引数2:・・・・・
+    " 引数3:・・・・・
+    "}}}
+
+

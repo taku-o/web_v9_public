@@ -1,0 +1,33 @@
+.. vim:set expandtab ff=unix ft=rest nowrap :
+
+..  外部コマンドを実行する
+
+..  
+
+.. |BR| raw:: html
+
+    <br />
+
+.. |yen|    unicode:: U+000A5 .. YEN SIGN
+
+.. role:: raw-html(raw)
+    :format: html
+
+.. contents::
+
+================================================================================
+外部コマンドを実行する
+================================================================================
+
+.. parsed-literal::
+    :class: program
+
+    :call system("mkdir")
+    "# => 「mkdir」コマンドを呼出
+    
+    :let files = system("dir")
+    :echo files
+    "# => ファイルの一覧表示
+
+
+

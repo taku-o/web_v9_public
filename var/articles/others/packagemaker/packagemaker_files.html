@@ -1,0 +1,88 @@
+.. vim:set expandtab ff=unix ft=rest :
+
+..  Package Maker #2 （Filesタブ）
+
+..  この記事では「Package Maker」のFilesタブの設定の説明をします。
+    (Mac)
+
+.. |BR| raw:: html
+
+    <br />
+
+.. |yen|    unicode:: U+000A5 .. YEN SIGN
+
+.. role:: raw-html(raw)
+    :format: html
+
+.. contents::
+
+================================================================================
+概要
+================================================================================
+
+この記事では「Package Maker」のFilesタブの設定の説明をします。
+
+
+
+================================================================================
+Filesタブについて
+================================================================================
+
+.. image:: /dist/img/others/packagemaker/files.jpg
+    :alt:  Package Maker filesタブ
+
+インストールするファイルの用意
+-------------------------------------------------------------------------------
+
+まず、インストール時にコピーするファイルを用意します。 |BR|
+(実行ファイルと、実行ファイルが利用するリソースファイル)
+
+
+作業用ディレクトリの準備
+-------------------------------------------------------------------------------
+
+次に、作業用のディレクトリを用意します。 |BR|
+そのディレクトリに、インストール後の状態と同じディレクトリ、ファイル構造になるように、 |BR|
+インストール用のファイルを配置します。
+
+
+Filesタブで作業用ディレクトリを指定
+-------------------------------------------------------------------------------
+
+Filesタブで作業用のディレクトリを指定すると、
+作業用ディレクトリに作成したディレクトリ、ファイル構造通りに、
+ファイルがシステムにコピーされます。 |BR|
+(この時、インストール先のルートとなるディレクトリは、Infoタブで指定します。)
+
+システムへのインストールで必要な作業がコピーだけで終わる場合、
+このFilesタブの指定だけでインストーラーを作成できます。
+
+.. note::
+
+    もし、アプリケーションのインストールで、
+    設定ファイルの変更、特定のファイルのコピー、削除が伴う場合には、 |BR|
+    Resourcesタブで編集用のスクリプトを指定します。
+
+
+
+================================================================================
+ページリンク
+================================================================================
+
+#. `Package Maker #1 （インストーラー作成までの流れ）`__
+#. - `Package Maker #2 （Filesタブ）`__
+#. `Package Maker #3 （インストール中に実行されるスクリプト）`__
+#. `Package Maker #4 （インストールの必須条件のチェック）`__
+#. `Package Maker #5 （ドキュメント）`__
+#. `Package Maker #6 （Infoタブ）`__
+#. `Package Maker #7 （パッケージの作成）`__
+
+__ /articles/others/packagemaker/packagemaker.html
+__ /articles/others/packagemaker/packagemaker_files.html
+__ /articles/others/packagemaker/packagemaker_script.html
+__ /articles/others/packagemaker/packagemaker_validate.html
+__ /articles/others/packagemaker/packagemaker_document.html
+__ /articles/others/packagemaker/packagemaker_info.html
+__ /articles/others/packagemaker/packagemaker_package.html
+
+

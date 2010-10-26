@@ -1,0 +1,51 @@
+.. vim:set expandtab ff=unix ft=rest nowrap :
+
+..  範囲指定可能なコマンドを定義する
+
+..  
+
+.. |BR| raw:: html
+
+    <br />
+
+.. |yen|    unicode:: U+000A5 .. YEN SIGN
+
+.. role:: raw-html(raw)
+    :format: html
+
+.. contents::
+
+================================================================================
+範囲指定可能なコマンドを定義する
+================================================================================
+
+- 選択した行が欲しい場合
+
+.. parsed-literal::
+    :class: program
+
+    :function! Func() range
+        :echo a:firstline
+        :echo a:lastline
+    :endfunction
+    
+    :command! -range Func :<line1>,<line2>call Func()
+
+- ビジュアルモードで選択したテキストが欲しい場合
+
+.. parsed-literal::
+    :class: program
+
+    :function! Func() range
+        :let tmp = @@
+        :silent normal gvy
+        :let selected = @@
+        :let @@ = tmp
+        :echo selected
+    :endfunction
+    
+    :command! -range Func :call Func()
+
+
+
+

@@ -1,0 +1,51 @@
+.. vim:set expandtab ff=unix ft=rest nowrap :
+
+..  正規表現で文字列を検索する
+
+..  
+
+.. |BR| raw:: html
+
+    <br />
+
+.. |yen|    unicode:: U+000A5 .. YEN SIGN
+
+.. role:: raw-html(raw)
+    :format: html
+
+.. contents::
+
+================================================================================
+正規表現で文字列を検索する
+================================================================================
+
+- match()ファンクションを使用した文字列検索。位置を返す。
+
+.. parsed-literal::
+    :class: program
+
+    :echo match("ABCABCABC", "ABC$")
+    "# => 6
+    :echo match("ABCABCABC", "DEF")
+    "# => -1
+
+- 正規表現を使用した文字列検索のサンプル。
+
+.. parsed-literal::
+    :class: program
+
+    :echo "ABCABCABC" =~ "ABC$"
+    "# => 1
+    :echo "ABCABCABC" !~ "ABC"
+    "# => 0
+
+- matchstr()ファンクションを使用した文字列検索。マッチした文字列を返す。
+
+.. parsed-literal::
+    :class: program
+
+    :echo matchstr("XYZOPQABC", "A..$")
+    "# => ABC
+
+
+

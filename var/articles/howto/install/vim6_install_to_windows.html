@@ -1,0 +1,224 @@
+.. vim:set expandtab ff=unix ft=rest :
+
+..  PCに昨日初めてさわった人でもわかるgvim超々入門 (Windows、vim6)
+
+..  gvim version 6 のインストール方法を扱った記事です。Windows用。
+    (Windows)
+
+.. |BR| raw:: html
+
+    <br />
+
+.. |yen|    unicode:: U+000A5 .. YEN SIGN
+
+.. role:: raw-html(raw)
+    :format: html
+
+.. contents::
+
+================================================================================
+gvimの入手
+================================================================================
+
+まずソフトウエアを入手しましょう。 |BR|
+`KaoriYa.net`_ というサイトで、
+`KoRoNさん`_ という方がWindows用のgvimを配布されています。
+
+.. _`KoRoNさん`: mailto:koron@tka.att.ne.jp
+
+`KaoriYa.net`__ の
+「→Windows用 gvim 6.#.### ダウンロード」というリンクをクリックしてください。
+
+__ http://www.kaoriya.net/#VIM
+
+Windowsのブラウザのインターネットエクスプローラーだと、次のようなダイアログが立ちあがります。 |BR|
+「保存 (S)」ボタンを押しましょう。
+
+.. image:: /dist/img/howto/vim6_install_to_windows/download.jpg
+    :alt:  ダウンロードダイアログ
+
+「保存 (S)」ボタンを押すと、ダウンロードして保存するファイル名とダウンロード先を指定するダイアログが出ます。 |BR|
+「保存場所」に困ったら「デスクトップ」に保存してください。ファイル名は変更しない方が良いと思います。
+
+.. image:: /dist/img/howto/vim6_install_to_windows/dialog.jpg
+    :alt:  ダウンロード先ダイアログ
+
+↑ 上で「保存 (S)」を押すと、ダウンロードが始まります。
+
+.. image:: /dist/img/howto/vim6_install_to_windows/downloading.jpg
+    :alt:  ダウンロード中
+
+
+
+================================================================================
+圧縮ファイルの解凍
+================================================================================
+
+ダウンロードしたファイルは圧縮ファイルという形式のファイルです。 |BR|
+圧縮ファイルがどういうものであるかは説明しませんが、このままでは利用できないので、 |BR|
+解凍ソフトというアプリケーションを使用して、この圧縮ファイルを解凍します。
+
+まず、解凍ツールを手に入れましょう。誰でも簡単に扱えそうな解凍ツールを探してみました。
+→
+「 `解凍レンジ`__ 」 |BR|
+ここでは、このソフトを使用することにします。他の解凍ツールでも構いません。
+
+__ http://www.vector.co.jp/soft/win95/util/se094501.html
+
+解凍レンジをインストールします。
+ダウンロードした実行ファイルをダブルクリックすると、インストール用のダイアログが表示されます。 |BR|
+「デスクトップにショートカットを作成(D)」にはチェックを入れて、「インストール実行」をクリックしてください。
+
+.. image:: /dist/img/howto/vim6_install_to_windows/easyrange_install.jpg
+    :alt:  EasyRangeインストール
+
+デスクトップには、gvimの圧縮ファイル(中央)と、解凍ツール(右および、左)があります。
+
+.. image:: /dist/img/howto/vim6_install_to_windows/desktop.jpg
+    :alt:  デスクトップ
+
+gvimの圧縮ファイルを解凍ツールにドラッグアンドドロップしてください。
+「解凍レンジ」であれば、このような画面が表示されます。
+
+.. image:: /dist/img/howto/vim6_install_to_windows/easyrange.jpg
+    :alt:  解凍ダイアログ
+
+「全て解凍」を選択します。
+メーターと共に、圧縮ファイルが解凍される様子がわかります。
+
+.. image:: /dist/img/howto/vim6_install_to_windows/expanding.jpg
+    :alt:  解凍中
+
+解凍後はこの状態になります。 |BR|
+左から2番目、上から2番目の「gvim.exe」というのがアプリケーションの実行ファイルです。 |BR|
+(「フォルダオプションの表示」の項目で、拡張子を表示できる状態にしておいてください。)
+
+.. image:: /dist/img/howto/vim6_install_to_windows/afterexpand.jpg
+    :alt:  圧縮ファイル解凍後
+
+
+
+================================================================================
+インストール
+================================================================================
+
+gvimのインストール前に、他に必要なものがいくつかあるので、
+そちらを先に解決します。
+
+
+libiconv
+-------------------------------------------------------------------------------
+
+「libiconv」は漢字コードの変換を行うライブラリです。
+国や言語を問わずに、あらゆるエンコーディングセットを相互変換することを目的としています。 |BR|
+このライブラリを入手、インストールします。
+
+`KaoriYa.net`_ のサイトに行き、
+「iconv-#.#-dll  →iconv-#.# DLLダウンロード」をクリックして、
+「libiconv」をダウンロードしてください。
+
+ここでダウンロードしたファイルも圧縮ファイルです。
+先ほどと同じように解凍します。
+
+.. image:: /dist/img/howto/vim6_install_to_windows/iconv_dir.jpg
+    :alt:  iconvの解凍
+
+必要なのは「iconv.dll」というファイルです。 |BR|
+このファイルを、OSはCドライブにインストールされていると仮定した場合、 |BR|
+Windows 95/98/Meなら、C:\\WINDOWS\\SYSTEM に、 |BR|
+Windows NT/2000/XPなら、C:\\WINNT\\SYSTEM32 に、 |BR|
+コピーします。
+
+下の画像は、C:\\WINDOWS\\SYSTEMにコピーしているところです。
+
+.. image:: /dist/img/howto/vim6_install_to_windows/c_windows_dir.jpg
+    :alt:  C:\\WINDOWS\\SYSTEM
+
+コピーするディレクトリまでは、「エクスプローラ」というアプリケーションを使って、移動します。
+
+
+
+NetUpVim
+-------------------------------------------------------------------------------
+
+「NetUpVim」は香り屋で配布しているgvimを最新のバージョンにアップデータとするツールです。
+このアプリケーションも必要です。 |BR|
+このアプリケーションもやはり、gvimをダウンロードした `KaoriYa.net`__ に置いてあります。
+
+__ http://www.kaoriya.net/#NETUPVIM
+
+「NetUpVim  →Windows用 NetUpVim 1.#ダウンロード」をクリックしてダウンロードします。 |BR|
+ここでダウンロードしたファイルも圧縮ファイルなので、やはり解凍します。
+
+.. image:: /dist/img/howto/vim6_install_to_windows/netup_dir.jpg
+    :alt:  NetUpVimの解凍
+
+圧縮ファイルを解凍したらこの中身のファイルを全て、gvimの解凍ディレクトリにコピーします。 |BR|
+↓このディレクトリに、NetUpVimの解凍後の中身のファイルを入れます。
+
+.. image:: /dist/img/howto/vim6_install_to_windows/afterexpand.jpg
+    :alt:  圧縮ファイル解凍後
+
+コピーしたら、そのコピーした方の「netupvim.exeファイル」をダブルクリックして、
+gvimをアップデートします。
+
+.. image:: /dist/img/howto/vim6_install_to_windows/netup_dialog.jpg
+    :alt:  NetUpVim起動
+
+ここで、「はい」を選択すると、アップデートし始めます。
+もちろん、「はい」を選択します。
+
+.. image:: /dist/img/howto/vim6_install_to_windows/netup_window.jpg
+    :alt:  Update中
+
+gvimをアップデートしています。
+
+.. image:: /dist/img/howto/vim6_install_to_windows/netup_dialog2.jpg
+    :alt:  確認
+
+このような確認のダイアログが何度か出てきますが、
+全て、「はい」を選択すれば良いでしょう。
+
+.. image:: /dist/img/howto/vim6_install_to_windows/netup_window_finish.jpg
+    :alt:  終了
+
+これで、NetUpVimによるgvimのアップデートは終了です。 |BR|
+このNetUpVimによるgvimのアップデートは、今後も時々は行う必要があります。
+
+
+gvim
+-------------------------------------------------------------------------------
+
+ここまでたどり着いたら、gvim.exeのアイコンをダブルクリックしてみましょう。
+
+.. image:: /dist/img/howto/vim6_install_to_windows/icon.jpg
+    :alt:  gvimアイコン
+
+初めてWindows版gvimを起動する時は、
+次のようなダイアログが表示されると思います。 |BR|
+レジストリにgvimを登録します。「はい(Y)」を選択してください。
+
+.. image:: /dist/img/howto/vim6_install_to_windows/register.jpg
+    :alt:  レジストリ登録
+
+↓
+
+.. image:: /dist/img/howto/vim6_install_to_windows/register_ok.jpg
+    :alt:  レジストリ登録完了
+
+下のような画面が表示されましたか？ |BR|
+表示されたらgvimのインストールは完了です。
+
+.. image:: /dist/img/howto/vim6_install_to_windows/open.jpg
+    :alt:  gvim最初の画面
+
+ここで一旦、gvimは終了させておきます。
+
+gvimのフォルダは名前を短く変更して(vimなど)、
+アクセスしやすいディレクトリ(C:\\など)に移動させておくと良いでしょう。 |BR|
+デスクトップにgvimのショートカットがあると、便利かもしれません。
+
+
+.. _`KaoriYa.net`: http://www.kaoriya.net/
+
+

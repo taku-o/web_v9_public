@@ -1,0 +1,139 @@
+.. vim:set expandtab ff=unix ft=rest nowrap :
+
+..  日付、時間の計算
+
+..  
+
+.. |BR| raw:: html
+
+    <br />
+
+.. |yen|    unicode:: U+000A5 .. YEN SIGN
+
+.. role:: raw-html(raw)
+    :format: html
+
+.. contents::
+
+================================================================================
+日付、時間の計算
+================================================================================
+
+- localtime()は1970年からの秒を返す。strftime()で文字列表記に変換できる。
+
+.. parsed-literal::
+    :class: program
+
+    :let now = localtime()
+    :echo now
+    "# => 1203574847
+    :echo strftime("%Y/%m/%d %H:%M:%S", now)
+    "# => 2008/02/21 15:20:47
+
+- 1時間前。
+
+.. parsed-literal::
+    :class: program
+
+    :let hour = (60 \* 60)
+    :echo strftime("%Y/%m/%d %H:%M:%S", now - hour)
+    "# => 2008/02/21 14:20:47
+
+- 1日前。
+
+.. parsed-literal::
+    :class: program
+
+    :let day = (60 \* 60 \* 24)
+    :echo strftime("%Y/%m/%d %H:%M:%S (%A)", now - day)
+    "# => 2008/02/20 15:20:47 (水曜日)
+
+- 31日前。
+
+.. parsed-literal::
+    :class: program
+
+    :let month = (60 \* 60 \* 24 \* 31)
+    :echo strftime("%Y/%m/%d %H:%M:%S (%A)", now - month)
+    "# => 2008/01/21 15:20:47 (月曜日)
+
+- 365日前。
+
+.. parsed-literal::
+    :class: program
+
+    :let year = (60 \* 60 \* 24 \* 365)
+    :echo strftime("%Y/%m/%d %H:%M:%S (%A)", now - year)
+    "# => 2007/02/21 15:20:47 (水曜日)
+
+- 日付から経過秒数をとる（日本時間）。
+
+.. parsed-literal::
+    :class: program
+
+    :function! Localtime(year, month, day, hour, minute, second)
+        " days from 0000/01/01
+        :let l:year  = a:month < 3 ? a:year - 1   : a:year
+        :let l:month = a:month < 3 ? 12 + a:month : a:month
+        :let l:days = 365\*l:year + l:year/4 - l:year/100 + l:year/400 + 306\*(l:month+1)/10 + a:day - 428
+
+        " days from 0000/01/01 to 1970/01/01
+        " 1970/01/01 == 1969/13/01
+        :let l:ybase = 1969
+        :let l:mbase = 13
+        :let l:dbase = 1
+        :let l:basedays = 365\*l:ybase + l:ybase/4 - l:ybase/100 + l:ybase/400 + 306\*(l:mbase+1)/10 + l:dbase - 428
+
+        " seconds from 1970/01/01
+        :return (l:days-l:basedays)\*86400 + (a:hour-9)\*3600 + a:minute\*60 + a:second
+    :endfunction
+    
+    :let ltime = Localtime(2008, 2, 23, 14, 23, 0)
+    :echo ltime
+    :echo strftime("%Y/%m/%d %H:%M:%S (%A)", ltime)
+    "# => 1203744180
+    "# => 2008/02/23 14:23:00 (土曜日)
+
+- 経過秒数から日付、時間、曜日表示。
+
+.. parsed-literal::
+    :class: program
+
+    :function! Localtime(year, month, day, hour, minute, second)
+        " days from 0000/01/01
+        :let l:year  = a:month < 3 ? a:year - 1   : a:year
+        :let l:month = a:month < 3 ? 12 + a:month : a:month
+        :let l:days = 365\*l:year + l:year/4 - l:year/100 + l:year/400 + 306\*(l:month+1)/10 + a:day - 428
+
+        " days from 0000/01/01 to 1970/01/01
+        " 1970/01/01 == 1969/13/01
+        :let l:ybase = 1969
+        :let l:mbase = 13
+        :let l:dbase = 1
+        :let l:basedays = 365\*l:ybase + l:ybase/4 - l:ybase/100 + l:ybase/400 + 306\*(l:mbase+1)/10 + l:dbase - 428
+
+        " seconds from 1970/01/01
+        :return (l:days-l:basedays)\*86400 + (a:hour-9)\*3600 + a:minute\*60 + a:second
+    :endfunction
+
+    :let ltime = Localtime(2008, 2, 23, 14, 23, 0)
+    
+    :echo strftime("%Y/%m/%d", ltime)
+    "# => 2008/02/23
+    :echo strftime("%H:%M:%S", ltime)
+    "# => 14:23:00
+    :echo strftime("%Y/%m/%d %H:%M:%S", ltime)
+    "# => 2008/02/23 14:23:00
+    
+    :echo strftime("%B", ltime)
+    "# => 2月
+    :echo strftime("%b", ltime)
+    "# => 2
+    
+    :echo strftime("%a", ltime)
+    "# => 土
+    :echo strftime("%A", ltime)
+    "# => 土曜日
+
+
+

@@ -1,0 +1,52 @@
+.. vim:set expandtab ff=unix ft=rest nowrap :
+
+..  ディクショナリの比較
+
+..  
+
+.. |BR| raw:: html
+
+    <br />
+
+.. |yen|    unicode:: U+000A5 .. YEN SIGN
+
+.. role:: raw-html(raw)
+    :format: html
+
+.. contents::
+
+================================================================================
+ディクショナリの比較
+================================================================================
+
+- キーと値が全て一致したら"1"が返る。
+
+.. parsed-literal::
+    :class: program
+
+    :let var_dict1 = { "one":"item 1", "two":"item 2", "three":"item 3", "four":"item 4" }
+    :let var_dict2 = { "one":"item 1", "two":"item 2", "three":"item 3", "four":"item 4" }
+    :let var_dict3 = { "five":"item 5", "six":"item 6", "seven":"item 7", "eight":"item 8" }
+    
+    :echo var_dict1 == var_dict2
+    "# => 1
+    :echo var_dict1 == var_dict3
+    "# => 0
+
+- キーが、数字、文字列で違っていたが、一致すると判定されてしまった。
+
+.. parsed-literal::
+    :class: program
+
+    :let var_dict4 = { "one":"1", "two":"2", "three":"3", "four":"4" }
+    :let var_dict5 = { "one":1, "two":2, "three":3, "four":4 }
+    :echo var_dict4 == var_dict5
+    "# => 0
+    
+    :let var_dict6 = { "1":"item 1", "2":"item 2", "3":"item 3", "4":"item 4" }
+    :let var_dict7 = { 1:"item 1", 2:"item 2", 3:"item 3", 4:"item 4" }
+    :echo var_dict6 == var_dict7
+    "# => 1
+
+
+

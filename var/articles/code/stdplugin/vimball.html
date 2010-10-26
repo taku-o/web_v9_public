@@ -1,0 +1,67 @@
+.. vim:set expandtab ff=unix ft=rest nowrap :
+
+..  Vimballアーカイブでスクリプトを配布する
+
+..  
+
+.. |BR| raw:: html
+
+    <br />
+
+.. |yen|    unicode:: U+000A5 .. YEN SIGN
+
+.. role:: raw-html(raw)
+    :format: html
+
+.. contents::
+
+================================================================================
+Vimballアーカイブでスクリプトを配布する
+================================================================================
+
+- インストールするファイルをディレクトリに配置する。
+
+.. parsed-literal::
+    :class: program
+
+    /tmp/directory/
+      |
+      +-- autoload/
+      |     |
+      |     +-- Align.vim
+      |
+      +-- doc/
+      |     |
+      |     +-- Align.txt
+      |
+      +-- plugin/
+            |
+            +-- AlignMaps.vim
+            +-- AlignPlugin.vim
+
+- インストールファイル一覧を用意する。
+
+.. parsed-literal::
+    :class: program
+
+    autoload/Align.vim
+    doc/Align.txt
+    plugin/AlignMaps.vim
+    plugin/AlignPlugin.vim
+
+- トップディレクトリに移動する。（この例では/tmp/directory/）
+- インストールファイル一覧をvimエディタで開き、「:MkVimball」コマンドを実行する。
+
+.. parsed-literal::
+    :class: console
+
+    :%MkVimball Align-4.0.vba
+
+
+参考：
+`Vimball : インストールしたvimスクリプトを管理するプラグイン`__
+
+__ /articles/vim/vimball_vim.html
+
+
+

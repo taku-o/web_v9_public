@@ -1,0 +1,294 @@
+.. vim:set expandtab ff=unix ft=rest :
+
+..  Vimwiki : Vimベースの個人用Wiki環境 #1 インストールから基本的な使い方まで
+
+..  VimwikiはVimスクリプトで作られた個人用Wikiシステムです。
+    他のシステムや環境に依存せず、Vimエディタ上で単独動作します。
+    作成し記録したWikiのページからHTML形式のドキュメントを生成したり、TODO項目を管理する、
+    といった機能もあります。
+    (Windows, Mac)
+
+.. |BR| raw:: html
+
+    <br />
+
+.. |yen|    unicode:: U+000A5 .. YEN SIGN
+
+.. role:: raw-html(raw)
+    :format: html
+
+.. contents::
+
+================================================================================
+概要
+================================================================================
+
+Vimwiki : Personal Wiki for Vim |BR|
+http://www.vim.org/scripts/script.php?script_id=2226
+
+VimwikiはVimスクリプトで作られた個人用Wikiシステムです。
+他のシステムや環境に依存せず、Vimエディタ上で単独動作します。 |BR|
+作成し記録したWikiのページからHTML形式のドキュメントを生成したり、TODO項目を管理する、
+といった機能もあります。
+
+
+
+================================================================================
+インストール方法
+================================================================================
+
+プラグインのインストール
+--------------------------------------------------------------------------------
+
+`Vimwikiプラグイン`_ はVimballと呼ばれる形式で配布されているので、 |BR|
+ダウンロードしたVimwikiプラグインをインストールするには、 |BR|
+zip形式のファイルを解凍後に生成される「.vba」ファイルに対して「:source」コマンドを実行します。
+
+.. _`Vimwikiプラグイン`: `Vimwiki`_
+
+.. parsed-literal::
+    :class: program
+
+    vimwiki_0_9_2c.vba.zip
+    
+    ↓ zip圧縮ファイル解凍し、次のファイルを作り出す
+    
+    vimwiki_0_9_2c.vba
+    
+    ↓ Vimエディタでvimwiki_0_9_2c.vbaを開いて、次のコマンドを実行する
+
+.. parsed-literal::
+    :class: console
+
+    :source %
+
+.. csv-table::
+    :header: "ファイル", "URL"
+
+    "vimwiki_#_#_#_vba.zip", "http://www.vim.org/scripts/script.php?script_id=2226"
+
+
+
+================================================================================
+Vimwikiのファイル構成
+================================================================================
+
+Vimwikiの使い方を説明する前に、Vimwikiのファイルの構成について説明しておきます。 |BR|
+Vimwikiの基本的なファイル構成は次の通りです。
+
+.. parsed-literal::
+    :class: program
+
+    $HOME                       ホームディレクトリ。
+      ├─ vimwiki/             デフォルトのVimwikiディレクトリ。
+      ｜    ├─ index.wiki     VimwikiのインデックスWikiファイル。
+      ｜    └─ \*.wiki        他のWikiファイル。
+      ｜
+      └─ vimwiki_html/        HTMLファイルの出力先ディレクトリ。
+            ├─ index.html     index.wikiをHTML化すると、対応するHTMLファイルが生成される。
+            ├─ \*.html        他のWikiページから生成されるHTMLファイル。
+            └─ style.css      デフォルトのスタイルシート。
+
+- Vimwikiは、複数のWikiページから構成されます。
+- Wikiページは、Wiki独自の文法で記述します。
+- トピックごとに、別のWikiページが作成されます。
+- 文章中のキーワードから、関連する別のWikiページに誘導するリンクを張れます。この機能により、個々の文書が高度に関連するドキュメント群を構築できます。
+
+
+
+================================================================================
+Vimwikiプラグインの基本的な使い方
+================================================================================
+
+Vimwikiを使いはじめるには
+--------------------------------------------------------------------------------
+
+ノーマルモードで「\\ww」と実行すると、Vimwikiのスタートページを開けます。 |BR|
+はじめてVimwikiを使う場合は、まず、この「\\ww」コマンドを実行し、最初のWikiページを作成してください。
+
+.. parsed-literal::
+    :class: console
+
+    \\ww
+
+この時、「\\ww」ではなく、「\\wt」を実行すると、新しくタブを開いて、そのタブでVimwikiのページを開きます。 |BR|
+何かの作業を行っている最中は、別のタブにVimwikiを開くと、Wiki使用後、すぐに元の作業に戻れて便利です。
+
+.. parsed-literal::
+    :class: console
+
+    \\wt
+
+
+新しいWikiページを作成する
+--------------------------------------------------------------------------------
+
+新しいWikiページは、単純にVimエディタのファイル書き込みコマンドで「.wiki」ファイルを作成するか、 |BR|
+キーワード（Wikiワード）のリンクを辿れば作成されます。
+
+リンクを作るには、英語大文字始まりのキャメルケースの綴りの語を書くか、
+（もちろんWikiページに） |BR|
+
+.. parsed-literal::
+    :class: program
+
+    LinkToTopPage
+
+角括弧２つで、リンクを張りたい語を囲みます。
+
+.. parsed-literal::
+    :class: program
+
+    \[\[link to Top Page]]
+
+リンク上で「Enter」キーを押下すると、 |BR|
+そのWikiワード用のWikiページが作成済みでなければ、新たに作成されます。
+
+.. image:: /dist/img/vim/vimwiki_link.png
+    :alt: リンク
+
+
+Wikiページ間を移動する
+--------------------------------------------------------------------------------
+
+リンクを張った語の上で「Enter」キーを押下すると、リンク先のWikiページに移動します。 |BR|
+リンク先のWikiページから遷移元のページに戻りたい場合は、「BackSpace」キーを押下してください。
+
+.. image:: /dist/img/vim/vimwiki_move.png
+    :alt:  画面遷移。Enterで移動、BackSpaceで戻る。
+    :class: image-border
+
+
+見出しを作る
+--------------------------------------------------------------------------------
+
+同数の「=」でテキストを囲むと、その囲まれたテキストは見出しとして扱われます。 |BR|
+「=」が多いほど、小見出しになります。
+
+.. parsed-literal::
+    :class: program
+
+    = 見出し H1 =
+    
+    == 見出し H2 ==
+    
+    === 見出し H3 ===
+    
+    ==== 見出し H4 ====
+
+手で直接編集しても良いですが、見出しにしたいテキストの上で「=」「-」を押下することでも、
+見出しのレベルを増減できます。
+
+
+TODOリストを管理する
+--------------------------------------------------------------------------------
+
+行を空白文字（半角スペースなど）＋「\* \[ ]」か、 |BR|
+空白文字（半角スペースなど）＋「# \[ ]」で始めると、その行はTODOリストとして扱われます。
+
+.. parsed-literal::
+    :class: program
+
+    # \[ ] TODOリスト1
+    # \[ ] TODOリスト2
+    # \[ ] TODOリスト3
+    # \[ ] TODOリスト4
+    # \[ ] more ...
+    # \[ ] and more ...
+
+TODOリストの上では、「Control」＋「Space」キーを押下することで、 |BR|
+「\[ ]」の中に、TODO項目完了の印の「x」を入れられます。
+
+.. raw:: html
+
+    <pre class="program literal-block">
+    # [ ] TODOリスト1
+    <span class="code_high"># [x] TODOリスト2</span>
+    <span class="code_high"># [x] TODOリスト3</span>
+    # [ ] TODOリスト4
+    # [ ] more ...
+    # [ ] and more ...
+    </pre>
+
+.. image:: /dist/img/vim/vimwiki_todolist.png
+    :alt:  TODOリスト HTML化
+    :class: image-border
+
+
+Wikiページの文法
+--------------------------------------------------------------------------------
+
+Wikiの文法について詳しくはVimwikiのヘルプを読むか、
+
+.. parsed-literal::
+    :class: console
+
+    " Vimwikiの文法のヘルプを開く
+    :help vimwiki-syntax
+
+当方で用意した、 |BR|
+`Vimwiki : Vimベースの個人用Wiki環境 #3 Wikiページ記法`_ |BR|
+のページを参照してください。
+
+
+WikiページをHTML化する
+--------------------------------------------------------------------------------
+
+作成したWikiページをHTML形式に変換できます。 |BR|
+コマンドは2種類用意されていますが、通常は「:VimwikiAll2HTML」コマンドの方を使用すれば良いでしょう。
+
+.. parsed-literal::
+    :class: console
+
+    " 全てのWikiページをHTML化する
+    :VimwikiAll2HTML
+
+.. parsed-literal::
+    :class: console
+
+    " 現在編集中のWikiページをHTML化する。
+    :Vimwiki2HTML
+
+Wikiページから作り出したHTMLファイルは、ホームディレクトリの「vimwiki_html」ディレクトリに出力されます。 |BR|
+参考： `Vimwikiのファイル構成`_
+
+
+ヘルプ
+--------------------------------------------------------------------------------
+
+Vimwikiをインストールすると、詳細なヘルプドキュメントも同時にインストールされます。 |BR|
+Vimwikiのヘルプを確認するには次のコマンドを実行してください。
+
+.. parsed-literal::
+    :class: console
+
+    :help vimwiki
+
+Vimwikiの操作方法については、別に記事を用意してあるので、
+そちらの記事も参考にしてください。 |BR|
+参考： `Vimwiki : Vimベースの個人用Wiki環境 #2 Vimwikiの操作`_
+
+
+
+================================================================================
+ページリンク
+================================================================================
+
+#. - `Vimwiki : Vimベースの個人用Wiki環境 #1 インストールから基本的な使い方まで`_
+#. `Vimwiki : Vimベースの個人用Wiki環境 #2 Vimwikiの操作`_
+#. `Vimwiki : Vimベースの個人用Wiki環境 #3 Wikiページ記法`_
+#. `Vimwiki : Vimベースの個人用Wiki環境 #4 設定・カスタマイズ`_
+
+.. _`Vimwiki : Vimベースの個人用Wiki環境 #1 インストールから基本的な使い方まで`: `doc_vimwiki`_
+.. _`Vimwiki : Vimベースの個人用Wiki環境 #2 Vimwikiの操作`: `doc_vimwiki_usage`_
+.. _`Vimwiki : Vimベースの個人用Wiki環境 #3 Wikiページ記法`: `doc_vimwiki_syntax`_
+.. _`Vimwiki : Vimベースの個人用Wiki環境 #4 設定・カスタマイズ`: `doc_vimwiki_config`_
+
+.. _`Vimwiki`: http://www.vim.org/scripts/script.php?script_id=2226
+.. _`doc_vimwiki`: /articles/vim/vimwiki/vimwiki_vim.html
+.. _`doc_vimwiki_usage`: /articles/vim/vimwiki/vimwiki_vim_usage.html
+.. _`doc_vimwiki_syntax`: /articles/vim/vimwiki/vimwiki_vim_syntax.html
+.. _`doc_vimwiki_config`: /articles/vim/vimwiki/vimwiki_vim_config.html
+
+
+

@@ -1,0 +1,275 @@
+.. vim:set expandtab ff=unix ft=rest :
+
+..  spinner.vim : 3つのキーの操作だけで、バッファ、ファイル、タブを素早く切り替えられるプラグイン
+
+..  spinner.vimプラグインは「快適に」「簡単に」操作できることを目指して作られた、
+    操作ファイル切り替えプラグインです。
+    「Control」「Shift」「Enter」の3つのキーの操作だけで、
+    バッファ、同じディレクトリのファイル、タブなどを順々に切り替えられる機能があります。
+    (Windows, Mac)
+
+.. |BR| raw:: html
+
+    <br />
+
+.. |yen|    unicode:: U+000A5 .. YEN SIGN
+
+.. role:: raw-html(raw)
+    :format: html
+
+.. contents::
+
+================================================================================
+概要
+================================================================================
+
+spinner.vim : fast buffer/file/tab/... switching plugin with only 3 keys. |BR|
+http://spinner-vim-plugin.googlecode.com/files/spinner-vim-plugin.vba
+
+spinner.vimプラグインは「快適に」「簡単に」操作できることを目指して作られた、
+操作ファイル切り替えプラグインです。
+:raw-html:`<kbd>Control</kbd>` :raw-html:`<kbd>Shift</kbd>` :raw-html:`<kbd>Enter</kbd>` の
+3つのキーの操作だけで、
+
+- バッファ
+- ファイル（開いているファイルと同じディレクトリから探す）
+- 最近編集したファイル
+- タブ
+- ウィンドウ
+- エラーリスト
+- エラーリスト（ファイル単位）
+
+の種類の操作ファイルを順々に切り替えられる機能を提供します。
+
+
+
+================================================================================
+インストール方法
+================================================================================
+
+spinner-vim-plugin.vbaのダウンロード
+--------------------------------------------------------------------------------
+
+spinner.vimプラグインは、次のURLからダウンロードします。 |BR|
+http://spinner-vim-plugin.googlecode.com/files/spinner-vim-plugin.vba
+
+
+spinner-vim-plugin.vbaのインストール
+--------------------------------------------------------------------------------
+
+spinner.vimプラグインはVimBall形式で配布しています。 |BR|
+このプラグインをインストールするには、
+「spinner-vim-plugin.vba」ファイルをVimエディタで開き、
+:raw-html:`<kbd>:source %</kbd>` コマンドを実行してください。
+プラグインと、プラグインのヘルプファイルがインストールされます。
+
+.. parsed-literal::
+    :class: console
+
+    **" プラグインをインストールするには、**
+    **" Vimエディタでspinner-vim-plugin.vbaファイルを開いてから、**
+    **" sourceコマンドを実行する**
+    :source %
+
+.. csv-table::
+    :header: "ファイル", "URL"
+
+    "spinner-vim-plugin.vba", "http://spinner-vim-plugin.googlecode.com/files/spinner-vim-plugin.vba"
+
+
+
+================================================================================
+spinner.vimプラグインの基本的な使い方
+================================================================================
+
+.. csv-table::
+    :header: "操作", "説明"
+
+    <C-Enter>, 次のファイルへ移動
+    <S-Enter>, 前のファイルへ移動
+    <C-S-Enter>, 操作モードを切り替える
+    <A-Enter>, 操作モードを表示する。
+    <D-Enter>, 操作モードを表示する。
+
+
+操作ファイルを次に進める、前に戻る。
+--------------------------------------------------------------------------------
+
+spinner.vimの基本操作の一つです。 |BR|
+ノーマルモードで、 :raw-html:`<kbd>Control-Enter</kbd>` を押下すると次のファイルに、 |BR|
+:raw-html:`<kbd>Shift-Enter</kbd>` を押下すると前のファイルに操作ファイルが切り替わります。
+
+.. note::
+
+    :raw-html:`<kbd>Control-Enter</kbd>` は
+    :raw-html:`<kbd>Control</kbd>` キーを押しながら :raw-html:`<kbd>Enter</kbd>` キー、 |BR|
+    :raw-html:`<kbd>Shift-Enter</kbd>` は
+    :raw-html:`<kbd>Shift</kbd>` キーを押しながら :raw-html:`<kbd>Enter</kbd>` キーを押すことを示しています。
+
+
+操作モードを切り替える。
+--------------------------------------------------------------------------------
+
+:raw-html:`<kbd>Control-Enter</kbd>` 、 :raw-html:`<kbd>Shift-Enter</kbd>` を押した時に、
+どの種類のファイルを操作するのかを切り替えるのが、
+:raw-html:`<kbd>Control-Shift-Enter</kbd>` キーです。
+
+ノーマルモードで :raw-html:`<kbd>Control-Shift-Enter</kbd>` キーを押下するごとに、
+:raw-html:`<kbd>Control-Enter</kbd>` 押下時の挙動が次の順序で変わっていきます。
+
+- バッファを切り替える。
+- 同じディレクトリにあるファイルを開く。
+- 最近編集したファイルの一覧から、ファイルを開く。
+- タブを移動する。
+- ウィンドウを移動する。
+- エラーリストの次の項目に移動する。
+- エラーリスト（ファイル単位）の次のファイルの項目に移動する。
+
+.. image:: /dist/img/vim/spinner_switch_mode.png
+    :alt:  C-S-Enter押下毎に、spinner.vimプラグインの挙動が変わります。
+
+
+今、どの操作モードにいるか、確認する。
+--------------------------------------------------------------------------------
+
+spinner.vimプラグインで、どの操作モードにいるか分からなくなった時は、 |BR|
+:raw-html:`<kbd>Alt-Enter</kbd>` か、 :raw-html:`<kbd>Command-Enter</kbd>` で、
+現在の操作モードを表示できます。
+
+.. image:: /dist/img/vim/spinner_current_mode.png
+    :alt:  spinner.vimプラグインの現在の操作モードを表示
+
+
+
+================================================================================
+一歩進んだ、spinner.vimプラグインの使い方
+================================================================================
+
+spinner.vimの操作モードをステータスバーに表示する。
+--------------------------------------------------------------------------------
+
+spinner.vimプラグインが今のどの操作モードにいるか忘れやすい、というのは、
+状態をもったプラグインである、spinner.vimの大きな弱点です。 |BR|
+この問題を解決する方法の一つとして、ステータスバーを使う方法を紹介します。
+
+spinner.vimプラグインをインストールすると「g:CurrentSpinnerMode()」で現在の操作モードをとれるようになるので、
+例えば、次のようにVimエディタ設定ファイルで設定すれば、
+ステータスバーにspinner.vimプラグインの操作モードを表示できます。
+
+.. parsed-literal::
+    :class: program
+
+    **" ステータスバーにspinner.vimプラグインの状態を表示**
+    set statusline=%<%f\ %m%r%h%w[#%n]%{'['.(&fenc!=''?&fenc:&enc).']['.&ff.'][spinner:'.g:CurrentSpinnerMode().']'}%=[row:%l/%L,col:%c]\ %P
+
+.. image:: /dist/img/vim/spinner_statusbar.png
+    :alt:  ステータスバーにspinner.vimプラグインの操作モードを表示
+
+
+操作モードを直接指定する。
+--------------------------------------------------------------------------------
+
+spinner.vimプラグインでは、通常、
+:raw-html:`<kbd>Control-Shift-Enter</kbd>` で操作モードを順々に切り替えて、
+目的のモードまで変更するのですが、
+
+:raw-html:`<kbd>2 Control-Shift-Enter</kbd>` のように、操作モードの番号を指定して、
+:raw-html:`<kbd>Control-Shift-Enter</kbd>` を押下すると、指定した操作モードに直接切り替えられます。
+
+.. parsed-literal::
+    :class: console
+
+    **" コマンドのフォーマット**
+    {モードの番号} <C-S-Enter>
+
+    **" コマンド実行例。タブ操作モードに移行。**
+    4 <C-S-Enter>
+
+.. csv-table::
+    :header: "NUMBER", "spinner.vimプラグインのモード"
+
+    1, buffer
+    2, same directory file
+    3, most recently edited
+    4, tab
+    5, window
+    6, quickfix
+    7, quickfix file
+
+
+spinner.vimのキーのマッピングを変更する。
+--------------------------------------------------------------------------------
+
+Vimエディタの設定ファイルで
+「g:spinner_nextitem_key」「g:spinner_previousitem_key」「g:spinner_switchmode_key」「g:spinner_displaymode_key」
+を設定すると、デフォルト以外のキーでspinner.vimプラグインを操作できるようになります。
+
+.. parsed-literal::
+    :class: program
+
+    **" 設定のフォーマット**
+    let g:spinner_nextitem_key = {mapping}
+    let g:spinner_previousitem_key = {mapping}
+    let g:spinner_switchmode_key = {mapping}
+    let g:spinner_displaymode_key = {mapping}
+
+    **" 設定例**
+    let g:spinner_nextitem_key = ',n'
+    let g:spinner_previousitem_key = ',p'
+    let g:spinner_switchmode_key = ',s'
+    let g:spinner_displaymode_key = ',d'
+
+.. csv-table::
+    :header: 設定, 説明
+
+    g:spinner_nextitem_key, 次のアイテムに移動するキー
+    g:spinner_previousitem_key, 前のアイテムに移動するキー
+    g:spinner_switchmode_key, 操作モードを切り替えるキー
+    g:spinner_displaymode_key, 操作モードを表示するキー
+
+
+Vimエディタ起動後、最初のspinner.vim操作モードを指定する。
+--------------------------------------------------------------------------------
+
+起動直後の最初の操作モードを変更するには「g:spinner_initial_search_type」を設定します。
+
+.. parsed-literal::
+    :class: program
+
+    **" 設定のフォーマット**
+    let g:spinner_initial_search_type = {mode number}
+
+    **" 設定例。同ディレクトリファイルを最初の操作モードにする**
+    let g:spinner_initial_search_type = 2
+
+.. csv-table::
+    :header: 操作モード番号, 操作モード
+
+    1, buffer
+    2, same directory file
+    3, most recently edited
+    4, tab
+    5, window
+    6, quickfix
+    7, quickfix file
+
+
+
+================================================================================
+コンソール版Vimエディタでの問題
+================================================================================
+
+このspinner.vimプラグインをコンソール版Vimエディタで使う場合、
+:raw-html:`<kbd>Control-Enter</kbd>` 、 :raw-html:`<kbd>Shift-Enter</kbd>` といった、
+デフォルトで割り当てられているマッピングが機能しない、という大きな問題があります。
+
+ただし、一部環境（というには多いですが）を考慮して、全ての環境の利便性を下げるつもりはないので、
+この問題はそのままにしています。
+
+コンソール版でspinner.vimプラグインを使う場合は、
+`spinner.vimのキーのマッピングを変更する。`_ を参考に、
+操作キーを変更してください。
+
+
+
+

@@ -1,0 +1,124 @@
+.. vim:set expandtab ff=unix ft=rest nowrap :
+
+..  変数のスコープ
+
+..  
+
+.. |BR| raw:: html
+
+    <br />
+
+.. |yen|    unicode:: U+000A5 .. YEN SIGN
+
+.. role:: raw-html(raw)
+    :format: html
+
+.. contents::
+
+================================================================================
+変数のスコープ
+================================================================================
+
+- 変数はファンクション内でのみ使用可能。
+
+.. parsed-literal::
+    :class: program
+
+    :let l:var1 = "text value"
+
+- ファンクション内でのみ使用可能。ファンクションの引数用。
+
+.. parsed-literal::
+    :class: program
+
+    :let a:var2 = "text value"
+
+- 変数はスクリプト内でのみ使用可能。
+
+.. parsed-literal::
+    :class: program
+
+    :let s:var3 = "text value"
+
+- 変数はバッファ内でのみ使用可能。
+
+.. parsed-literal::
+    :class: program
+
+    :let b:var4 = "text value"
+
+- 変数はウィンドウの範囲でのみ使用可能。
+
+.. parsed-literal::
+    :class: program
+
+    :let w:var5 = "text value"
+
+- 変数はタブの範囲でのみ使用可能。
+
+.. parsed-literal::
+    :class: program
+
+    :let t:var6 = "text value"
+
+- 変数はどこからでも使用可能。
+
+.. parsed-literal::
+    :class: program
+
+    :let g:var7 = "text value"
+
+- 同じく、変数はどこからでも使用可能。
+
+.. parsed-literal::
+    :class: program
+
+    :let var8 = "text value"
+
+- vimエディタが定義、設定する変数。
+
+.. parsed-literal::
+    :class: program
+
+    :let v:var9 = "text value"
+
+- 変数のスコープの使い分けサンプル
+
+.. parsed-literal::
+    :class: program
+
+    :if exists("g:loaded_hello")
+        :finish
+    :endif
+    " 外部からでも、変数を操作させたい時は「g:」を使う。
+    " （ここの場合、他のスクリプトでg:loaded_helloを1に変更して、
+    " スクリプトを読み込まないようにできる。）
+    :let g:loaded_hello = 1
+    
+    " そのスクリプト内だけで使用する変数は「s:」を使う
+    :let s:save_cpo = &cpo
+    :set cpo&vim
+    
+    :function! Hello(opt)
+        " ファンクションの中だけで使用する変数には「l:」を使う
+        :let l:text = "Hello World "
+        " ファンクションのパラメータは「a:」で参照できる
+        :let l:text .= a:opt
+        :echo l:text
+    :endfunction
+    
+    :command! -narg=1 Hello :call Hello(<f-args>)
+    :let &cpo = s:save_cpo
+
+.. note::
+
+    このサイトで公開している「vimスクリプト リファレンス」では、
+    サンプルコードでスコープを使用していません。 |BR|
+    なぜなら、スコープを使用したサンプルコードを書いてしまうと、
+    そのままではコピーしても動かない可能性が高いので、
+    読む方が混乱すると考えたからです。 |BR|
+    余裕のある方は、当サイトのコードをスコープを使用したコードに置き換えてから、
+    使用してください。
+
+
+

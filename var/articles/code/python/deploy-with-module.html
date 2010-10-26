@@ -1,0 +1,67 @@
+.. vim:set expandtab ff=unix ft=rest nowrap :
+
+..  Pythonのモジュールをプラグインに同梱して配布する
+
+..  
+
+.. |BR| raw:: html
+
+    <br />
+
+.. |yen|    unicode:: U+000A5 .. YEN SIGN
+
+.. role:: raw-html(raw)
+    :format: html
+
+.. contents::
+
+================================================================================
+Pythonのモジュールをプラグインに同梱して配布する
+================================================================================
+
+例えば、runtimepathのpluginディレクトリ以下に、chardetというモジュールを置くことを想定するなら、
+
+.. parsed-literal::
+    :class: program
+
+    $VIMRUNTIME
+        |
+        +-- plugin/
+        |       +-- some-plugin.vim    ... pythonを使用するプラグイン
+        |
+        +-- plugin/chardet/            ... chardet Pythonモジュール
+                +-- __init__.py
+                +-- some1.py
+                +-- some2.py
+
+パスを特定後、site.addsitedir()でモジュールのパスを追加する。
+
+.. parsed-literal::
+    :class: program
+
+    " モジュールのパスを特定する
+    for i in split(globpath(&runtimepath, "plugin/chardet/__init__.py"), '\n')
+        let adding_pythonpath = fnamemodify(i, ":p:h:h")
+    endfor
+    
+    
+    " Pythonのsite.addsitedir()で、モジュールのパスを追加する
+    python << EOF
+    from vim import *
+    import vim
+    import site
+    site.addsitedir(vim.eval('adding_pythonpath'))
+    EOF
+    
+    
+    " その後、モジュールを読み込み、処理を行う
+    python << EOF
+    import chardet
+    " do some thing
+    " do some thing
+    " do some thing
+    EOF
+
+
+
+

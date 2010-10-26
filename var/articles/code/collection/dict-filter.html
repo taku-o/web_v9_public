@@ -1,0 +1,34 @@
+.. vim:set expandtab ff=unix ft=rest nowrap :
+
+..  ディクショナリのフィルタリング
+
+..  
+
+.. |BR| raw:: html
+
+    <br />
+
+.. |yen|    unicode:: U+000A5 .. YEN SIGN
+
+.. role:: raw-html(raw)
+    :format: html
+
+.. contents::
+
+================================================================================
+ディクショナリのフィルタリング
+================================================================================
+
+- ディクショナリの各キーは「v:key」に、各値は「v:val」に入る。
+
+.. parsed-literal::
+    :class: program
+
+    :let var_dict = { "one":"item 1", "two":"item 2", "three":"item 3", "four":"item 4" }
+    
+    :call filter(var_dict, "v:key =~ '^t'")
+    :echo var_dict
+    "# => {'two': 'item 2', 'three': 'item 3'}
+
+
+

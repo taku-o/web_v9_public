@@ -1,0 +1,56 @@
+.. vim:set expandtab ff=unix ft=rest nowrap :
+
+..  for文
+
+..  
+
+.. |BR| raw:: html
+
+    <br />
+
+.. |yen|    unicode:: U+000A5 .. YEN SIGN
+
+.. role:: raw-html(raw)
+    :format: html
+
+.. contents::
+
+================================================================================
+for文
+================================================================================
+
+- for文のサンプル。
+
+.. parsed-literal::
+    :class: program
+
+    :let var_list = [ "one", "two", "three", "four", "five", "six", "seven" ]
+    :for item in var_list
+        :echo item
+    :endfor
+    "# => one
+    "# => two
+    "# => three
+    "# => four
+    "# => ...
+
+- for文では「:continue」「:break」を使用できる。
+
+.. parsed-literal::
+    :class: program
+
+    :for item in [ "one", "two", "three", "four", "five", "six", "seven" ]
+        :if item == "two"
+            :continue
+        :endif
+        :if item == "five"
+            :break
+        :endif
+        :echo item
+    :endfor
+    "# => one
+    "# => three
+    "# => four
+
+
+

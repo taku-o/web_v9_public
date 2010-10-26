@@ -1,0 +1,604 @@
+.. vim:set expandtab ff=unix ft=rest :
+
+..  vut.vim : Macromedia Dreamweaver風のテンプレートライブラリ
+
+..  Macromedia Dreamweaver風のテンプレート、およびライブラリの機能を提供するvimスクリプトです。
+    あるテンプレート、ライブラリに変更が行われた時に、ファイル内から
+    そのテンプレート、ライブラリが使用されている場所を探し出して、更新する仕組みを持っています。
+    (Windows, Mac)
+
+.. |BR| raw:: html
+
+    <br />
+
+.. |yen|    unicode:: U+000A5 .. YEN SIGN
+
+.. role:: raw-html(raw)
+    :format: html
+
+.. contents::
+
+================================================================================
+概要
+================================================================================
+
+VUT : Vim Universal Templates |BR|
+http://www.vim.org/scripts/script.php?script_id=1078
+
+Macromedia Dreamweaver風のテンプレート、およびライブラリの機能を提供するvimスクリプトです。 |BR|
+あるテンプレート、ライブラリに変更が行われた時に、ファイル内から
+そのテンプレート、ライブラリが使用されている場所を探し出して、更新する仕組みを持っています。
+
+このスクリプトは、コメントを利用して、テンプレート、ライブラリを表現します。 |BR|
+テンプレート、ライブラリを示すコメントタグを削除すると、通常のソースになり、
+テンプレート、ライブラリとしては認識されなくなります。
+
+テンプレートファイルの拡張子には「vht」、 |BR|
+ライブラリファイルの拡張子には「vhl」を使用します。
+
+
+テンプレートの説明
+-------------------------------------------------------------------------------
+
+テンプレートの説明をします。 |BR|
+テンプレートは、編集可能領域付きのファイルの雛形を管理する機能です。
+
+下のようなテンプレートがあるとします。
+
+.. parsed-literal::
+    :class: program
+
+    **テンプレート**
+     1 <html>
+     2 <head>
+     3 </head>
+     4 <body>
+     5 テンプレートの一部です。編集可能領域の上。
+     6 <hr/>
+     7
+     8 <!-- #BeginEditable "regionName" -->
+     9 編集可能領域です。
+    10 <!-- #EndEditable -->
+    11
+    12 <hr/>
+    13 テンプレートの一部です。編集可能領域の下。
+    14 </body>
+    15 </html>
+
+このテンプレートを変更します。
+
+.. raw:: html
+
+    <pre><u>テンプレートを変更。</u>
+     1 &lt;html&gt;
+     2 &lt;head&gt;
+     3 <span class="code_high">&lt;title&gt;タイトル追加&lt;/title&gt;</span>
+     4 &lt;/head&gt;
+     5 &lt;body&gt;
+     6 テンプレートの一部です。編集可能領域の上。
+     7 &lt;hr/&gt;
+     8
+     9 &lt;!-- #BeginEditable "regionName" --&gt;
+    10 編集可能領域です。
+    11 &lt;!-- #EndEditable --&gt;
+    12
+    13 &lt;hr/&gt;
+    14 テンプレートの一部です。編集可能領域の下。
+    15 &lt;/body&gt;
+    16 &lt;/html&gt;</pre>
+
+その後、変更したテンプレートを使用しているファイルで、テンプレートの更新を実行すると、 |BR|
+**「編集可能領域」以外の部分** がテンプレートと同じ状態まで更新されるという機能です。
+
+.. parsed-literal::
+    :class: program
+
+    **テンプレート内の編集可能領域**
+     1 <!-- #BeginEditable "regionName" -->
+     2 編集可能領域です。
+     3 <!-- #EndEditable -->
+
+テンプレート内の、このコメントに囲まれた領域は「編集可能領域」というもので、
+テンプレートを利用している各ファイル固有のコードを記述できる箇所です。 |BR|
+テンプレートの更新を実行しても、この領域に書かれたコードは変更されません。
+
+- テンプレートは領域名を持ちます。
+- 領域名は、ファイル内でユニークである必要があります。
+- 領域名に使用できる文字は、アルファベット、数字、_ のみです。
+- テンプレートは、テンプレートを使用しているファイルのあるディレクトリの「Templates」ディレクトリから検索されます。
+
+
+ライブラリの説明
+-------------------------------------------------------------------------------
+
+ライブラリの説明をします。 |BR|
+ライブラリは、部分、部分のソースを管理、共有する機能です。
+
+任意のエレメントを、複数のソースで共有することができます。
+ライブラリを変更後、更新を実行すると、ライブラリが利用されているソースで、
+その変更が反映されます。 |BR|
+例えば、HTMLの場合なら、メニュー、ヘッダ、フッタの箇所でライブラリを利用する事で、
+サイト管理の手間を軽減する事ができるでしょう。
+
+下のようなライブラリのソースがあるとします。
+
+.. parsed-literal::
+    :class: program
+
+    **ライブラリ その1 'header.vhl'**
+     1 <a name="top"/>
+     2 <div>
+     3 <img title="ヘッダ" src="header.gif"/>
+     4 </div>
+
+.. parsed-literal::
+    :class: program
+
+    **ライブラリ その2 'footer.vhl'**
+     1 <hr/>
+     2 <a href="#top">Topへ</a>
+
+そのライブラリを使用しているファイルがあります。
+
+.. parsed-literal::
+    :class: program
+
+    **ライブラリを使用しているファイル**
+     1 <html>
+     2 <head>
+     3 <title>ライブラリを使用しているファイル</title>
+     4 </head>
+     5 <body>
+     6
+     7 <!-- #BeginLibraryItem "header.vhl" -->
+     8 <a name="top"/>
+     9 <div>
+    10 <img title="ヘッダ" src="header.gif"/>
+    11 </div>
+    12 <!-- #EndLibraryItem -->
+    13
+    14 Contents
+    15
+    16 <!-- #BeginLibraryItem "footer.vhl" -->
+    17 <hr/>
+    18 <a href="#top">Topへ</a>
+    19 <!-- #EndLibraryItem -->
+    20
+    21 </body>
+    22 </html>
+
+ここで、ライブラリを変更します。
+
+.. raw:: html
+
+    <pre><u>ライブラリ その1 &rsquo;header.vhl&rsquo; を変更</u>
+     1 &lt;a name="top"/&gt;
+     2 <span class="code_high">&lt;div class="header"&gt;</span>
+     3 &lt;img title="ヘッダ" src="header.gif"/&gt;
+     4 &lt;/div&gt;</pre>
+
+その後、変更したライブラリを使用しているファイルで、ライブラリの更新を実行すると、 |BR|
+**ライブラリを使用している箇所** がライブラリと同じ状態まで更新されます。
+
+.. raw:: html
+
+    <pre><u>ライブラリを使用しているファイルを更新した所</u>
+     1 &lt;html&gt;
+     2 &lt;head&gt;
+     3 &lt;title&gt;ライブラリを使用しているファイル&lt;/title&gt;
+     4 &lt;/head&gt;
+     5 &lt;body&gt;
+     6
+     7 &lt;!-- #BeginLibraryItem "header.vhl" --&gt;
+     8 &lt;a name="top"/&gt;
+     9 <span class="code_high">&lt;div class="header"&gt;</span>
+    10 &lt;img title="ヘッダ" src="header.gif"/&gt;
+    11 &lt;/div&gt;
+    12 &lt;!-- #EndLibraryItem --&gt;
+    13
+    14 Contents
+    15
+    16 &lt;!-- #BeginLibraryItem "footer.vhl" --&gt;
+    17 &lt;hr/&gt;
+    18 &lt;a href="#top"&gt;Topへ&lt;/a&gt;
+    19 &lt;!-- #EndLibraryItem --&gt;
+    20
+    21 &lt;/body&gt;
+    22 &lt;/html&gt;</pre>
+
+- ライブラリは、1つのファイルに複数含めることができます。
+- ライブラリには、対象となるライブラリファイルへの相対PATH、もしくは絶対PATHを指定します。
+
+
+
+================================================================================
+インストール方法
+================================================================================
+
+`スクリプトの配布先`__ から
+圧縮ファイルをダウンロードし、 |BR|
+解凍ツールで解凍後、ユーザーローカルのvim設定ファイルディレクトリにコピーしてください。
+
+__ http://www.vim.org/scripts/script.php?script_id=1078
+
+.. note::
+
+    :helptagsコマンドでエラーが発生するようなので、
+    docディレクトリはコピーしない方が良いでしょう。
+    (2005/02/23)
+
+.. parsed-literal::
+    :class: program
+
+    **" vim設定ファイルのディレクトリ (Win)**
+    $HOME/vimfiles/
+
+.. parsed-literal::
+    :class: program
+
+    **" vim設定ファイルのディレクトリ (Mac)**
+    $HOME/.vim/
+
+.. parsed-literal::
+    :class: program
+
+    **このスクリプトのファイル構成**
+    doc/
+      vut.txt
+
+    ftplugin/
+      html/
+        vuthtml.vim
+      sgml/
+        vutsgml.vim
+      sh/
+        vutsh.vim
+      tex/
+        vuttex.vim
+      vim/
+        vutvim.vim
+      xhtml/
+        vutxhtml.vim
+      xml/
+        vutxml.vim
+
+    plugin/
+      vut.vim
+
+.. csv-table::
+    :header: ファイル, URL
+
+    vut.zip, http://www.vim.org/scripts/script.php?script_id=1078
+
+
+
+================================================================================
+テンプレートの使用方法
+================================================================================
+
+テンプレートの機能を扱うコマンド群の説明です。 |BR|
+コマンドはどれも見ての通り、「VUT」というスペルで始まっています。
+
+テンプレートは、ファイルのあるディレクトリの「Templates」ディレクトリに探しに行くので、 |BR|
+テンプレートを初めて使う場合には、まず、「Templates」ディレクトリを作成する事から始めましょう。
+
+.. csv-table:: コマンド, 説明
+
+    :VUTinsert {regionname}, regionnameという名前で、テンプレートの編集可能領域タグを挿入します。
+    :VUTcommit {templatename}, templatenameという名前で、テンプレートを保存します。
+    :VUTcheckout {templatename}, templatenameという名前のテンプレートをファイルに貼付けます。
+    :VUTupdate {templatename}, 使用しているテンプレートが更新されていたら、現在のファイルに、その変更を反映させます。
+    :VUTstrip, テンプレートで使用されている作業可能領域タグを取り除きます。
+    :VUTcheck, ファイルで使用されているテンプレートの作業可能領域タグのシンタックスチェックを行います。
+    :VUTshow, 利用可能なテンプレートの一覧を表示します。
+
+
+:VUTinsert {regionname}
+-------------------------------------------------------------------------------
+
+「編集可能領域」を示すコメントタグを挿入します。
+
+例えば、下のコマンドを実行すると、
+
+.. parsed-literal::
+    :class: console
+
+    **" :VUTinsertコマンドの実行例**
+    :VUTinsert regionname
+
+カーソルの下に、下のコードが書き込まれます。
+
+.. parsed-literal::
+    :class: program
+
+     1 <!-- #BeginEditable "regionname" -->
+     2
+     3 <!-- #EndEditable -->
+
+コメントタグの種類は、もちろん、ファイルタイプによって、適切なものが選択されます。 |BR|
+(上はHTMLファイルの場合の例です。)
+
+範囲を選択してのコマンド実行も可能で、 |BR|
+その場合、選択した範囲が、「編集可能領域」を示すコメントタグで囲まれます。
+
+.. parsed-literal::
+    :class: console
+
+    **" Visualモードで範囲を選択しての :VUTinsertコマンドの実行。**
+    :'<,'>:VUTinsert regionname
+
+領域名に使用できる文字は、アルファベット、半角数字、_ で、 |BR|
+領域名はファイル内でユニークである必要があります。
+
+
+:VUTcommit {templatename}
+-------------------------------------------------------------------------------
+
+指定した名前で、テンプレートを保存します。
+
+.. parsed-literal::
+    :class: console
+
+    **" :VUTcommitコマンドの実行例**
+    :VUTcommit templatename
+
+テンプレートは、ファイルのあるディレクトリの「Templates」ディレクトリに、
+
+.. parsed-literal::
+    :class: console
+
+    templatename + .vht
+
+というファイル名で保存されます。 |BR|
+「Templates」ディレクトリが無いと、このコマンドはエラーになります。
+
+
+:VUTcheckout {templatename}
+-------------------------------------------------------------------------------
+
+カーソルの下に、指定したテンプレートの内容を貼付けます。
+
+.. parsed-literal::
+    :class: console
+
+    **" :VUTcheckoutコマンドの実行例**
+    :VUTcheckout templatename
+
+テンプレートは、ファイルのあるディレクトリの「Templates」ディレクトリに探しに行きます。 |BR|
+上のコマンド実行例だと、
+
+.. parsed-literal::
+    :class: console
+
+    Templates/templatename.vht
+
+をテンプレートとして使用します。
+
+
+:VUTupdate {templatename}
+-------------------------------------------------------------------------------
+
+テンプレートが更新されていたら、
+その変更を現在のファイルに反映させます。
+
+.. parsed-literal::
+    :class: console
+
+    **" :VUTupdateコマンドの実行例**
+    :VUTupdate templatename
+
+
+:VUTstrip
+-------------------------------------------------------------------------------
+
+ファイル内で使用されている、
+「作業可能領域」のコメントタグを取り除きます。
+
+.. parsed-literal::
+    :class: console
+
+    **" :VUTstripコマンドの実行例**
+    :VUTstrip
+
+
+:VUTcheck
+-------------------------------------------------------------------------------
+
+ファイル内で使用されている、
+「作業可能領域」のコメントタグの文法チェックを行います。
+
+.. parsed-literal::
+    :class: console
+
+    **" :VUTcheckコマンドの実行例**
+    :VUTcheck
+
+問題が無いなら、
+
+.. parsed-literal::
+    :class: console
+
+    Did not detect anything wrong.
+
+と表示されます。
+
+
+:VUTshow
+-------------------------------------------------------------------------------
+
+利用可能なテンプレートの一覧を表示します。
+
+.. parsed-literal::
+    :class: console
+
+    **" :VUTshowコマンドの実行例**
+    :VUTshow
+
+
+
+================================================================================
+ライブラリの使用方法
+================================================================================
+
+テンプレートの機能を扱うコマンド群の説明です。 |BR|
+コマンドは、「VUL」というスペルで始まっています。
+
+ライブラリへのパスは、相対PATH、もしくは絶対PATHが指定できます。
+
+.. csv-table::
+    :header: コマンド, 説明
+
+    :VULinsert {libpath}, libpathを参照するライブラリタグを挿入します。
+    :VULcommit, ライブラリタグの間にカーソルを置いて、このコマンドを実行すると、ライブラリタグ内のテキストが、ライブラリタグで指定しているファイルに保存されます。
+    :VULcheckout {libpath}, libpathにあるライブラリをファイルに貼付けます。
+    :VULupdate [{libpath}], 使用しているライブラリが更新されていたら、現在のファイルに反映させます。
+    :VULstrip, ファイル内のライブラリタグを取り除きます。
+    :VULadd {libpath}, 選択した範囲をライブラリとして保存し、そのライブラリを示すライブラリタグを挿入します。
+    :VULshow, 現在編集中のファイルのディレクトリにあるライブラリの一覧を表示します。
+
+
+:VULinsert {libpath}
+-------------------------------------------------------------------------------
+
+指定したライブラリを指す、ライブラリタグをカーソルの下に挿入します。
+
+例えば、下のコマンドを実行すると、
+
+.. parsed-literal::
+    :class: console
+
+    **" :VULinsertコマンドの実行例**
+    :VULinsert lib/header.vhl
+
+カーソルの下に、下のコードが書き込まれます。
+
+.. parsed-literal::
+    :class: program
+
+     1 <!-- #BeginLibraryItem "lib/header.vhl" -->
+     2
+     3 <!-- #EndLibraryItem -->
+
+コメントタグの種類は、もちろん、ファイルタイプによって、適切なものが選択されます。 |BR|
+(上はHTMLファイルの場合の例です。)
+
+ライブラリへのパスは、相対PATH、もしくは絶対PATHが指定できます。
+
+
+:VULcommit
+-------------------------------------------------------------------------------
+
+ライブラリタグの間にカーソルを置いて、このコマンドを実行すると、
+ライブラリタグ内のテキストが、ライブラリタグで指定しているファイルに保存されます。 |BR|
+つまり、このコマンドで、ライブラリを作成、変更するには、
+まず、ファイル内に、ライブラリタグを挿入する必要があるということです。 |BR|
+簡単にライブラリを作成したいときは、
+`:VULaddコマンド`_ の方が有効です。
+
+.. _`:VULaddコマンド`: `:VULadd {libpath}`_
+
+.. parsed-literal::
+    :class: console
+
+    **" :VULcommitコマンドの実行例**
+    :VULcommit
+
+
+:VULcheckout {libpath}
+-------------------------------------------------------------------------------
+
+指定のライブラリの内容を、ライブラリタグで囲んだ状態でファイルに貼付けます。
+
+.. parsed-literal::
+    :class: console
+
+    **" :VULcheckoutコマンドの実行例**
+    :VULcheckout lib/header.vhl
+
+
+:VULupdate [{libpath}]
+-------------------------------------------------------------------------------
+
+ライブラリのパスを指定した場合には、ファイル内の同じパスを指定しているライブラリを、 |BR|
+指定していない場合には、カーソルの下のライブラリを更新します。
+
+.. parsed-literal::
+    :class: console
+
+    **" :VULupdateコマンドの実行例**
+    :VULupdate lib/header.vhl
+
+
+:VULstrip
+-------------------------------------------------------------------------------
+
+ファイルで使用されているライブラリタグを取り除きます。
+
+.. parsed-literal::
+    :class: console
+
+    **" :VULstripコマンドの実行例**
+    :VULstrip
+
+
+:VULadd {libpath}
+-------------------------------------------------------------------------------
+
+このコマンドは範囲を選択してから、実行してください。 |BR|
+このコマンドは、下の2つの作業を実行します。
+
+- 選択した範囲をライブラリとして保存します。
+- 選択した範囲をライブラリタグで囲みます。
+
+.. parsed-literal::
+    :class: console
+
+    **" 範囲を選択しての:VUTaddコマンドの実行例。**
+    :'<,'>:VULadd lib/header.vhl
+
+
+:VULshow
+-------------------------------------------------------------------------------
+
+現在編集中のファイルのディレクトリにあるライブラリの一覧を表示します。
+
+.. parsed-literal::
+    :class: console
+
+    **" :VULshowコマンドの実行例**
+    :VULshow
+
+
+
+================================================================================
+サポートされていないファイルタイプ用の設定を追加するには
+================================================================================
+
+このスクリプトでサポートしているファイルタイプは、
+
+.. parsed-literal::
+    :class: console
+
+    html、sgml、sh、tex、vim、xhtml、xml
+
+です。 |BR|
+これら以外のファイルタイプ用の設定を加えるには、 |BR|
+「b:vut_bcom」、「b:vut_ecom」の設定を書いたファイルをftpluginディレクトリに用意してください。 |BR|
+既に用意されているftpluginを参照すれば、容易に作成できると思います。
+
+.. parsed-literal::
+    :class: program
+
+    **HTML用のftpluginの設定ファイルの中身**
+     1 " VUT definitions of comment strings
+     2 let b:vut_bcom = '<!--'
+     3 let b:vut_ecom = '-->'
+
+.. csv-table::
+    :header: 設定, 説明, デフォルト値, 設定例
+
+    b:vut_bcom, コメントの開始を示す文字列, /\*, :let b:vut_bcom = '<!--'
+    b:vut_ecom, コメントの終了を示す文字列, \*/, :let b:vut_ecom = '-->'
+
+
+

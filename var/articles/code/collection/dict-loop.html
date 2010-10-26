@@ -1,0 +1,55 @@
+.. vim:set expandtab ff=unix ft=rest nowrap :
+
+..  ディクショナリのループ
+
+..  
+
+.. |BR| raw:: html
+
+    <br />
+
+.. |yen|    unicode:: U+000A5 .. YEN SIGN
+
+.. role:: raw-html(raw)
+    :format: html
+
+.. contents::
+
+================================================================================
+ディクショナリのループ
+================================================================================
+
+- while文を使用したループ。
+
+.. parsed-literal::
+    :class: program
+
+    :let var_dict = { "one":"item 1", "two":"item 2", "three":"item 3", "four":"item 4" }
+    :let keys = keys(var_dict)
+    :let i = 0
+    :while i < len(keys)
+        :let k = keys[i]
+        :echo "key:" . k . ", value:" . var_dict[k]
+        :let i = i + 1
+    :endwhile
+    "# => key:four, value:item 4
+    "# => key:one, value:item 1
+    "# => key:two, value:item 2
+    "# => key:three, value:item 3
+
+- for文を使用したループ。
+
+.. parsed-literal::
+    :class: program
+
+    :let var_dict = { "one":"item 1", "two":"item 2", "three":"item 3", "four":"item 4" }
+    :for k in keys(var_dict)
+        :echo "key:" . k . ", value:" . var_dict[k]
+    :endfor
+    "# => key:four, value:item 4
+    "# => key:one, value:item 1
+    "# => key:two, value:item 2
+    "# => key:three, value:item 3
+
+
+

@@ -1,0 +1,77 @@
+.. vim:set expandtab ff=unix ft=rest nowrap :
+
+..  ファイルに書かれたpythonのコードを実行する
+
+..  
+
+.. |BR| raw:: html
+
+    <br />
+
+.. |yen|    unicode:: U+000A5 .. YEN SIGN
+
+.. role:: raw-html(raw)
+    :format: html
+
+.. contents::
+
+================================================================================
+ファイルに書かれたpythonのコードを実行する
+================================================================================
+
+「:pyfile」コマンドで実行ファイルを指定する。
+--------------------------------------------------------------------------------
+
+- pythonのスクリプトファイル
+
+.. parsed-literal::
+    :class: program
+
+    #!/usr/bin/python
+    print "Hello Python"
+
+- vimスクリプト側
+
+.. parsed-literal::
+    :class: program
+
+    :pyfile hello.py
+    "# => Hello Python
+
+
+スクリプトにコマンドライン引数を渡す
+--------------------------------------------------------------------------------
+
+- pythonのスクリプトファイル
+
+.. parsed-literal::
+    :class: program
+
+    #!/usr/bin/python
+    import sys
+    
+    i = 0
+    while i < len(sys.argv):
+        print "argument " + str(i + 1) + " is " + sys.argv[i]
+        i += 1
+
+- vimスクリプト側
+
+.. parsed-literal::
+    :class: program
+
+    " 「:python」コマンドを使用して引数を渡す
+    :python import sys
+    :python sys.argv = ("ARG1", "ARG2", "ARG3")
+    :pyfile arg.py
+    "# => argument 1 is ARG1
+    "# => argument 2 is ARG2
+    "# => argument 3 is ARG3
+    
+    " この方法ではコマンドライン引数を渡せない
+    :pyfile arg.py ARG1 ARG2 ARG3
+    "# => エラー
+
+
+
+

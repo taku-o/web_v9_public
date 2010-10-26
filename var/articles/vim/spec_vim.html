@@ -1,0 +1,101 @@
+.. vim:set expandtab ff=unix ft=rest :
+
+..  spec.vimによるChangeLog作成支援
+
+..  specファイル用のファイルタイププラグインの機能を使用しての
+    チェンジログの作成方法を紹介しています。
+    (Windows)
+
+.. |BR| raw:: html
+
+    <br />
+
+.. |yen|    unicode:: U+000A5 .. YEN SIGN
+
+.. role:: raw-html(raw)
+    :format: html
+
+.. contents::
+
+================================================================================
+概要
+================================================================================
+
+spec.vim : spec file plugin |BR|
+http://www.vim.org/script.php?script_id=98
+
+オープンソースプロジェクトで良く見かけられる、 |BR|
+ChangeLogを作成支援する。 |BR|
+RPMのspecファイル用のプラグインに含まれるChangeLog作成機能を利用します。
+
+.. image:: /dist/img/vim/changelog_add.jpg
+
+
+
+================================================================================
+インストール方法
+================================================================================
+
+このプラグインは、$VIMRUNTIME/ftplugin/にデフォルトで含まれています。
+
+$HOME/_vimrcに、
+
+.. parsed-literal::
+    :class: program
+
+    :let spec_chglog_format = "%c ユーザー <mail\@address>"
+    :au BufNewFile,BufRead \*.changelog setf spec
+
+と設定します。(拡張子changelogをチェンジログファイルとして利用する場合)
+
+フォーマットを変更する場合は、
+
+.. parsed-literal::
+    :class: console
+
+    :help strftime()
+
+を参考に設定してください。
+
+.. csv-table::
+    :header: "ファイル", "URL"
+
+    spec.vim, http://www.vim.org/script.php?script_id=98
+
+
+
+================================================================================
+使用方法
+================================================================================
+
+拡張子changelogのファイルを用意します。(拡張子changelogをチェンジログファイルとして利用する場合)
+ノーマルモードで、
+
+.. parsed-literal::
+    :class: console
+
+    \\c
+
+と入力するたびに、
+
+.. parsed-literal::
+    :class: program
+
+    %changelog
+    \* 02/10/01 1:01:15 ユーザー <mail\@address>
+    - 
+
+という入力を自動的に行ってくれます。
+
+
+
+================================================================================
+注意事項など
+================================================================================
+
+初めてChangeLogを作成する時は、次のようなダイアログが立ちあがります。
+
+.. image:: /dist/img/vim/changelog_dialog.jpg
+
+
+

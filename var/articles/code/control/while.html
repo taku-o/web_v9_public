@@ -1,0 +1,62 @@
+.. vim:set expandtab ff=unix ft=rest nowrap :
+
+..  while文
+
+..  
+
+.. |BR| raw:: html
+
+    <br />
+
+.. |yen|    unicode:: U+000A5 .. YEN SIGN
+
+.. role:: raw-html(raw)
+    :format: html
+
+.. contents::
+
+================================================================================
+while文
+================================================================================
+
+- while文のサンプル。
+
+.. parsed-literal::
+    :class: program
+
+    :let max = 50
+    :let index = 0
+    :while index < 50
+        :echo index
+        :let index = index + 1
+    :endwhile
+    "# => 0
+    "# => 1
+    "# => 2
+    "# => 3
+    "# => ...
+
+- while文では「:continue」「:break」を使用できる。
+
+.. parsed-literal::
+    :class: program
+
+    :let max = 50
+    :let index = 0
+    :while index < max
+        :let index = index + 1
+        :if index % 2 == 0
+            :continue
+        :endif
+        :echo index
+        :if index > 6
+            :break
+        :endif
+    :endwhile
+    "# => 1
+    "# => 3
+    "# => 5
+    "# => 7
+
+
+

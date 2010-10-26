@@ -1,0 +1,169 @@
+.. vim:set expandtab ff=unix ft=rest :
+
+..  monday.vim : Ctrl-a、Ctrl-xで曜日、月をループ （＋他の用途への応用）
+
+..  Ctrl-a、Ctrl-xで数字をインクリメント、デクリメントできる機能のように、
+    曜日、月をインクリメント、デクリメントすることのできる機能を提供します。
+    (Windows, Mac)
+
+.. |BR| raw:: html
+
+    <br />
+
+.. |yen|    unicode:: U+000A5 .. YEN SIGN
+
+.. role:: raw-html(raw)
+    :format: html
+
+.. contents::
+
+================================================================================
+概要
+================================================================================
+
+monday : Lets you use ctrl-a and ctrl-x on names of months and weekdays |BR|
+http://www.vim.org/scripts/script.php?script_id=1046
+
+Ctrl-a、Ctrl-xで、曜日、月をインクリメント、デクリメントできる機能を提供するvimスクリプトです。
+
+
+
+================================================================================
+インストール方法
+================================================================================
+
+`スクリプト`__ をダウンロードして、 |BR|
+そのスクリプトをpluginディレクトリにコピーして下さい。
+
+__ http://www.vim.org/scripts/script.php?script_id=1046
+
+.. csv-table::
+    :header: "ファイル", "URL"
+
+    "monday.vim", "http://www.vim.org/scripts/script.php?script_id=1046"
+
+
+
+================================================================================
+使い方
+================================================================================
+
+現在のバージョン(2004/09/13)で対応しているのは、
+
+曜日 |BR|
+monday、tuesday、wednesday、thursday、friday、saturday、sunday
+
+月 |BR|
+january、february、march、april、may、june、july、august、september、october、november、december |BR|
+です。
+
+これらの単語の上で、 |BR|
+
+- Ctrl-aを押すと、1つ先の曜日、月に変更し、
+- Ctrl-xを押すと、1つ前の曜日、月に変更します。
+
+なお、このスクリプトは、大文字小文字の構成もなるべく確保してくれます。
+
+- monday → tuesday (全部小文字の場合)
+- Monday → Tuesday (先頭の文字だけ大文字の場合)
+- MONDAY → TUESDAY (全部大文字の場合)
+
+と変換します。
+
+
+
+================================================================================
+拡張
+================================================================================
+
+このスクリプトを拡張して、スクリプトが現在対応していない変換パターンを追加してみましょう。
+
+変換パターンを追加するには、今の所、スクリプトを直接編集するしか方法はありません。
+スクリプトをエディタで開いて、スクリプト内の変換パターンを定義している箇所にコードを追加します。
+
+下の行の後に、パターンを追加していきます。
+
+.. parsed-literal::
+    :class: program
+
+    :call <SID>AddPair("december", "january")
+
+
+曜日、月の省略形の変換パターンの追加
+-------------------------------------------------------------------------------
+
+下のコードをスクリプト内のパターン定義箇所に追加してください。
+
+.. parsed-literal::
+    :class: program
+
+    :call <SID>AddPair("mon", "tue")
+    :call <SID>AddPair("tue", "wed")
+    :call <SID>AddPair("wed", "thu")
+    :call <SID>AddPair("thu", "fri")
+    :call <SID>AddPair("fri", "sat")
+    :call <SID>AddPair("sat", "sun")
+    :call <SID>AddPair("sun", "mon")
+
+    :call <SID>AddPair("jan", "feb")
+    :call <SID>AddPair("feb", "mar")
+    :call <SID>AddPair("mar", "apr")
+    :call <SID>AddPair("apr", "may")
+    :call <SID>AddPair("may", "june")
+    :call <SID>AddPair("june", "july")
+    :call <SID>AddPair("july", "aug")
+    :call <SID>AddPair("aug", "sep")
+    :call <SID>AddPair("sep", "oct")
+    :call <SID>AddPair("oct", "nov")
+    :call <SID>AddPair("nov", "dec")
+    :call <SID>AddPair("dec", "jan")
+
+may、june、julyは、省略前と省略後でスペルが同じなので、組み込むことはできませんでした。 |BR|
+この場合、例えば「july」の次の月が「august」になるか、「aug」になるか、スクリプトからでは区別できないからです。 |BR|
+つまり、こういう状況が発生するような場合、変換パターンを追加することはできません。
+
+
+このスクリプトのプログラマ的応用
+-------------------------------------------------------------------------------
+
+変換パターンは、別に曜日、月など、時間に関わるものである必要はありません。
+
+例えば、Javaプログラマなら |BR|
+public ←→ protected ←→ private ←→ public ...... |BR|
+という変換パターンとか。
+
+.. parsed-literal::
+    :class: program
+
+    :call <SID>AddPair("public", "protected")
+    :call <SID>AddPair("protected", "private")
+    :call <SID>AddPair("private", "public")
+
+true ←→ false、yes ←→  no、on ←→ off という変換パターンとか。
+
+.. parsed-literal::
+    :class: program
+
+    :call <SID>AddPair("true", "false")
+    :call <SID>AddPair("false", "true")
+    :call <SID>AddPair("yes", "no")
+    :call <SID>AddPair("no", "yes")
+    :call <SID>AddPair("on", "off")
+    :call <SID>AddPair("off", "on")
+
+いろいろ考えられそうです。
+
+
+================================================================================
+ダウンロード
+================================================================================
+
+今回、解説した変換パターンを加えたスクリプトです。
+いろいろ、手を加えて使ってみてください。
+
+`download`__
+
+__ http://indefero.taku-o.net/index.php/p/download/source/file/master/monday_custom.vim
+
+
+

@@ -1,0 +1,925 @@
+.. vim:set expandtab ff=unix ft=rest :
+
+..  高性能なテキスト整形ツールAlignの使い方 #4 「:Align」コマンドを使用して整形処理を行う
+
+..  組み込みのマッピングによる整形機能を使用する以外に
+    Alignに用意された整形処理コマンド「:Align」を直接実行して、
+    整形処理を行う方法も用意されています。
+    この方法は組み込みのマッピングを使用する場合に比べて、
+    様々なフォーマットのテキストの整形に対応できる上、
+    整形処理の結果を細かく調節できる利点があります。
+    (Windows, Mac)
+
+.. |BR| raw:: html
+
+    <br />
+
+.. |yen|    unicode:: U+000A5 .. YEN SIGN
+
+.. role:: raw-html(raw)
+    :format: html
+
+.. contents::
+
+================================================================================
+概要
+================================================================================
+
+Align : Provides commands and maps to help produce aligned text, eqns, declarations, etc |BR|
+http://www.vim.org/scripts/script.php?script_id=294
+
+組み込みのマッピングによる整形機能を使用する以外に
+`Align`_ に用意された整形処理コマンド「:Align」を直接実行して、
+整形処理を行う方法も用意されています。 |BR|
+この方法は組み込みのマッピングを使用する場合に比べて、
+様々なフォーマットのテキストの整形に対応できる上、
+整形処理の結果を細かく調節できる利点があります。
+
+「 `高性能なテキスト整形ツールAlignの使い方 #1 インストールから設定まで`_ 」の続きとなる記事です。
+
+
+
+================================================================================
+「:Align」コマンドで整形する
+================================================================================
+
+はじめに、整形処理を実行する「:Align」コマンドの使い方を説明します。 |BR|
+「:Align」コマンドは引数に与えられたセパレータで、文章をいくつかのフィールドに分割し、
+その各フィールドの位置を揃えるコマンドです。
+
+.. parsed-literal::
+    :class: console
+
+    **" 「:Align」コマンドの書式**
+    :Align [{セパレータ1}] [{セパレータ2}] [{セパレータ3}] ....
+
+「[」と「]」で囲まれた範囲に関しては省略可能です。
+
+コマンドの使い方は簡単で、
+例えば、以下のようなCSVフォーマットのファイルがある時に、
+各フィールドの位置を整理してファイルを見やすくするには、
+
+.. parsed-literal::
+    :class: program
+
+    ** サンプルCSVファイル**
+    one,two,three,four,five
+    six,seven,eight,nine,ten
+    eleven,twelve,thirteen,fourteen,fifteen
+
+次のように「,（カンマ）」をセパレータに指定して「:Align」コマンドを実行します。
+
+.. parsed-literal::
+    :class: console
+
+    :Align ,
+
+.. parsed-literal::
+    :class: program
+
+    ** サンプルCSVファイル整形後**
+    one    , two    , three    , four     , five
+    six    , seven  , eight    , nine     , ten
+    eleven , twelve , thirteen , fourteen , fifteen
+
+
+「:Align」コマンドの整形範囲指定
+--------------------------------------------------------------------------------
+
+「:Align」コマンドで整形する範囲は、
+通常のコマンド実行と同じようにコマンドラインモードで指定するか、
+
+.. parsed-literal::
+    :class: console
+
+    **" コマンド実行時に範囲指定する**
+    :%:Align ,
+    :20,50:Align ,
+
+ビジュアルモードで範囲を選択して指定します。 |BR|
+（範囲を選択した状態で「:Align」コマンドを実行する。）
+
+.. raw:: html
+
+    <pre class="program">ビジュアルモードで整形処理の範囲を選択する。
+    <span class="code_high">one,two,three,four,five</span>
+    <span class="code_high">six,seven,eight,nine,ten</span>
+    <span class="code_high">eleven,twelve,thirteen,fourteen,fifteen</span>
+    </pre>
+
+整形範囲を指定しない場合は、通常のコマンド実行と同じく、
+「:Align」コマンドはカレント行のみを対象に整形処理を実行します。
+
+
+「:Align」コマンドの引数
+--------------------------------------------------------------------------------
+
+「:Align」コマンドには、文章分割用のセパレータを複数指定できます。 |BR|
+デフォルトの状態では、次のようにコマンドを実行したら、
+「A」か「B」か「C」か「D」か「E」をセパレータとして扱います。
+
+.. parsed-literal::
+    :class: console
+
+    **" デフォルトでは、A or B or C or D or E**
+    :Align A B C D E
+
+例えば、次の文章に、
+
+.. parsed-literal::
+    :class: program
+
+    one,two-three+four=five
+    six,seven-eight+nine+ten
+    eleven,twelve=thirteen+fourteen=fifteen
+
+「,」「=」「+」「-」を指定して「:Align」コマンドを実行すれば、
+
+.. parsed-literal::
+    :class: console
+
+    :%:Align , = + -
+
+↓ 「,」「=」「+」「-」で文章を区切って、このように整形できるということです。
+
+.. parsed-literal::
+    :class: program
+
+    one    , two    - three    + four     = five
+    six    , seven  - eight    + nine     + ten
+    eleven , twelve = thirteen + fourteen = fifteen
+
+
+
+================================================================================
+「:AlignCtrl」コマンドで整形処理の条件を設定する
+================================================================================
+
+「:Align」コマンドの整形処理の結果をカスタマイズするには、「:AlignCtrl」コマンドを使用します。
+この「:AlignCtrl」コマンドは整形処理の条件を設定するコマンドです。 |BR|
+「:AlignCtrl」コマンドは、「:Align」コマンドと組み合わせて、
+
+.. parsed-literal::
+    :class: program
+
+    「:AlignCtrl」コマンドで整形処理の条件を設定
+      ↓
+    「:Align」コマンドで整形処理を行う
+
+というように使用します。
+
+
+「:AlignCtrl」コマンドのフォーマット
+--------------------------------------------------------------------------------
+
+「:AlignCtrl」コマンドのフォーマットは次のとおりです。 |BR|
+コマンド中、「[」と「]」で囲まれた範囲に関しては省略可能。
+
+.. parsed-literal::
+    :class: console
+
+    **" 「:AlignCtrl」コマンドの書式**
+    :AlignCtrl {整形処理の条件} [{セパレータ1}] [{セパレータ2}] [{セパレータ3}] ....
+
+
+「:Align」コマンド実行時に使用されるセパレータ
+--------------------------------------------------------------------------------
+
+この「:AlignCtrl」コマンドのフォーマットに対して、
+「:Align」コマンドのフォーマットは下記のようになっていました。
+
+.. parsed-literal::
+    :class: console
+
+    **" 「:Align」コマンドの書式**
+    :Align [{セパレータ1}] [{セパレータ2}] [{セパレータ3}] ....
+
+上の章では説明しませんでしたが、「:Align」コマンドを引数なしで実行すると、 |BR|
+「:AlignCtrl」コマンドか「:Align」コマンドで、
+最後に設定したセパレータが文章の区切りとして使用されます。
+
+.. parsed-literal::
+    :class: console
+
+    **" 「:AlignCtrl」コマンドでセパレータを指定**
+    **" コマンド中の「=」は整形処理の条件。説明はあとで。**
+    :AlignCtrl = ,
+    " ↓
+    **" 直前の「:AlignCtrl」コマンドで指定したセパレータが使用される**
+    :Align
+    " ↓
+    **" 新たにセパレータを指定するまでは同じセパレータが使われる**
+    :Align
+
+つまり、「:AlignCtrl」コマンドか「:Align」コマンド、どちらかで一度設定すれば、
+しばらくは同じセパレータを使いまわせる、ということになります。
+
+
+「:AlignCtrl」での整形処理の条件の指定の仕方
+--------------------------------------------------------------------------------
+
+「:AlignCtrl」コマンドのコマンド例は次のようになります。 |BR|
+（どのように指定すれば、どのように整形の結果が変わるかについては後述。）
+
+.. parsed-literal::
+    :class: console
+
+    **" 整形処理の条件を設定**
+    :AlignCtrl l=p0P2 ,
+
+全ての条件を一度の「:AlignCtrl」コマンド実行で指定する必要はなく、 |BR|
+下記例のように何度かに分けて条件を設定できます。
+
+.. parsed-literal::
+    :class: console
+
+    **" パターン1 一度に全ての条件指定**
+    :AlignCtrl l=p0P2 ,
+    
+    **" パターン2 二度に分けて条件を指定**
+    :AlignCtrl l= ,
+    :AlignCtrl p0P2
+    
+    **" パターン3 四度に分けて整形の条件指定**
+    :AlignCtrl l
+    :AlignCtrl = ,
+    :AlignCtrl p0
+    :AlignCtrl P2
+
+
+
+================================================================================
+「:AlignCtrl」コマンドで設定できる整形条件一覧
+================================================================================
+
+次のリストは、「:AlignCtrl」コマンドで指定できる整形処理の条件の一覧です。
+
+- `各フィールドの左寄せ、右寄せ、センタリング。`_
+- `配置指定の繰り返し、配置の整形条件のスキップ。`_
+- `セパレータの左寄せ、右寄せ、センタリング。`_
+- `セパレータとフィールド間の空白文字サイズを調整する。`_
+- `セパレータを順序固定で指定するか、ORで指定するか。`_
+- `特定の行を整形対象外にする。特定の行を整形対象の行にする。`_
+- `行頭の余白の扱い。維持する、削除する、先頭に合わせる。`_
+
+
+
+================================================================================
+各フィールドの左寄せ、右寄せ、センタリング。
+================================================================================
+
+セパレータで文章を区切った後の、各フィールドの整形位置を左端で合わせるか、
+右端で合わせるか、あるいは中央に配置するかを指定するには、 |BR|
+「:AlignCtrl」コマンドで整形処理の条件として「l」「r」「c」を指定します。
+
+.. parsed-literal::
+    :class: console
+
+    **" 左寄せ**
+    :AlignCtrl l
+    **" 右寄せ**
+    :AlignCtrl r
+    **" センタリング**
+    :AlignCtrl c
+
+--------------------------------------------------------------------------------
+
+次のような「=」区切りの整形前コードがあるとして、
+
+.. parsed-literal::
+    :class: program
+
+    a=bb=ccc=1=dd=ee=ffff
+    ccc=a=bb=2=ee=ff=g
+    dd=eee=f=39=bbb=ssss=tttt
+
+左寄せ「l」を指定した場合、
+
+.. parsed-literal::
+    :class: console
+
+    :AlignCtrl l
+    :Align =
+
+.. parsed-literal::
+    :class: program
+
+    a   = bb  = ccc = 1  = dd  = ee   = ffff
+    ccc = a   = bb  = 2  = ee  = ff   = g
+    dd  = eee = f   = 39 = bbb = ssss = tttt
+
+右寄せ「r」を指定した場合、
+
+.. parsed-literal::
+    :class: console
+
+    :AlignCtrl r
+    :Align =
+
+.. parsed-literal::
+    :class: program
+
+      a =  bb = ccc =  1 =  dd =   ee = ffff
+    ccc =   a =  bb =  2 =  ee =   ff =    g
+     dd = eee =   f = 39 = bbb = ssss = tttt
+
+中央揃え「c」を指定した場合、
+
+.. parsed-literal::
+    :class: console
+
+    :AlignCtrl l
+    :Align =
+
+.. parsed-literal::
+    :class: program
+
+     a  = bb  = ccc = 1  = dd  =  ee  = ffff
+    ccc =  a  = bb  = 2  = ee  =  ff  =  g  
+    dd  = eee =  f  = 39 = bbb = ssss = tttt
+
+と整形します。
+
+--------------------------------------------------------------------------------
+
+左から1番目のフィールドを左寄せ、2番目のフィールドを右寄せ、3番目のフィールドを左寄せ、といった具体に、 |BR|
+それぞれのフィールドに対し配置を指定したい場合は、
+フィールドの配置を制御する「l」「r」「c」を順に並べて指定します。
+
+.. image:: /dist/img/vim/align/align_ctrl_lrc.jpg
+    :alt:  「l」「r」「c」の並び
+
+.. parsed-literal::
+    :class: console
+
+    :AlignCtrl lrl
+    :Align =
+
+.. parsed-literal::
+    :class: program
+
+    a=bb=ccc=1=dd=ee=ffff
+    ccc=a=bb=2=ee=ff=g
+    dd=eee=f=39=bbb=ssss=tttt
+
+     ↓ 1番目のフィールドを左寄せ、2番目のフィールドを右寄せ、3番目のフィールドを左寄せで整形
+
+    a   =  bb = ccc = 1  =  dd = ee   = ffff
+    ccc =   a = bb  = 2  =  ee = ff   = g
+    dd  = eee = f   = 39 = bbb = ssss = tttt
+
+.. note::
+
+    「:AlignCtrl」コマンドで指定した配置の数より、フィールドの数の方が多いときは、 |BR|
+    指定した配置指定がループします。
+
+     .. image:: /dist/img/vim/align/align_ctrl_lrc_loop.jpg
+        :alt:  「l」「r」「c」の並びのループ
+
+
+
+================================================================================
+配置指定の繰り返し、配置の整形条件のスキップ。
+================================================================================
+
+少し変わった整形の条件指定として、「+」「:」「-」があります。 |BR|
+これらの条件は、「l」「r」「c」の条件と一緒に用います。
+少し難しいので、例を見て理解してください。
+
+.. csv-table::
+    :header: 命令, 説明
+
+    "\+", それ以降のフィールドの配置は、最後の「l」「r」「c」と同じ配置制御を適用する。
+    "\:", それ以降のフィールドは、セパレータで分割しない。
+    "\-", 指定したフィールドは分割しないで、スキップし、右のフィールドと連結する。
+
+
+--------------------------------------------------------------------------------
+
+整形前のコードが次の「=」区切りのコードであったとして、
+
+.. parsed-literal::
+    :class: program
+
+    a=bb=ccc=1=dd=ee=ffff
+    ccc=a=bb=2=ee=ff=g
+    dd=eee=f=39=bbb=ssss=tttt
+
+例えば、「:AlignCtrl lrl+」と指定したとすると、
+4番目のフィールド以降は、最後の「l」「r」「c」命令、
+この場合、左寄せ「l」で整形します。
+
+.. parsed-literal::
+    :class: console
+
+    :AlignCtrl lrl+
+    :Align =
+
+.. parsed-literal::
+    :class: program
+
+    a   =  bb = ccc = 1  = dd  = ee   = ffff
+    ccc =   a = bb  = 2  = ee  = ff   = g
+    dd  = eee = f   = 39 = bbb = ssss = tttt
+
+「:」を指定すると、それ以降のフィールドは、セパレータによる分割の対象となりません。 |BR|
+例えば、「:AlignCtrl lrl:」と指定すると、4番目のフィールド以降のテキストは分割しないで、
+一塊の文章として扱います。
+
+.. parsed-literal::
+    :class: console
+
+    :AlignCtrl lrl:
+    :Align =
+
+.. parsed-literal::
+    :class: program
+
+    a   =  bb = ccc = 1=dd=ee=ffff
+    ccc =   a = bb  = 2=ee=ff=g
+    dd  = eee = f   = 39=bbb=ssss=tttt
+
+「-」を指定すると、指定されたフィールドの配置指定はスキップされます。 |BR|
+スキップされたフィールドは右のフィールドにくっつきます。
+
+.. parsed-literal::
+    :class: console
+
+    :AlignCtrl l-cr-r
+    :Align =
+
+.. parsed-literal::
+    :class: program
+
+    a   = bb=ccc =  1 =    dd=ee = ffff
+    ccc =  a=bb  =  2 =    ee=ff = g
+    dd  = eee=f  = 39 = bbb=ssss = tttt
+
+
+
+================================================================================
+セパレータの左寄せ、右寄せ、センタリング。
+================================================================================
+
+各行のセパレータの文字数が違う時に、
+そのセパレータの左寄せ、右寄せ、センタリングを制御するには、 |BR|
+「:AlignCtrl」コマンドで「<」「>」「|」を指定します。
+
+.. parsed-literal::
+    :class: console
+
+    **" セパレータを左寄せに。**
+    :AlignCtrl <
+    **" セパレータを右寄せに。**
+    :AlignCtrl > 長いセパレータを右寄せ
+    **" セパレータを中央に配置する。**
+    :AlignCtrl |
+
+.. note::
+
+    各行のセパレータの文字数が違うという状況は、
+    セパレータの指定に正規表現を使用した時に発生する場合があります。
+
+    .. parsed-literal::
+        :class: console
+
+        **" 1文字以上の連続した「-」をセパレータとして指定する。**
+        :Align -\\+
+
+--------------------------------------------------------------------------------
+
+可変数の「-」を区切りとする、次の整形前コードがあるとして、
+
+.. parsed-literal::
+    :class: program
+
+    a - bbb - c
+    aa -- bb -- ccc
+    aaa --- b --- cc
+
+左寄せ「<」を指定すると、
+
+.. parsed-literal::
+    :class: console
+
+    :AlignCtrl <
+    :Align -\\+
+
+.. parsed-literal::
+    :class: program
+
+    a   -   bbb -   c
+    aa  --  bb  --  ccc
+    aaa --- b   --- cc
+
+右寄せ「>」を指定すると、
+
+.. parsed-literal::
+    :class: console
+
+    :AlignCtrl >
+    :Align -\\+
+
+.. parsed-literal::
+    :class: program
+
+    a     - bbb   - c
+    aa   -- bb   -- ccc
+    aaa --- b   --- cc
+
+中央揃え「|」を指定すると、
+
+.. parsed-literal::
+    :class: console
+
+    :AlignCtrl |
+    :Align -\\+
+
+.. parsed-literal::
+    :class: program
+
+    a    -  bbb  -  c
+    aa  --  bb  --  ccc
+    aaa --- b   --- cc
+
+と整形します。
+
+--------------------------------------------------------------------------------
+
+セパレータの位置ごとに、配置を指定したい場合は、
+フィールドの配置指定の時と同じく、
+「:AlignCtrl」コマンドで一度に条件を指定します。 |BR|
+指定した条件の数より、セパレータの数が多い場合は、条件がループします。
+
+.. parsed-literal::
+    :class: console
+
+    **" 最初のセパレータを左寄せ**
+    **" 2番目のセパレータを左寄せ**
+    **" 3番目のセパレータを右寄せ**
+    **" 以後、ループ**
+    :AlignCtrl <<>
+    :Align -\\+
+
+.. parsed-literal::
+    :class: program
+
+    a - bbb - ca - bbb - ca - bbb - ca - bbb - c
+    aa -- bb -- cccaa -- bb -- cccaa -- bb -- cccaa -- bb -- ccc
+    aaa --- b --- ccaaa --- b --- ccaaa --- b --- ccaaa --- b --- cc
+
+    ↓ このように整形される。
+
+    a  -    bbb-    ca     -  bbb-    ca   -    bbb  -  ca   -    bbb-    c
+    aa --   bb --   cccaa --  bb --   cccaa--   bb  --  cccaa--   bb --   ccc
+    aaa---  b  ---  ccaaa---  b  ---  ccaaa---  b  ---  ccaaa---  b  ---  cc
+
+
+
+================================================================================
+セパレータとフィールド間の空白文字サイズを調整する。
+================================================================================
+
+セパレータと各フィールド間のスペースのサイズを調節するには、
+「:AlignCtrl」コマンドで「p」か「P」を指定します。 |BR|
+「p」がセパレータ左の空白文字サイズで、
+「P」がセパレータ右空白文字サイズを制御する指定です。 |BR|
+この「p」「P」の条件は、空白文字のサイズとなる数字と組み合わせて使用します。
+
+.. parsed-literal::
+    :class: console
+
+    :AlignCtrl p{セパレータ左の空白文字サイズ}
+    :AlignCtrl P{セパレータ右の空白文字サイズ}
+
+.. parsed-literal::
+    :class: console
+
+    **" セパレータ左に5文字のスペースを入れる。**
+    :AlignCtrl p5
+    
+    **" セパレータ右に3文字のスペースを入れる。**
+    :AlignCtrl P3
+
+--------------------------------------------------------------------------------
+
+次のような「=」区切りのコードがあるとして、
+
+.. parsed-literal::
+    :class: program
+
+    a=b=c=d=e=f=g=h=1
+
+セパレータ左に0文字のスペース、セパレータ右に2文字のスペースを入れるには、 |BR|
+「:AlignCtrl」コマンドで「p0P2」と指定します。
+
+.. parsed-literal::
+    :class: console
+
+    :AlignCtrl p0P2
+    :Align =
+
+↓ このように整形されました。
+
+.. parsed-literal::
+    :class: program
+
+    a=  b=  c=  d=  e=  f=  g=  h=  1
+
+--------------------------------------------------------------------------------
+
+セパレータの位置ごとに挿入する空白文字のサイズを変えたい場合は、
+次の例のようにまとめて指定します。 |BR|
+セパレータの数が指定した数より多い場合は、指定した条件がループします。
+
+.. parsed-literal::
+    :class: console
+
+    **" 第1セパレータの左のスペースのサイズ 1**
+    **" 第2セパレータの左のスペースのサイズ 0**
+    **" 第3セパレータの左のスペースのサイズ 2**
+    **" セパレータの右のスペースのサイズ 0**
+    :AlignCtrl p102P0
+
+.. parsed-literal::
+    :class: program
+
+    a=b=c=d=e=f=g=h=1
+
+    ↓ 条件指定後、「:Align =」で整形
+
+    a =b=c  =d =e=f  =g =h=1
+
+
+
+================================================================================
+セパレータを順序固定で指定するか、ORで指定するか。
+================================================================================
+
+「:Align」の整形処理では文章を分割するセパレータを複数指定できますが、
+そのセパレータが複数、コマンドで指定された時に、
+順序固定でセパレータを使用するか、OR条件で使用するか、
+という制御を行うのが「C」と「=」です。
+「=」がOR条件、「C」が順序指定となります。 |BR|
+デフォルトでは、OR条件となっています。
+
+.. parsed-literal::
+    :class: console
+
+    **" OR条件でセパレータ指定**
+    :AlignCtrl =
+    **" 順序固定でセパレータ指定**
+    :AlignCtrl C
+
+.. parsed-literal::
+    :class: console
+
+    **" A or B or C or D or Eのセパレータで分割する。**
+    :AlignCtrl = A B C D E
+
+    **" 最初にAのセパレータで文章を分割。**
+    **" 次にBのセパレータで文章を分割**
+    **" 次にCのセパレータで文章を分割**
+    **" 以後、繰り返し。フィールドの数が多い場合はループ**
+    :AlignCtrl C A B C D E
+
+--------------------------------------------------------------------------------
+
+元のテキストがこのようなテキストであった場合に、
+
+.. parsed-literal::
+    :class: program
+
+    a,b+c-d:e
+    x,y,z+2,p
+    w,s-t,0:u
+
+「:AlignCtrl」で「=」を指定すると、どれかのセパレータにマッチすると、 |BR|
+その位置でフィールドの分割が行われる。
+
+.. parsed-literal::
+    :class: console
+
+    :AlignCtrl =
+    :Align , + :
+
+.. parsed-literal::
+    :class: program
+
+    a , b   + c-d : e
+    x , y   , z   + 2 , p
+    w , s-t , 0   : u
+
+しかし、「:AlignCtrl」で「C」を指定すると、左から順番にセパレータとのマッチングが行われ、 |BR|
+マッチしたその位置でフィールドの分割が行われる。
+
+.. parsed-literal::
+    :class: console
+
+    :AlignCtrl C
+    :Align , + :
+
+.. parsed-literal::
+    :class: program
+
+    a , b       + c-d : e
+    x , y,z     + 2,p
+    w , s-t,0:u
+
+
+
+================================================================================
+特定の行を整形対象外にする。特定の行を整形対象の行にする。
+================================================================================
+
+整形範囲に入っている、ある特定の行を `Align`_ による整形処理の対象外としたい時、
+あるいは、整形処理の対象の行としたい時は、
+「:AlignCtrl」コマンドに「g」「v」と特定行を特定するパターン文字列を渡します。
+
+.. parsed-literal::
+    :class: console
+
+    **" パターンにマッチする行を整形処理の対象としない**
+    :AlignCtrl v {特定行にマッチするパターン}
+    **" パターンにマッチする行だけを整形処理の対象とする**
+    :AlignCtrl g {特定行にマッチするパターン}
+
+.. note::
+
+    「:AlignCtrl」コマンドの2番目のパラメータ以降が
+    セパレータの指定でないことに気をつけてください。 |BR|
+    この機能は「:AlignCtrl」コマンドの使い方が、少し違うのです。
+
+
+--------------------------------------------------------------------------------
+
+もとの整形前テキストが次のコードであった場合に、
+
+.. parsed-literal::
+    :class: program
+
+    one= 2;
+    /\* skip = this \*/
+    three= 4;
+    /\* seven = 7 \*/
+    five= 6;
+
+パターンにマッチする行を整形処理の対象外とする。
+
+.. parsed-literal::
+    :class: console
+
+    :AlignCtrl v ^\\s\*/\\\*
+    :Align =
+
+.. parsed-literal::
+    :class: program
+
+    one   = 2;
+    /\* skip = this \*/
+    three = 4;
+    /\* seven = 7 \*/
+    five  = 6;
+
+パターンにマッチする行だけ、整形処理の対象とする。
+
+.. parsed-literal::
+    :class: console
+
+    :AlignCtrl g ^\\s\*/\\\*
+    :Align =
+
+.. parsed-literal::
+    :class: program
+
+    one= 2;
+    /\* skip  = this \*/
+    three= 4;
+    /\* seven = 7 \*/
+    five= 6;
+
+
+--------------------------------------------------------------------------------
+
+「:AlignCtrl v」「:AlignCtrl g」で一度セットされた
+整形処理対象、整形処理対象外のパターン指定をリセットするには、
+次のコマンドを実行します。
+
+.. parsed-literal::
+    :class: console
+
+    **" セットされたパターンをリセット**
+    :AlignCtrl v
+    :AlignCtrl g
+
+
+
+================================================================================
+行頭の余白の扱い。維持する、削除する、先頭に合わせる。
+================================================================================
+
+「w」「W」「I」は、
+整形処理の対象とする行の頭に空白文字がいくつかあり、先頭位置が揃っていない場合に、
+その空白文字をどう扱うか、を制御します。 |BR|
+
+.. parsed-literal::
+    :class: console
+
+    **" 空白文字を削除する。**
+    :AlignCtrl w
+    **" 空白文字を維持する。**
+    :AlignCtrl W
+    **" 一番上の行の先頭位置に合わせる。**
+    :AlignCtrl I
+
+
+--------------------------------------------------------------------------------
+
+先頭が空白文字で始まっている、次のサンプルコードに対し、
+
+.. parsed-literal::
+    :class: program
+
+        a := baaa
+      caaaa := deeee
+            ee := f
+
+「w」の条件を指定すると、行頭までの空白文字は全て削除され、 |BR|
+その後、整形が行われます。
+
+.. parsed-literal::
+    :class: console
+
+    :AlignCtrl w
+    :Align :=
+
+.. parsed-literal::
+    :class: program
+
+    a     := baaa
+    caaaa := deeee
+    ee    := f
+
+「W」の条件を指定すると、行頭までの空白文字は残したままで整形処理が行われます。 |BR|
+場合によっては、整形しても先頭位置がばらばらのままになります。
+
+.. parsed-literal::
+    :class: console
+
+    :AlignCtrl W
+    :Align :=
+
+.. parsed-literal::
+    :class: program
+
+        a      := baaa
+      caaaa    := deeee
+            ee := f
+
+「I」の条件を指定すると、一番上の行の先頭位置に、
+他の行の先頭位置が揃えられます。
+
+.. parsed-literal::
+    :class: console
+
+    :AlignCtrl I
+    :Align :=
+
+.. parsed-literal::
+    :class: program
+
+        a     := baaa
+        caaaa := deeee
+        ee    := f
+
+
+
+================================================================================
+ページリンク
+================================================================================
+
+#. `高性能なテキスト整形ツールAlignの使い方 #1 インストールから設定まで`_
+#. `高性能なテキスト整形ツールAlignの使い方 #2 組み込みマッピングでテーブル構造を整形する`_
+#. `高性能なテキスト整形ツールAlignの使い方 #3 組み込みマッピングでプログラムのソースを整形する`_
+#. - `高性能なテキスト整形ツールAlignの使い方 #4 「:Align」コマンドを使用して整形処理を行う`_
+#. `高性能なテキスト整形ツールAlignの使い方 #5 ここまで紹介していない残りの機能の紹介`_
+#. `高性能なテキスト整形ツールAlignの使い方 #6 Alignの使い方を簡潔に説明`_
+
+.. _`高性能なテキスト整形ツールAlignの使い方 #1 インストールから設定まで`: `doc_align`_
+.. _`高性能なテキスト整形ツールAlignの使い方 #2 組み込みマッピングでテーブル構造を整形する`: `doc_align_mapt`_
+.. _`高性能なテキスト整形ツールAlignの使い方 #3 組み込みマッピングでプログラムのソースを整形する`: `doc_align_mapa`_
+.. _`高性能なテキスト整形ツールAlignの使い方 #4 「:Align」コマンドを使用して整形処理を行う`: `doc_align_ctrl`_
+.. _`高性能なテキスト整形ツールAlignの使い方 #5 ここまで紹介していない残りの機能の紹介`: `doc_align_ext`_
+.. _`高性能なテキスト整形ツールAlignの使い方 #6 Alignの使い方を簡潔に説明`: `doc_align_summary`_
+
+.. _`Align`: http://www.vim.org/scripts/script.php?script_id=294
+.. _`doc_align`: /articles/vim/align/align_vim.html
+.. _`doc_align_mapt`: /articles/vim/align/align_vim_mapt.html
+.. _`doc_align_mapa`: /articles/vim/align/align_vim_mapa.html
+.. _`doc_align_ctrl`: /articles/vim/align/align_vim_ctrl.html
+.. _`doc_align_ext`: /articles/vim/align/align_vim_ext.html
+.. _`doc_align_summary`: /articles/vim/align/align_vim_summary.html
+
+
+
+

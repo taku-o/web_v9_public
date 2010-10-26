@@ -1,0 +1,86 @@
+.. vim:set expandtab ff=unix ft=rest :
+
+..  range-search.vim : 選択した範囲のみを対象に検索実行
+
+..  選択した範囲のみを対象にした検索を行うためのスクリプトです。
+    (Windows, Mac)
+
+.. |BR| raw:: html
+
+    <br />
+
+.. |yen|    unicode:: U+000A5 .. YEN SIGN
+
+.. role:: raw-html(raw)
+    :format: html
+
+.. contents::
+
+================================================================================
+概要
+================================================================================
+
+range-search.vim : Allows one to perform a search only inside a range |BR|
+http://www.vim.org/scripts/script.php?script_id=1396
+
+選択した範囲のみを対象にした検索を行うためのスクリプトです。
+
+
+
+================================================================================
+インストール方法
+================================================================================
+
+`スクリプト`__ ダウンロードして、 |BR|
+ローカルの適当なディレクトリにコピーします。
+
+__ http://www.vim.org/scripts/script.php?script_id=1396
+
+次にvimエディタの設定ファイル、.vimrc (もしくは_vimrc)に |BR|
+range-search.vimスクリプトをsourceコマンドで読み込む設定を追加します。
+
+.. parsed-literal::
+    :class: program
+
+    **" ホームディレクトリ以下の.vim/macrosにスクリプトをコピーした場合の設定例**
+    :source $HOME/.vim/macros/range-search.vim
+
+.. csv-table::
+    :header: "ファイル", "URL"
+
+    range-search.vim, "http://www.vim.org/scripts/script.php?script_id=1396"
+
+
+
+================================================================================
+使用方法
+================================================================================
+
+このスクリプトで検索を実行するには、vimエディタで検索対象とする範囲を指定してから、 |BR|
+下のコマンドを実行してください。
+
+.. parsed-literal::
+    :class: console
+
+    :Rs 検索文字
+
+.. parsed-literal::
+    :class: console
+
+    **" Visualモードで選択してからの検索実行例**
+    :'<,'>Rs searchwords
+
+.. parsed-literal::
+    :class: console
+
+    **" コマンドで範囲を指定してからの検索実行例**
+    :20,39:Rs searchwords
+
+.. image:: /dist/img/vim/range-search_vim.jpg
+    :alt:  このスクリプトで検索を実行しようとしている所
+
+上の画像はvimエディタのVisualモードで範囲を選択して、 |BR|
+検索を実行しようとしている所のキャプチャーです。
+
+
+

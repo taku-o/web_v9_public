@@ -1,0 +1,51 @@
+.. vim:set expandtab ff=unix ft=rest nowrap :
+
+..  vimスクリプトの変数の値を、pythonのコード側から読み取る
+
+..  
+
+.. |BR| raw:: html
+
+    <br />
+
+.. |yen|    unicode:: U+000A5 .. YEN SIGN
+
+.. role:: raw-html(raw)
+    :format: html
+
+.. contents::
+
+================================================================================
+vimスクリプトの変数の値を、pythonのコード側から読み取る
+================================================================================
+
+- vimスクリプト側で定義した変数を、pythonコード側から読み取る
+
+.. parsed-literal::
+    :class: program
+
+    :python import vim
+    
+    " スコープ無しの変数を読み込む
+    :let var_a = "text value"
+    :python print vim.eval("var_a")
+    "# => text value
+    
+    " スコープの付いた変数を読み込む
+    :let g:var_g = "global value"
+    :python print vim.eval("g:var_g")
+    "# => global value
+
+
+- vimエディタのオプションの値を、pythonコード側から読み取る
+
+.. parsed-literal::
+    :class: program
+
+    :python import vim
+    
+    :python print vim.eval("&guifont")
+    "# => MS_Mincho:h12:cSHIFTJIS
+
+
+

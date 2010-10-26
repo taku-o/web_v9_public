@@ -1,0 +1,134 @@
+.. vim:set expandtab ff=unix ft=rest :
+
+..  grepu.vim ／ grepw.vim : ファイルのグレップ検索
+
+..  指定の文字を持つファイルを検索して、
+    検索語が見つかった行とファイルの一覧を表示することのできるスクリプトです。
+    
+    更に、その一覧上から、検索語がヒットした個所をエディタで開くことができます。
+    (Windows, Mac)
+
+.. |BR| raw:: html
+
+    <br />
+
+.. |yen|    unicode:: U+000A5 .. YEN SIGN
+
+.. role:: raw-html(raw)
+    :format: html
+
+.. contents::
+
+================================================================================
+概要
+================================================================================
+
+grepu.vim |BR|
+
+現在いるディレクトリのファイルに対して検索をかけ、
+その検索語が見つかったファイルおよび、見つけた行を表示します。 |BR|
+更には、そのリスト上から、検索語がヒットした個所へ移動できます。
+
+.. image:: /dist/img/vim/grepu_list.jpg
+    :alt:  リスト
+
+検索でヒットしたリストを表示します。行数付き。
+
+.. image:: /dist/img/vim/grepu_jump.jpg
+    :alt:  ファイルを開く
+
+検索のヒットした行に移動します。
+
+
+
+================================================================================
+インストール方法
+================================================================================
+
+本来、 `Jano's Vim Macro Page`_ から、スクリプトをダウンロードすべきなのですが、
+リンクが切れているので、当サイトにファイルを逃がしてあります。 |BR|
+`grepu.vim`_ と、 `array.vim`_ をダウンロードしてください。
+
+.. _`Jano's Vim Macro Page`: http://www.vanhemert.co.uk/index.html
+.. _`grepu.vim`: http://indefero.taku-o.net/index.php/p/download/source/tree/master/jano_vim_macros
+.. _`array.vim`: http://indefero.taku-o.net/index.php/p/download/source/tree/master/jano_vim_macros
+
+.. csv-table::
+    :header: "ファイル", "URL"
+
+    "grepu.vim、array.vim（待避）", "http://indefero.taku-o.net/index.php/p/download/source/tree/master/jano_vim_macros"
+
+ダウンロードしたgrepu.vim、array.vimは
+$VIMRUNTIME/macrosディレクトリにコピーしてください。
+
+最後に_vimrcファイルに、次の1文を書き足します。
+
+.. parsed-literal::
+    :class: program
+
+    source $VIMRUNTIME/grepu.vim
+
+これでインストール完了です。
+
+
+
+================================================================================
+使用方法
+================================================================================
+
+まず、検索から入ります。
+
+.. parsed-literal::
+    :class: console
+
+    ,gr
+
+このコマンドをノーマルモードで入力すると、 |BR|
+その時カーソルの下に単語があれば検索をかけ、
+もし、単語が無ければ、検索ワードを尋ねてきます。
+
+検索ワードを入力した場合は、入力後、Enterキーで検索を実行できます。
+
+.. image:: /dist/img/vim/grepu_ask.jpg
+    :alt:  検索ワードを尋ねてくる
+
+検索結果のリストが表示されたら、
+
+.. image:: /dist/img/vim/grepu_list.jpg
+    :alt:  リスト
+
+開きたいファイルの開きたい行の上にカーソルを持って行き、
+
+.. parsed-literal::
+    :class: console
+
+    e
+
+で、そのファイルを開きます。
+
+.. parsed-literal::
+    :class: console
+
+    w
+
+で、別のウィンドウにファイルを開くことができます。
+
+
+
+================================================================================
+注意事項など
+================================================================================
+
+このスクリプトは、Unix用です。 |BR|
+Windowsユーザー用には、
+`grepw.vim`__
+というマクロが用意されています。
+
+__ http://indefero.taku-o.net/index.php/p/download/source/tree/master/jano_vim_macros
+
+Windowsで、grepwマクロを使用するには、grepw.vimの他に、 |BR|
+grep.exeがインストールされている必要があります。
+
+
+
+

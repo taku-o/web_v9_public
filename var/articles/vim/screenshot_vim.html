@@ -1,0 +1,164 @@
+.. vim:set expandtab ff=unix ft=rest :
+
+..  ScreenShot.vim : Vimエディタでの表示内容をHTML化するプラグイン
+
+..  Vimエディタで表示している内容をHTML化して、Webブラウザで表示、印刷できるようにするプラグインです。
+    同様の機能をもったプラグインである 2html.vim との違いとして、
+    VimエディタのタイトルバーごとHTML化したり、差分diff結果をHTML化する機能を持ちます。
+    (Windows, Mac)
+
+.. |BR| raw:: html
+
+    <br />
+
+.. |yen|    unicode:: U+000A5 .. YEN SIGN
+
+.. role:: raw-html(raw)
+    :format: html
+
+.. contents::
+
+================================================================================
+概要
+================================================================================
+
+ScreenShot : ScreenShot.vim enables you make screenshot of your VIM session as HTML code. |BR|
+http://www.vim.org/scripts/script.php?script_id=1552
+
+Vimエディタで表示している内容をHTML化して、Webブラウザで表示、印刷できるようにするプラグインです。 |BR|
+同様の機能をもったプラグインである `2html.vim`_ との違いとして、
+VimエディタのタイトルバーごとHTML化したり、差分diff結果をHTML化する機能を持ちます。
+
+
+
+================================================================================
+インストール方法
+================================================================================
+
+日本語環境用に少し修正を入れたプラグインを作成してあります。 |BR|
+プラグインをセットアップするには `プラグインファイル`__ をダウンロード後、
+vim設定ファイルディレクトリのpluginディレクトリにコピーしてください。
+
+__ http://indefero.taku-o.net/index.php/p/download/source/file/master/ScreenShot_mb.vim
+
+.. csv-table::
+    :header: "説明", "ファイル", "URL"
+
+    "オリジナル", "ScreenShot.vim",    "http://www.vim.org/scripts/script.php?script_id=1552"
+    "修正版",     "ScreenShot_mb.vim", "http://indefero.taku-o.net/index.php/p/download/source/file/master/ScreenShot_mb.vim"
+
+
+
+================================================================================
+使用方法
+================================================================================
+
+ScreenShot.vimプラグインには、3つのコマンドが用意されています。
+
+.. csv-table::
+    :header: コマンド, 説明
+
+    :ScreenShot, ウィンドウも含めて、スクリーンショットをHTML化します。
+    :Text2Html,  選択したテキストをHTML化します。
+    :Diff2Html,  差分diff実行時に、そのdiffの状態をHTML化します。
+
+
+:ScreenShot
+--------------------------------------------------------------------------------
+
+「:ScreenShot」コマンドを実行すると、ウィンドウも含めて、Vimエディタに表示している内容をHTML化します。
+
+.. parsed-literal::
+    :class: console
+
+    :ScreenShot
+
+下画像は、左上がVimエディタ上での表示で、右下がHTML化したテキストをWebブラウザで表示した様子です。
+
+.. image:: /dist/img/vim/screenshot_screenshot.png
+    :alt:  「:ScreenShot」コマンド結果
+
+
+:Text2Html
+--------------------------------------------------------------------------------
+
+「:Text2Html」コマンドは、選択した範囲のテキストをHTML化します。テキスト未選択時はファイル全体が対象となります。 |BR|
+「 `2html.vim`_ 」プラグインの挙動に最も近いのが、この「:Text2Html」コマンドだと思います。
+
+.. parsed-literal::
+    :class: console
+
+    :'<,'>Text2Html
+
+左上がVimエディタ上での表示で、右下がHTML化したテキストをWebブラウザで表示したものです。
+選択した範囲のみ、HTML化されます。
+
+.. image:: /dist/img/vim/screenshot_text2html.png
+    :alt:  「:Text2Html」コマンド結果
+
+.. note::
+
+    2html.vimプラグインのドキュメントも参考にしてください。 |BR|
+    `2html.vim : ファイルをシンタックスハイライトつきのHTMLに変換`__
+
+    __ /articles/vim/2html_vim.html
+
+
+:Diff2Html
+--------------------------------------------------------------------------------
+
+diffモードでのみ、動作します。
+差分diff実行後に「Diff2Html」コマンドを実行すると、差分diffの状態をHTML化します。
+
+.. parsed-literal::
+    :class: console
+
+    :Diff2Html
+
+下画像は、左上がVimエディタでの差分diffの状態、右下が「Diff2Html」コマンドで、HTML化した様子です。 |BR|
+上下ウィンドウで分割して比較しても、左右比較した状態でHTML化されます。
+
+.. image:: /dist/img/vim/screenshot_diff2html.png
+    :alt:  「:Diff2Html」コマンド結果
+
+.. note::
+
+    差分diffの使い方が分らない場合は、いくつかドキュメントを用意してあるので、そちらのペースを参照してください。 |BR|
+    `2つのテキストファイルのdiff`__
+
+    __ /howto/diff.html
+
+
+
+================================================================================
+設定
+================================================================================
+
+ScreenShot.vimプラグインには、次の設定が用意されています。
+これらの設定を有効にするには、Vimエディタの設定ファイルに記述してください。 |BR|
+いくつかの設定は「:ScreenShot」コマンドの結果のみで有効です。
+
+.. csv-table::
+    :header: オプション, 説明
+
+    Title,            タイトルバーを表示するか。1で表示、0で非表示。
+    Icon,             アイコンをタイトルバーに表示するか。1で表示、0で非表示。
+    Credits,          クレジットを表示するか。1で表示、0で非表示。
+    force_background, 背景色を特定の色にする。
+
+.. image:: /dist/img/vim/screenshot_options.png
+    :alt:  ScreenShot.vim設定項目
+
+各設定は「g:ScreenShot」ディクショナリのキーとして、次のように指定します。
+
+.. parsed-literal::
+    :class: program
+
+    " 設定例
+    :let g:ScreenShot = {'Title':1, 'Icon':1, 'Credits':1, 'force_background':'#000000', 'fill_screen':1}
+
+
+.. _2html.vim : /articles/vim/2html_vim.html
+
+
+

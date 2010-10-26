@@ -1,0 +1,72 @@
+.. vim:set expandtab ff=unix ft=rest nowrap :
+
+..  変数宣言
+
+..  
+
+.. |BR| raw:: html
+
+    <br />
+
+.. |yen|    unicode:: U+000A5 .. YEN SIGN
+
+.. role:: raw-html(raw)
+    :format: html
+
+.. contents::
+
+================================================================================
+変数宣言
+================================================================================
+
+- 変数を使用する前に特に宣言は必要ない。変数に値をセットすると使用できる。
+- 変数に値をセットするには「:let」コマンドを使用する。
+
+.. parsed-literal::
+    :class: program
+
+    :let var = "initial value"
+
+- 変数を削除するには「:unlet」コマンドを使用する。
+
+.. parsed-literal::
+    :class: program
+
+    :unlet var
+
+- 変数にはいくつかの型がある。
+
+.. parsed-literal::
+    :class: program
+
+    :let var_str = "text"
+    :let var_num = 97
+    :let var_list = [ "one", "two", "three", "four" ]
+    :let var_dict = { "one":"item 1", "two":"item 2", "three":"item 3", "four":"item 4" }
+
+- 「:echo」コマンドで変数の値を表示できる。
+
+.. parsed-literal::
+    :class: program
+
+    :let var_str = "text"
+    :echo var_str
+    "# => text
+    
+    :let var_num = 97
+    :echo var_num
+    "# => 97
+    
+    :let var_list = [ "one", "two", "three", "four" ]
+    :echo var_list
+    "# => ['one', 'two', 'three', 'four']
+    
+    :let var_dict = { "one":"item 1", "two":"item 2", "three":"item 3", "four":"item 4" }
+    :echo var_dict
+    "# => {'four': 'item 4', 'one': 'item 1', 'two': 'item 2', 'three': 'item 3'}
+
+- 文字列型、数値型間では、自動的に型の変換が行われる。
+- 変数にはスコープがあり、その範囲内でのみ変数を使用できる。
+
+
+

@@ -1,0 +1,48 @@
+.. vim:set expandtab ff=unix ft=rest nowrap :
+
+..  バッファ内からテキストを検索
+
+..  
+
+.. |BR| raw:: html
+
+    <br />
+
+.. |yen|    unicode:: U+000A5 .. YEN SIGN
+
+.. role:: raw-html(raw)
+    :format: html
+
+.. contents::
+
+================================================================================
+バッファ内からテキストを検索
+================================================================================
+
+- 条件にマッチする行を取得
+
+.. parsed-literal::
+    :class: program
+
+    :let regexp = "^NO:"
+    :echo search(regexp)
+    :echo search(regexp)
+    :echo search(regexp)
+    :echo search(regexp)
+    "# => 順々に検索にマッチした行番号を出力
+
+- 検索にマッチした範囲のテキストを取得
+
+.. parsed-literal::
+    :class: program
+
+    :let start = search("^START:")
+    :let end   = search("^END:")
+    :let lines = getline(start, end)
+    :for i in lines
+        :echo i
+    :endfor
+    "# => 「START:」で始まる行から「END:」で始まる行までのテキストを出力
+
+
+

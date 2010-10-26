@@ -1,0 +1,98 @@
+.. vim:set expandtab ff=unix ft=rest nowrap :
+
+..  特定のエンコードのファイルを読み込む
+
+..  
+
+.. |BR| raw:: html
+
+    <br />
+
+.. |yen|    unicode:: U+000A5 .. YEN SIGN
+
+.. role:: raw-html(raw)
+    :format: html
+
+.. contents::
+
+================================================================================
+特定のエンコードのファイルを読み込む
+================================================================================
+
+- ファイルを読込後、エンコーディングを変換する
+
+.. parsed-literal::
+    :class: program
+
+    :let inputfile = "test.txt"
+    :let lines = readfile(inputfile)
+    
+    :let i = 0
+    :for str in lines
+        :let lines[i] = iconv(str, "utf-8", "cp932")
+        :let i += 1
+    :endfor
+    :echo join(lines, "\n")
+    "# => utf-8エンコードのファイルの読み込み、cp932エンコードに変換後、出力する
+
+- &encodingでvimエディタ内部で使用しているエンコーディングを取得できる
+
+.. parsed-literal::
+    :class: program
+
+    :let inputfile = "test.txt"
+    :let lines = readfile(inputfile)
+    
+    :let i = 0
+    :for str in lines
+        :let lines[i] = iconv(str, "utf-8", &encoding)
+        :let i += 1
+    :endfor
+    :echo join(lines, "\n")
+    "# => utf-8エンコードのファイルの読み込み、vimエディタ内部で使用しているエンコーディングに変換して出力
+
+- リストの一括変換を行うなら、mapを使用すると良い
+
+.. parsed-literal::
+    :class: program
+
+    :let inputfile = "test.txt"
+    :let lines = readfile(inputfile)
+    :call map(lines, 'iconv(v:val, "utf-8", &encoding)')
+    :echo join(lines, "\n")
+    "# => utf-8エンコードのファイルの読み込み、vimエディタ内部で使用しているエンコーディングに変換して出力
+
+- cp932の文字列を文字化けしないように読み込む
+
+.. parsed-literal::
+    :class: program
+
+    :let cp932text = .....
+    :echo iconv(cp932text, "cp932",  &encoding)
+
+- euc-jpの文字列を文字化けしないように読み込む
+
+.. parsed-literal::
+    :class: program
+
+    :let eucjptext = .....
+    :echo iconv(eucjptext, "euc-jp", &encoding)
+
+- utf-8の文字列を文字化けしないように読み込む
+
+.. parsed-literal::
+    :class: program
+
+    :let utf8text = .....
+    :echo iconv(utf8text, "utf-8", &encoding)
+
+- エンコードを指定して、バッファに読み込む
+
+.. parsed-literal::
+    :class: program
+
+    :let inputfile = "test.txt"
+    :execute ":e ++enc=utf-8 " . inputfile
+    "# => utf-8エンコードのファイルをバッファに読み込む
+
+

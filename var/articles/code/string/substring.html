@@ -1,0 +1,40 @@
+.. vim:set expandtab ff=unix ft=rest nowrap :
+
+..  部分文字列を抜き出す
+
+..  
+
+.. |BR| raw:: html
+
+    <br />
+
+.. |yen|    unicode:: U+000A5 .. YEN SIGN
+
+.. role:: raw-html(raw)
+    :format: html
+
+.. contents::
+
+================================================================================
+部分文字列を抜き出す
+================================================================================
+
+- 一部分を抜き出す
+
+.. parsed-literal::
+    :class: program
+
+    :echo strpart("ABCDEFGHIJ", 5, 4)
+    "# => FGHI
+
+- 正規表現は日本語を正しく扱える
+
+.. parsed-literal::
+    :class: program
+
+    :let splitted = split("マルチバイトな日本語文字列", '\\zs')
+    :echo join(splitted[4:6], "")
+    "# => イトな
+
+
+

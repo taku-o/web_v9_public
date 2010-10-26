@@ -1,0 +1,102 @@
+.. vim:set expandtab ff=unix ft=rest :
+
+..  Package Maker #3 （インストール中に実行されるスクリプト）
+
+..  「Package Maker」で作成したインストーラーの
+    インストール中に実行されるスクリプトについての説明をします。
+    (Mac)
+
+.. |BR| raw:: html
+
+    <br />
+
+.. |yen|    unicode:: U+000A5 .. YEN SIGN
+
+.. role:: raw-html(raw)
+    :format: html
+
+.. contents::
+
+================================================================================
+概要
+================================================================================
+
+「Package Maker」で作成したインストーラーの
+インストール中に実行されるスクリプトについての説明をします。
+
+
+
+================================================================================
+インストール中に実行されるスクリプト
+================================================================================
+
+スクリプトについて
+-------------------------------------------------------------------------------
+
+Resourcesタブで指定したディレクトリに、
+下記の名前のスクリプトを用意しておくと、 |BR|
+インストーラーは、インストール中のあるタイミングで、そのスクリプトを呼び出します。
+
+- InstallationCheck
+- VolumeCheck
+- preflight
+- preinstall
+- preupgrade
+- postinstall
+- postupgrade
+- postflight
+
+上記のリストのスクリプトは全て用意する必要はなく、
+インストールに必要な分だけ用意します。
+
+.. note::
+
+    スクリプトは、シェルスクリプトでも、perlスクリプトでも良いのですが、
+    スクリプトの先頭には、そのスクリプト用のコマンドを指定しておく必要はあります。
+
+    .. parsed-literal::
+        :class: program
+
+        **# 例**
+        #!/usr/bin/perl
+
+
+各スクリプトの呼び出されるタイミング
+-------------------------------------------------------------------------------
+
+それぞれのスクリプトは次の順番で呼び出されます。
+
+- インストール開始
+- InstallationCheck
+- VolumeCheck
+- preflight
+- preinstall または preupgrade
+- インストールコピーの実行
+- postinstall または postupgrade
+- postflight
+- インストール終了
+
+
+
+================================================================================
+ページリンク
+================================================================================
+
+#. `Package Maker #1 （インストーラー作成までの流れ）`__
+#. `Package Maker #2 （Filesタブ）`__
+#. - `Package Maker #3 （インストール中に実行されるスクリプト）`__
+#. `Package Maker #4 （インストールの必須条件のチェック）`__
+#. `Package Maker #5 （ドキュメント）`__
+#. `Package Maker #6 （Infoタブ）`__
+#. `Package Maker #7 （パッケージの作成）`__
+
+__ /articles/others/packagemaker/packagemaker.html
+__ /articles/others/packagemaker/packagemaker_files.html
+__ /articles/others/packagemaker/packagemaker_script.html
+__ /articles/others/packagemaker/packagemaker_validate.html
+__ /articles/others/packagemaker/packagemaker_document.html
+__ /articles/others/packagemaker/packagemaker_info.html
+__ /articles/others/packagemaker/packagemaker_package.html
+
+
+

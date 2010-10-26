@@ -1,0 +1,62 @@
+.. vim:set expandtab ff=unix ft=rest nowrap :
+
+..  リストの比較
+
+..  
+
+.. |BR| raw:: html
+
+    <br />
+
+.. |yen|    unicode:: U+000A5 .. YEN SIGN
+
+.. role:: raw-html(raw)
+    :format: html
+
+.. contents::
+
+================================================================================
+リストの比較
+================================================================================
+
+- リストの中身が全て一致したら"1"が返る。
+
+.. parsed-literal::
+    :class: program
+
+    :let var_list1 = [ "one", "two", "three", "four" ]
+    :let var_list2 = [ "one", "two", "three", "four" ]
+    :let var_list3 = [ "five", "fix", "seven", "eight" ]
+    :echo var_list1 == var_list2
+    "# => 1
+    :echo var_list1 == var_list3
+    "# => 0
+
+- 数字と文字列の場合は、一致すると判定されない。
+
+.. parsed-literal::
+    :class: program
+
+    :let var_list4 = [ "1", "2", "3", "4" ]
+    :let var_list5 = [ 1, 2, 3, 4 ]
+    :echo var_list4 == var_list5
+    "# => 0
+
+- 「is」「isnot」で、同じリストインスタンスかどうかの判定ができる。
+
+.. parsed-literal::
+    :class: program
+
+    :let var_list6 = [ "one", "two", "three", "four" ]
+    :let var_list7 = [ "one", "two", "three", "four" ]
+    :let var_list8 = var_list6
+    :echo var_list6 is var_list7
+    "# => 0
+    :echo var_list6 is var_list8
+    "# => 1
+    :echo var_list6 isnot var_list7
+    "# => 1
+
+
+
+

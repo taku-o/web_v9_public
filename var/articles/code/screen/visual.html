@@ -1,0 +1,55 @@
+.. vim:set expandtab ff=unix ft=rest nowrap :
+
+..  ビジュアルモードの選択情報の取得
+
+..  
+
+.. |BR| raw:: html
+
+    <br />
+
+.. |yen|    unicode:: U+000A5 .. YEN SIGN
+
+.. role:: raw-html(raw)
+    :format: html
+
+.. contents::
+
+================================================================================
+ビジュアルモードの選択情報の取得
+================================================================================
+
+- ビジュアル選択の範囲の取得
+
+.. parsed-literal::
+    :class: program
+
+    :let pos = getpos(".")
+    
+    :normal \`<
+    :echo line(".")
+    :echo col(".")
+    "# => 選択開始位置を出力
+    
+    :normal \`>
+    :echo line(".")
+    :echo col(".")
+    "# => 選択終了位置を出力
+    
+    :call setpos('.', pos)
+
+- ビジュアルモードで選択したテキストを取得する
+
+.. parsed-literal::
+    :class: program
+
+    :let tmp = @@
+    :silent normal gvy
+    :let selected = @@
+    :let @@ = tmp
+    :echo selected
+    "# => 選択したテキストを出力
+
+
+
+

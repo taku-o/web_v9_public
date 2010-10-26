@@ -1,0 +1,50 @@
+.. vim:set expandtab ff=unix ft=rest nowrap :
+
+..  ユーザカスタムのマッピングを受け入れる。
+
+..  
+
+.. |BR| raw:: html
+
+    <br />
+
+.. |yen|    unicode:: U+000A5 .. YEN SIGN
+
+.. role:: raw-html(raw)
+    :format: html
+
+.. contents::
+
+================================================================================
+ユーザカスタムのマッピングを受け入れる。
+================================================================================
+
+- 公開するプラグインファイル側
+
+.. parsed-literal::
+    :class: program
+
+    **" ユーザのマッピングが設定されていなければ、デフォルトのマッピングを設定**
+    **" hasmaptoを使うと、マッピングが設定されているかわかる。**
+    if !hasmapto('<Plug>IncrementCommandLineNumber', 'c')
+        cmap <c-a> <Plug>IncrementCommandLineNumber
+    endif
+    
+    **" 機能を呼び出す**
+    cnoremap <Plug>IncrementCommandLineNumber <c-b>"<cr>:call g:IncrementCommandLineNumbering(1)<cr>:<c-r>=g:IncrementedCommandLine()<cr>
+
+|BR|
+
+- ユーザの設定ファイル側
+
+.. parsed-literal::
+    :class: program
+
+    **" 独自のマッピングを設定する場合は、ユーザー設定ファイル側で**
+    **" 例えば、このように書かせる**
+    cmap <S-Up> <Plug>IncrementCommandLineNumber
+
+
+
+
+

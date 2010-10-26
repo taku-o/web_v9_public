@@ -1,0 +1,459 @@
+.. vim:set expandtab ff=unix ft=rest :
+
+..  postmail.vim : メール送信用vimエディタプラグイン
+
+..  メール送信用vimエディタプラグインです。
+    カレントバッファ全文か、選択した行のテキストをメールで送信できます。
+    実行するにはPython環境が必要です。
+    (Windows, Mac)
+
+.. |BR| raw:: html
+
+    <br />
+
+.. |yen|    unicode:: U+000A5 .. YEN SIGN
+
+.. role:: raw-html(raw)
+    :format: html
+
+.. contents::
+
+================================================================================
+概要
+================================================================================
+
+postmail.vim : メール送信用vimエディタプラグイン |BR|
+http://postmail-vim-plugin.googlecode.com/files/postmail-vim-plugin.zip
+
+編集中のバッファ全文か、選択した範囲のテキストをEメールで送信します。 |BR|
+このプラグインの最も簡単な使い方は「:Mail」コマンドを実行することです。
+
+.. parsed-literal::
+    :class: console
+
+    :Mail
+
+
+プラグインの構成
+--------------------------------------------------------------------------------
+
+このプラグインは次のファイルから構成されます。
+
+.. csv-table::
+    :header: ファイル, 説明
+
+    postmail.vim, vimスクリプトファイル。
+    postmail.py,  python製メール送信エンジン。
+    postmail.conf,  メール送信先設定ファイル
+
+このメール送信プラグインは「postmail.conf」から設定を読み込んで、 |BR|
+メールサーバに接続、メールを送信する仕組みになっています。
+
+
+動作環境
+--------------------------------------------------------------------------------
+
+このプラグインを利用するには、動作環境が次の条件を満たす必要があります。
+
+- 'compatible'オプションがセットされていない、
+- '+python', '+iconv', '+multi_byte'オプション付きでコンパイルされたVimエディタを使用している
+- Pythonが適切にインストール、使用できる状態にある
+
+
+
+================================================================================
+インストール方法
+================================================================================
+
+ダウンロード、解凍
+--------------------------------------------------------------------------------
+
+まず、 `プラグイン`__ をダウンロードし、 |BR|
+次に、 ダウンロードした圧縮ファイルを解凍してください。
+
+__ http://postmail-vim-plugin.googlecode.com/files/postmail-vim-plugin.zip
+
+.. csv-table::
+    :header: "ファイル", "URL"
+
+    "postmail.zip", "http://postmail-vim-plugin.googlecode.com/files/postmail-vim-plugin.zip"
+
+
+runtimepathディレクトリにコピーする
+--------------------------------------------------------------------------------
+
+'postmail.zip' を解凍後、生成されたファイルを'runtimepath'ディレクトリの'plugin'、'doc'ディレクトリにコピーします。 |BR|
+'runtimepath'ディレクトリがどういうものか分からない場合は、 |BR|
+Windows環境なら「$HOME/vimfiles」ディレクトリを、 |BR|
+Mac OSX環境では「$HOME/.vim」ディレクトリを使用してください。
+
+
+':helptags'コマンドを実行する
+--------------------------------------------------------------------------------
+
+':helptags'コマンドを'postmail.vim'をインストールした'doc'ディレクトリに実行してください。
+
+.. parsed-literal::
+    :class: console
+
+    " Windows環境の場合のコマンド例
+    :helptags $HOME/vimfiles/doc
+
+.. parsed-literal::
+    :class: console
+
+    " Mac OSX環境の場合のコマンド例
+    :helptags $HOME/.vim/doc
+
+
+メール送信設定ファイル「postmail.conf」を編集する。
+--------------------------------------------------------------------------------
+
+「postmail.conf」設定ファイルを編集します。
+「postmail.conf」には、いくつかのメール送信用の設定例が書かれているので、
+余分な設定をコメントアウトしてから、
+自分の環境にあわせて設定を変更するとプラグインを利用できるようになります。 |BR|
+設定の詳細については、 `'postmail.conf'の設定方法`_ を見てください。
+
+.. note::
+
+    設定ファイルは、vimエディタのencodingオプションと同じエンコーディングで記述します。
+
+    .. parsed-literal::
+        :class: console
+
+        " vimエディタのencodingの値を確認する
+        :echo &encoding
+
+
+
+================================================================================
+使用方法
+================================================================================
+
+':Mail' コマンドを実行するとメールが送信されます。 |BR|
+メール送信コマンドの例も用意してあるので、そちらも見てください。 |BR|
+（ `':Mail'コマンドの使い方の例`_ ）
+
+
+':Mail'コマンドのフォーマット
+--------------------------------------------------------------------------------
+
+.. parsed-literal::
+    :class: console
+
+    :[range]Mail
+
+メールを送信します。範囲を指定すると選択した範囲のテキストを、
+範囲を指定しないとカレントバッファ全文を送信します。
+
+.. parsed-literal::
+    :class: console
+
+    :[range]Mail {to_mailaddress}
+
+{to_mailaddress}にメールを送信します。
+範囲を指定すると選択した範囲のテキストを、範囲を指定しないとカレントバッファ全文を送信します。
+
+.. parsed-literal::
+    :class: console
+
+    :[range]Mail {to_mailaddress1} {to_mailaddress2}, {to_mailaddress3}
+
+{to_mailaddress1}、{to_mailaddress2}、{to_mailaddress3}の3メールアドレスにメールを送信します。
+送信先はいくらでも指定できます。
+範囲を指定すると選択した範囲のテキストを、範囲を指定しないとカレントバッファ全文を送信します。
+
+
+':Mail'コマンドの使い方の例
+--------------------------------------------------------------------------------
+
+.. parsed-literal::
+    :class: console
+
+    :Mail
+
+メールを送信します。
+送信されるメッセージはカレントバッファ全文です。
+
+.. parsed-literal::
+    :class: console
+
+    :Mail mail\@nanasi.jp
+
+カレントバッファ全文を'mail\@nanasi.jp'に送信します。
+
+.. parsed-literal::
+    :class: console
+
+    :6,20Mail mail\@nanasi.jp
+
+6行目から20行目の範囲のテキストを'mail\@nanasi.jp'に送信します。
+
+
+
+================================================================================
+'postmail.conf'の設定方法
+================================================================================
+
+'postmail.conf' ファイルがメール送信サーバの設定ファイルです。 |BR|
+基本的な設定ファイルフォーマットは次のようになっています。
+
+.. parsed-literal::
+    :class: program
+
+    {
+        'auth_type':'{認証の種類。"None"、"POP"、もしくは"TLS"}' ,
+        'smtp_host':'{SMTPサーバのホスト}' ,
+        'smtp_port':'{SMTPサーバのポート}' ,
+        'login_user':'{SMTPサーバのユーザ名}' ,
+        'login_pass':'{SMTPサーバのユーザパスワード}' ,
+        'mail_encoding':'{メールのエンコーディング}' ,
+        'from_address':'{FROMに使用するアドレス}' ,
+        'default_to_address':'{デフォルトのTOアドレス}' ,
+        'default_subject':'{デフォルトのメールサブジェクト}'
+    }
+
+
+.. csv-table::
+    :header: 設定項目, 説明
+
+    auth_type,          SMTPサーバが採用している認証の種類。選択できるのは、'None'、'POP'、'TLS'です。
+    smtp_host,          SMTPサーバのホスト。
+    smtp_port,          SMTPサーバのポート番号。
+    login_user,         SMTPサーバに接続するユーザの名前。
+    login_pass,         SMTPサーバに接続するユーザのパスワード。
+    mail_encoding,      メールのメッセージのエンコーディング。おそらく変更する必要はない。
+    from_address,       FROMにセットするメールアドレス。
+    default_to_address, TOメールアドレスのデフォルトの値。
+    default_subject,    メールサブジェクトのデフォルトの値。
+
+
+'auth_type'の値と認証の種類のマッピングは次の表の通りです。
+
+.. csv-table::
+    :header: auth_type, 認証の種類
+
+     None, 認証なし
+     POP,  POP Before SMTP認証
+     TLS,  TLS認証
+
+
+
+================================================================================
+'postmail.conf'の設定例
+================================================================================
+
+postmail.confの設定例をいくつか紹介します。
+
+
+GMailをメール送信サーバにする場合
+--------------------------------------------------------------------------------
+
+元からある設定「basic configuration」を削除後、
+「gmail configuration」の箇所のコメントを削除して有効にしてください。
+
+.. parsed-literal::
+    :class: program
+
+    **" GMailを利用する場合のサンプル設定ファイル。**
+    {
+        'auth_type':          'TLS'                     ,
+        'smtp_host':          'smtp.gmail.com'          ,
+        'smtp_port':          '587'                     ,
+        'login_user':         'please_change\@gmail.com' ,
+        'login_pass':         'xxxxxxxxxxxx'            ,
+        'mail_encoding':      'ISO-2022-JP'             ,
+        'from_address':       'user\@example.jp'         ,
+        'default_to_address': 'user\@example.jp'         ,
+        'default_subject':    'default subject'
+    }
+
+
+Outbound Port25 Blockingのメールサーバでメールを送信する場合
+--------------------------------------------------------------------------------
+
+Outbound Port25 Blockingを採用しているメールサーバからメールを送信する場合は、
+「outbound port 25 blocking configuration」の項の設定例を参考にしてみてください。
+
+.. parsed-literal::
+    :class: program
+
+    **" Outbound Port25 Blocking**
+    {
+        'auth_type':          'None'                    ,
+        'smtp_host':          'smtp.example.jp'         ,
+        'smtp_port':          '587'                     ,
+        'login_user':         'please_change\@gmail.com' ,
+        'login_pass':         'xxxxxxxxxxxx'            ,
+        'mail_encoding':      'ISO-2022-JP'             ,
+        'from_address':       'user\@example.jp'         ,
+        'default_to_address': 'user\@example.jp'         ,
+        'default_subject':    'default subject'
+    }
+
+
+POP Before SMTP認証のメールサーバでメールを送信する場合
+--------------------------------------------------------------------------------
+
+POP Before SMTP認証を採用しているメールサーバなら、次のように設定します。
+認証方式の都合上、POP Before SMTP認証でメールを送信する場合、設定項目がいくつか必要になります。
+
+.. parsed-literal::
+    :class: program
+
+    **" POP Before SMTP認証**
+    {
+        'auth_type':          'POP'                     ,
+        'pop_host':           'pop.example.jp'          ,
+        'pop_port':           '110'                     ,
+        'pop_user':           'user\@example.jp'         ,
+        'pop_pass':           'xxxxxxxxxxxx'            ,
+        'smtp_host':          'smtp.example.jp'         ,
+        'smtp_port':          '25'                      ,
+        'login_user':         'please_change\@gmail.com' ,
+        'login_pass':         'xxxxxxxxxxxx'            ,
+        'mail_encoding':      'ISO-2022-JP'             ,
+        'from_address':       'user\@example.jp'         ,
+        'default_to_address': 'user\@example.jp'         ,
+        'default_subject':    'default subject'
+    }
+
+
+.. csv-table::
+    :header: 設定項目, 説明
+
+    pop_host, POPサーバのホスト。
+    pop_port, POPサーバのホストのポート番号。
+    pop_user, POPサーバに接続するユーザの名前。
+    pop_pass, POPサーバに接続するユーザのパスワード。
+
+
+
+================================================================================
+うまく動作しない場合
+================================================================================
+
+もし、postmail.vimがエラーを投げたり、うまく動かなかったりしたら、
+まず、次のポイントをチェックしてください。
+
+Vimエディタのバージョン。
+--------------------------------------------------------------------------------
+
+Vimエディタのバージョンが7以降でないと動作しません。 |BR|
+次のコマンドを実行して、Vimエディタのバージョンを調べてください。
+
+.. parsed-literal::
+    :class: console
+
+    :version
+
+
+'compatible' オプション。
+--------------------------------------------------------------------------------
+
+'compatible' オプションがonだと動作しません。 |BR|
+次のコマンドを実行して、Vimエディタのオプションを調べてください。 |BR|
+0が返ってくれば、OKです。
+
+.. parsed-literal::
+    :class: console
+
+    :echo &compatible
+
+
+Vimエディタのコンパイルオプション。
+--------------------------------------------------------------------------------
+
+'+python'、'+iconv'、'+multi_byte'付きでコンパイルされたVimエディタを使用していますか？ |BR|
+次のコマンドを実行して、Vimエディタのコンパイルオプションを調べてください。 |BR|
+'+python'、'+iconv'、'+multi_byte'が見つかればOKです。
+
+.. parsed-literal::
+    :class: console
+
+    :version
+
+もしくは、次のコマンドを実行し、全てのコマンドの結果が1になればOKです。
+
+.. parsed-literal::
+    :class: console
+
+    :echo has("python")
+    :echo has("iconv")
+    :echo has("multi_byte")
+
+
+Python環境。
+--------------------------------------------------------------------------------
+
+Pythonがインストールされて、かつ、使用できるようにPATHがセットされていますか？ |BR|
+次のコマンドを実行して、Pythonの状態を確認してください。 |BR|
+'python is installed.'と、返ってくればOKです。
+
+.. parsed-literal::
+    :class: console
+
+    :python print "python is installed."
+
+
+Pythonのバージョン。
+--------------------------------------------------------------------------------
+
+環境がMS-Windowsで、Vimエディタが'+python/dyn'付きでコンパイルされている場合は、 |BR|
+Pythonのバージョンをコンパイル時と揃える必要があります。 |BR|
+次のコマンドを実行して、Pythonのバージョンが揃っているか、確認してください。
+
+.. parsed-literal::
+    :class: console
+
+    " Vimエディタで使用できるPythonのバージョンを確認
+    :help python-dynamic\@en
+    
+    " Pythonの実行環境のバージョンを確認
+    :!python --version
+
+.. note::
+
+    Windows用のPythonは、 `日本Pythonユーザ会（PyJUG）`__ でダウンロードできます。 |BR|
+    http://www.python.jp/Zope/
+
+    __ http://www.python.jp/Zope/
+
+
+postmail.conf。
+--------------------------------------------------------------------------------
+
+'postmail.conf'設定ファイルは適切に設定されていますか？ |BR|
+もし、まだなら、'postmail.conf'ファイルを編集してください。 |BR|
+'postmail.conf'ファイルのテンプレートファイルは、pluginディレクトリに入っています。
+
+
+SMTPサーバの認証の種類。
+--------------------------------------------------------------------------------
+
+メール送信サーバの認証は、プラグインでサポートされているタイプですか？ |BR|
+postmail.vimは、'POP Before SMTP認証'と'TLS認証'しかサポートしていません。
+
+
+ネットワーク。
+--------------------------------------------------------------------------------
+
+ネットワークの環境を確認してください。 |BR|
+別のメーラーを使用してメールを送信できますか？
+
+
+
+================================================================================
+注意事項など
+================================================================================
+
+次のコマンドで、postmail.vimのより詳しい説明を参照できます。
+
+.. parsed-literal::
+    :class: console
+
+    :help postmail
+
+
+

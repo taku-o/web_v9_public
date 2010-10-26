@@ -1,0 +1,43 @@
+.. vim:set expandtab ff=unix ft=rest nowrap :
+
+..  ユーザの設定ディレクトリにあるスクリプトを読み込む
+
+..  
+
+.. |BR| raw:: html
+
+    <br />
+
+.. |yen|    unicode:: U+000A5 .. YEN SIGN
+
+.. role:: raw-html(raw)
+    :format: html
+
+.. contents::
+
+================================================================================
+ユーザの設定ディレクトリにあるスクリプトを読み込む
+================================================================================
+
+- $HOME/.vim/や、$HOME/vimfiles/に置かれたファイルを読み込む。
+
+.. parsed-literal::
+    :class: program
+
+    :runtime somescript/a.vim
+    "# => runtimepathオプションから、指定の名前のファイルを検索して読み込む。
+    
+    :runtime plugin/\*.vim
+    "# => pluginディレクトリのスクリプトを読み込む。
+
+- 呼び出されたスクリプトから、ファイルの置かれた場所を知るには「expand」を使用する。
+
+.. parsed-literal::
+    :class: program
+
+    :let path = expand('<sfile>:p')
+    :echo path
+    "# => スクリプトのパスを出力
+
+
+

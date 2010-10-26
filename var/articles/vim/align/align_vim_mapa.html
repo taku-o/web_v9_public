@@ -1,0 +1,719 @@
+.. vim:set expandtab ff=unix ft=rest :
+
+..  高性能なテキスト整形ツールAlignの使い方 #3 組み込みマッピングでプログラムのソースを整形する
+
+..  この記事では、高性能な整形ツールAlignに組み込みまれているマッピングを使用して、
+    プログラムのインデントを修正したり、変数宣言や、コメントのフォーマットを修正する方法を解説します。
+    (Windows, Mac)
+
+.. |BR| raw:: html
+
+    <br />
+
+.. |yen|    unicode:: U+000A5 .. YEN SIGN
+
+.. role:: raw-html(raw)
+    :format: html
+
+.. contents::
+
+================================================================================
+概要
+================================================================================
+
+Align : Provides commands and maps to help produce aligned text, eqns, declarations, etc |BR|
+http://www.vim.org/scripts/script.php?script_id=294
+
+この記事では、高性能な整形ツールAlignに組み込みまれているマッピングを使用して、 |BR|
+プログラムのインデントを修正したり、変数宣言や、コメントのフォーマットを修正する方法を解説します。
+
+「 `高性能なテキスト整形ツールAlignの使い方 #1 インストールから設定まで`_ 」の続きとなる記事です。
+
+
+
+================================================================================
+テーブル構造の整形機能の使い方
+================================================================================
+
+`Align`_ にはプログラムのソースの構造の整形用にもいくつかのキーマッピングが用意されています。 |BR|
+この `Align`_ に用意されたキーマッピングを使用するには次のようにします。
+
+#. まず整形処理の対象となる範囲を指定する。
+#. 実行する種類のキーマッピングを入力する。
+
+処理の範囲の指定方法には、ビジュアルモードで範囲を指定する方法と、
+「a」のマークを使用する方法とで2種類用意されています。
+
+.. note::
+
+    キーマッピングで整形処理を実行する方法以外にも、 |BR|
+    GUIのメニューから整形処理を呼び出す方法が用意されています。
+
+    .. image:: /dist/img/vim/align/align_menu.jpg
+        :alt:  メニュー
+
+
+ビジュアルモードで範囲指定して整形処理を行う
+--------------------------------------------------------------------------------
+
+範囲の指定にビジュアルモードを使う場合は、 |BR|
+まず、整形処理の対象としたい範囲をビジュアルモードで選択します。
+
+.. raw:: html
+
+    <pre class="program">ビジュアルモードで整形処理の範囲を選択する。
+    <span class="code_high">    int a,b,c;</span>
+    <span class="code_high">    struct ABC_str abc,def;</span>
+    </pre>
+
+.. image:: /dist/img/vim/align/align_vselecta.jpg
+    :alt:  ビジュアルモードで範囲指定
+
+次に実行する整形処理のキーマッピングを入力します。 |BR|
+例えば、1行の複数の変数宣言を、複数行に展開する場合は、次のように入力してください。 |BR|
+（どのような整形機能が用意されているかは後述。）
+
+.. parsed-literal::
+    :class: console
+
+    \\a,
+
+整形処理実行のキーを入力すると、整形処理が実行されます。
+
+.. raw:: html
+
+    <pre class="program">整形処理後
+        int a;
+        int b;
+        int c;
+        struct ABC_str abc;
+        struct ABC_str def;
+    </pre>
+
+.. image:: /dist/img/vim/align/align_l_ac_result.jpg
+    :alt:  整形処理実行後
+
+
+「a」のマークで範囲指定して整形処理を行う
+--------------------------------------------------------------------------------
+
+マークを利用して、 `Align`_ の機能を呼び出す場合は次のようにします。
+
+まず、整形処理を実行する範囲の先頭位置にカーソルを移動します。
+
+.. raw:: html
+
+    <pre class="program">整形範囲の先頭行の位置にカーソルを移動します。
+    <span class="code_high"> </span>   int a,b,c;
+        struct ABC_str abc,def;
+    </pre>
+
+ノーマルモードで「ma」と入力し、カーソル位置に「a」のマークを設定します。
+
+.. parsed-literal::
+    :class: console
+
+    ma
+
+次に、今度は整形処理の対象としたい範囲の最後の行にカーソルを移動します。
+
+.. raw:: html
+
+    <pre class="program">整形範囲の最後の行の位置にカーソルを移動します。
+        int a,b,c;
+    <span class="code_high"> </span>   struct ABC_str abc,def;
+    </pre>
+
+最後に実行する整形処理のキーマップを入力します。 |BR|
+今回は、プログラムの変数宣言の展開を行うので、次のように入力することになります。
+
+.. parsed-literal::
+    :class: console
+
+    \\a,
+
+整形処理実行のキーを入力すると、整形処理が実行されます。
+
+.. raw:: html
+
+    <pre class="program">整形処理後
+        int a;
+        int b;
+        int c;
+        struct ABC_str abc;
+        struct ABC_str def;
+    </pre>
+
+
+
+================================================================================
+用意されている整形機能のマッピングの一覧
+================================================================================
+
+`Align`_ に用意されたプログラム関連の整形処理用のキーマッピングをまとめたのが下の表です。 |BR|
+整形処理対象の範囲を選択して、下表のキーを入力すると、整形処理が実行されます。
+
+.. csv-table::
+
+    "`<Leader>a,`_", 複数の変数を一度に宣言していたら、その宣言を1行ずつの変数宣言に変換する。
+    `<Leader>adec`_, C言語の変数宣言の整形。
+    `<Leader>adef`_, C言語のdefine定義の整形。
+    `<Leader>a?`_, C言語の3項演算子の整形。
+    `<Leader>a<`_, 「<<」「>>」と入出力パラメータの整形。
+    `<Leader>a=`_, 「:=」の整形。
+    `<Leader>acom`_, C言語のコメントの整形。
+    `<Leader>aocom`_, C言語のコメントの整形。コメントの先頭揃え位置をなるべく前方の位置にする。
+    `<Leader>ascom`_, C言語のコメントの整形。コメントで始まる行の先頭位置は他のコメントの先頭位置と合わせない。
+    `<Leader>abox`_, 選択行をC言語風のボックスコメントで囲む。
+    `<Leader>anum`_, 小数点の位置で数値を整形。
+
+.. _`<Leader>acom`: `<Leader>acom、<Leader>aocom、<Leader>ascom`_
+.. _`<Leader>aocom`: `<Leader>acom、<Leader>aocom、<Leader>ascom`_
+.. _`<Leader>ascom`: `<Leader>acom、<Leader>aocom、<Leader>ascom`_
+
+.. note::
+
+    「<Leader>」は、特に特別な設定を行っていなければ、
+    「\\（バックスラッシュ、もしくは円マーク）」になります。 |BR|
+    例えば、「<Leader>a,」となっている時は、 |BR|
+    「\\a,」と実行すれば、「<Leader>a,」の整形処理を実行できます。
+
+..  <Leader>aenum
+    <Leader>aunum
+    <Leader>afnc
+    <Leader>anum 矩形
+
+
+
+================================================================================
+<Leader>a,
+================================================================================
+
+「<Leader>a,」は、整形処理範囲で複数の変数を一度に宣言している箇所があったら、 |BR|
+その変数宣言を1行ずつの変数宣言に修正します。
+
+--------------------------------------------------------------------------------
+
+整形前のソースコード
+
+.. parsed-literal::
+    :class: program
+
+        int a,b,c;
+        struct ABC_str abc,def;
+
+「<Leader>a,」と実行すると、
+
+.. parsed-literal::
+    :class: console
+
+    <Leader>a,
+
+.. parsed-literal::
+    :class: program
+
+        int a;
+        int b;
+        int c;
+        struct ABC_str abc;
+        struct ABC_str def;
+
+と変換します。
+
+
+
+================================================================================
+<Leader>adec
+================================================================================
+
+「<Leader>adec」を実行すると、変数宣言の整形処理を行います。
+
+--------------------------------------------------------------------------------
+
+整形前のソースコード
+
+.. parsed-literal::
+    :class: program
+
+        int     a;
+        float   b;
+        double \*c=NULL;
+        char x[5];
+        struct  abc_str abc;
+        struct  abc_str \*pabc;
+        int     a;              /\* a   \*/
+        float   b;              /\* b   \*/
+        double \*c=NULL;              /\* b   \*/
+        char x[5]; /\* x[5] \*/
+        struct  abc_str abc;    /\* abc \*/
+        struct  abc_str \*pabc;    /\* pabc \*/
+        static   int     a;              /\* a   \*/
+        static   float   b;              /\* b   \*/
+        static   double \*c=NULL;              /\* b   \*/
+        static   char x[5]; /\* x[5] \*/
+        static   struct  abc_str abc;    /\* abc \*/
+        static   struct  abc_str \*pabc;    /\* pabc \*/
+
+「<Leader>adec」と実行
+
+.. parsed-literal::
+    :class: console
+
+    <Leader>adec
+
+.. parsed-literal::
+    :class: program
+
+        int                    a;
+        float                  b;
+        double                \*c    = NULL;
+        char                   x[5];
+        struct abc_str         abc;
+        struct abc_str        \*pabc;
+        int                    a;           /\* a    \*/
+        float                  b;           /\* b    \*/
+        double                \*c    = NULL; /\* b    \*/
+        char                   x[5];        /\* x[5] \*/
+        struct abc_str         abc;         /\* abc  \*/
+        struct abc_str        \*pabc;        /\* pabc \*/
+        static int             a;           /\* a    \*/
+        static float           b;           /\* b    \*/
+        static double         \*c    = NULL; /\* b    \*/
+        static char            x[5];        /\* x[5] \*/
+        static struct abc_str  abc;         /\* abc  \*/
+        static struct abc_str \*pabc;        /\* pabc \*/
+
+と整形します。
+
+
+
+================================================================================
+<Leader>adef
+================================================================================
+
+「<Leader>adef」は、C言語のdefine宣言の整形を行うキーマッピングです。
+
+--------------------------------------------------------------------------------
+
+整形前のソースコード
+
+.. parsed-literal::
+    :class: program
+
+        #define ONE 1
+        #define TWO 22
+        #define THREE 333
+        #define FOUR 4444
+
+「<Leader>adef」と実行すると、
+
+.. parsed-literal::
+    :class: console
+
+    <Leader>adef
+
+.. parsed-literal::
+    :class: program
+
+    #    define ONE   1
+    #    define TWO   22
+    #    define THREE 333
+    #    define FOUR  4444
+
+と整形します。
+
+
+
+================================================================================
+<Leader>a?
+================================================================================
+
+「<Leader>a?」は、3項演算子の各項の位置を整形します。
+
+--------------------------------------------------------------------------------
+
+このようなソースコードがある場合、
+
+.. parsed-literal::
+    :class: program
+
+        printf("<%s>\n",
+          (x == ABC)? "abc" :
+          (x == DEFG)? "defg" :
+          (x == HIJKL)? "hijkl" : "???");
+
+3項演算子の範囲を選択してから、
+
+.. raw:: html
+
+    <pre class="program">    printf("<%s>\n",
+    <span class="code_high">      (x == ABC)? "abc" :</span>
+    <span class="code_high">      (x == DEFG)? "defg" :</span>
+    <span class="code_high">      (x == HIJKL)? "hijkl" : "???");</span>
+    </pre>
+
+「<Leader>a?」と実行すると、
+
+.. parsed-literal::
+    :class: console
+
+    <Leader>a?
+
+.. parsed-literal::
+    :class: program
+
+        printf("<%s>\n",
+          (x == ABC)?   "abc"   :
+          (x == DEFG)?  "defg"  :
+          (x == HIJKL)? "hijkl" : "???");
+
+このように整形します。
+
+
+
+================================================================================
+<Leader>a<
+================================================================================
+
+「<Leader>a<」は、C++言語の入出力の演算子と、
+その入出力のテキストの整形を行います。
+
+--------------------------------------------------------------------------------
+
+整形前のソースコード
+
+.. parsed-literal::
+    :class: program
+
+        cin << x;
+        cin      << y;
+        cout << "this is x=" << x;
+        cout << "but y=" << y << "is not";
+
+「<Leader>a<」と実行すると、
+
+.. parsed-literal::
+    :class: console
+
+    <Leader>a<
+
+.. parsed-literal::
+    :class: program
+
+        cin  << x;
+        cin  << y;
+        cout << "this is x=" << x;
+        cout << "but y="     << y  << "is not";
+
+と整形します。
+
+
+
+================================================================================
+<Leader>a=
+================================================================================
+
+「<Leader>a=」は「:=」の位置でコードをフィールドに分割して、
+その各フィールドの位置の整形を行います。
+
+--------------------------------------------------------------------------------
+
+整形前のソースコード
+
+.. parsed-literal::
+    :class: program
+
+        aa:=bb:=cc:=1;
+        a:=b:=c:=1;
+        aaa:=bbb:=ccc:=1;
+
+「<Leader>a<」と実行すると、
+
+.. parsed-literal::
+    :class: console
+
+    <Leader>a<
+
+.. parsed-literal::
+    :class: program
+
+        aa  := bb  := cc  := 1;
+        a   := b   := c   := 1;
+        aaa := bbb := ccc := 1;
+
+と位置を修正します。
+
+
+
+================================================================================
+<Leader>acom、<Leader>aocom、<Leader>ascom
+================================================================================
+
+「<Leader>acom」「<Leader>aocom」「<Leader>ascom」については、まとめて説明します。 |BR|
+この3つは、コメントの位置整形用のキーマッピングです。 |BR|
+「<Leader>acom」「<Leader>aocom」「<Leader>ascom」を実行すると、
+プログラムのコメントの先頭位置を整形します。 |BR|
+それぞれの違いは実際にどうなるかを見てもらった方が良いでしょう。
+コマンドを実行した時に、コメントの先頭位置がどこに合うかに注目してください。
+
+- 「<Leader>acom」は、コメントでない最後のコードの位置にコメントの先頭位置を合わせる。
+- 「<Leader>aocom」は、コメント前の空白文字をなるべく抑制する。
+- 「<Leader>ascom」は、コメントで始まる行は先頭位置を他のコメントと合わせない。
+
+--------------------------------------------------------------------------------
+
+整形前のサンプルのソースコードが次のようなコードである場合、
+
+.. parsed-literal::
+    :class: program
+
+        /\* align sample code \*/
+        if(itworks) { /\* this \*/
+                then= dothis;
+                } /\* set of three comments \*/
+
+「<Leader>acom」と実行した場合、
+
+.. parsed-literal::
+    :class: console
+
+    <Leader>acom
+
+.. parsed-literal::
+    :class: program
+
+                              /\* align sample code     \*/
+        if(itworks) {         /\* this                  \*/
+                then= dothis;
+                }             /\* set of three comments \*/
+
+
+「<Leader>aocom」と実行した場合、
+
+.. parsed-literal::
+    :class: console
+
+    <Leader>aocom
+
+.. parsed-literal::
+    :class: program
+
+                      /\* align sample code     \*/
+        if(itworks) { /\* this                  \*/
+                then= dothis;
+                }     /\* set of three comments \*/
+
+「<Leader>ascom」と実行した場合、
+
+.. parsed-literal::
+    :class: console
+
+    <Leader>ascom
+
+.. parsed-literal::
+    :class: program
+
+        /\* align sample code \*/
+        if(itworks) { /\* this                  \*/
+                then= dothis;
+                }     /\* set of three comments \*/
+
+と、整形します。 |BR|
+コメントの先頭位置がどこにあるかに注目してください。
+
+
+--------------------------------------------------------------------------------
+
+「<Leader>acom」「<Leader>aocom」「<Leader>ascom」は、「/\* \*/」によるコメントだけでなく、
+「//」による行コメントに対しても使用できます。
+
+もとのソースコード
+
+.. parsed-literal::
+    :class: program
+
+        // align sample code
+        if(itworks) { // this
+                then= dothis;
+                } // set of three comments
+
+「<Leader>acom」と実行した場合、
+
+.. parsed-literal::
+    :class: console
+
+    <Leader>acom
+
+.. parsed-literal::
+    :class: program
+
+                              // align sample code
+        if(itworks) {         // this
+                then= dothis;
+                }             // set of three comments
+
+「<Leader>aocom」と実行した場合、
+
+.. parsed-literal::
+    :class: console
+
+    <Leader>aocom
+
+.. parsed-literal::
+    :class: program
+
+                      // align sample code
+        if(itworks) { // this
+                then= dothis;
+                }     // set of three comments
+
+「<Leader>ascom」と実行した場合、
+
+.. parsed-literal::
+    :class: console
+
+    <Leader>ascom
+
+.. parsed-literal::
+    :class: program
+
+        // align sample code
+        if(itworks) { // this
+                then= dothis;
+                }     // set of three comments
+
+と、「/\* \*/」の時と同じく、整形されます。
+
+
+
+================================================================================
+<Leader>abox
+================================================================================
+
+「<Leader>abox」を実行すると、指定した範囲のテキストをコメントのボックスで囲みます。
+
+--------------------------------------------------------------------------------
+
+もとのソースコードが次のようなものである場合に、
+
+.. parsed-literal::
+    :class: program
+
+        This is some plain text
+        which will
+        soon be surrounded by a
+        comment box.
+
+「<Leader>abox」と実行すると、
+
+.. parsed-literal::
+    :class: console
+
+    <Leader>abox
+
+.. parsed-literal::
+    :class: program
+
+        /\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*
+         \* This is some plain text \*
+         \* which will              \*
+         \* soon be surrounded by a \*
+         \* comment box.            \*
+         \*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*/
+
+とコードを変換します。
+
+
+
+================================================================================
+<Leader>anum
+================================================================================
+
+「<Leader>anum」による整形処理は、各フィールドの数値の小数点位置を揃える、というものです。
+
+--------------------------------------------------------------------------------
+
+整形前のソースコード
+
+.. parsed-literal::
+    :class: program
+
+         -1.234 .5678 -.901e-4
+         1.234 5.678 9.01e-4
+         12.34 56.78 90.1e-4
+         123.4 567.8 901.e-4
+
+「<Leader>anum」と実行すると、
+
+.. parsed-literal::
+    :class: console
+
+    <Leader>anum
+
+.. parsed-literal::
+    :class: program
+
+          -1.234    .5678   -.901e-4
+           1.234   5.678    9.01e-4
+          12.34   56.78    90.1e-4
+         123.4   567.8    901.e-4
+
+と少数点位置を揃えます。
+
+--------------------------------------------------------------------------------
+
+この「<Leader>anum」は、次のようなカンマの少数でも整形処理を行えます。
+
+.. parsed-literal::
+    :class: program
+
+         -1,234 ,5678 -,901e-4
+         1,234 5,678 9,01e-4
+         12,34 56,78 90,1e-4
+         123,4 567,8 901,e-4
+
+「<Leader>anum」と実行
+
+.. parsed-literal::
+    :class: console
+
+    <Leader>anum
+
+.. parsed-literal::
+    :class: program
+
+          -1,234    ,5678   -,901e-4
+           1,234   5,678    9,01e-4
+          12,34   56,78    90,1e-4
+         123,4   567,8    901,e-4
+
+
+
+================================================================================
+ページリンク
+================================================================================
+
+#. `高性能なテキスト整形ツールAlignの使い方 #1 インストールから設定まで`_
+#. `高性能なテキスト整形ツールAlignの使い方 #2 組み込みマッピングでテーブル構造を整形する`_
+#. - `高性能なテキスト整形ツールAlignの使い方 #3 組み込みマッピングでプログラムのソースを整形する`_
+#. `高性能なテキスト整形ツールAlignの使い方 #4 「:Align」コマンドを使用して整形処理を行う`_
+#. `高性能なテキスト整形ツールAlignの使い方 #5 ここまで紹介していない残りの機能の紹介`_
+#. `高性能なテキスト整形ツールAlignの使い方 #6 Alignの使い方を簡潔に説明`_
+
+.. _`高性能なテキスト整形ツールAlignの使い方 #1 インストールから設定まで`: `doc_align`_
+.. _`高性能なテキスト整形ツールAlignの使い方 #2 組み込みマッピングでテーブル構造を整形する`: `doc_align_mapt`_
+.. _`高性能なテキスト整形ツールAlignの使い方 #3 組み込みマッピングでプログラムのソースを整形する`: `doc_align_mapa`_
+.. _`高性能なテキスト整形ツールAlignの使い方 #4 「:Align」コマンドを使用して整形処理を行う`: `doc_align_ctrl`_
+.. _`高性能なテキスト整形ツールAlignの使い方 #5 ここまで紹介していない残りの機能の紹介`: `doc_align_ext`_
+.. _`高性能なテキスト整形ツールAlignの使い方 #6 Alignの使い方を簡潔に説明`: `doc_align_summary`_
+
+.. _`Align`: http://www.vim.org/scripts/script.php?script_id=294
+.. _`doc_align`: /articles/vim/align/align_vim.html
+.. _`doc_align_mapt`: /articles/vim/align/align_vim_mapt.html
+.. _`doc_align_mapa`: /articles/vim/align/align_vim_mapa.html
+.. _`doc_align_ctrl`: /articles/vim/align/align_vim_ctrl.html
+.. _`doc_align_ext`: /articles/vim/align/align_vim_ext.html
+.. _`doc_align_summary`: /articles/vim/align/align_vim_summary.html
+
+
+

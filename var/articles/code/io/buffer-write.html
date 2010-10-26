@@ -1,0 +1,103 @@
+.. vim:set expandtab ff=unix ft=rest nowrap :
+
+..  バッファのテキストを変更する
+
+..  
+
+.. |BR| raw:: html
+
+    <br />
+
+.. |yen|    unicode:: U+000A5 .. YEN SIGN
+
+.. role:: raw-html(raw)
+    :format: html
+
+.. contents::
+
+================================================================================
+バッファのテキストを変更する
+================================================================================
+
+- カーソル位置にテキストを入力
+
+.. parsed-literal::
+    :class: program
+
+    :let input = "INSERT TEXT"
+    :let pos = getpos(".")
+    :execute ":normal i" . inserttext
+    :call setpos('.', pos)
+    "# => カーソル左の位置に「INSERT TEXT」のテキストが入る
+    
+    :let input = "APPEND TEXT"
+    :let pos = getpos(".")
+    :execute ":normal a" . inserttext
+    :call setpos('.', pos)
+    "# => カーソル右の位置に「APPEND TEXT」のテキストが入る
+
+- pを使用してテキストをペースト
+
+.. parsed-literal::
+    :class: program
+
+    :let tmp = @a
+    :let @a = "PUTTING TEXT"
+    :execute 'normal "ap'
+    :let @a = tmp
+    "# => カーソル右の位置に「PUTTING TEXT」のテキストが入る
+
+- 指定行にテキストを追加
+
+.. parsed-literal::
+    :class: program
+
+    :call append(0, "append text to first line.")
+    "# => 最初の行の前にテキストを一行挿入
+    
+    :call append(line("$"), "append text to last line.")
+    "# => 最終行の後に、一行追加
+    
+    :call append(line("."), "append text to current line.")
+    "# => カレント行の後に、一行追加
+    
+    call append(20, "append text to line. 20")
+    "# => 20行目の後に「append text to line. 20」の行追加。21行目となる。
+    "# => バッファが20行無い場合、追加されない
+
+- 指定行のテキストを置き換え
+
+.. parsed-literal::
+    :class: program
+
+    :call setline(1, "replace first line text.")
+    "# => 最初の行のテキストを置き換え
+    
+    :call setline(line("$"), "replace last line text.")
+    "# => 最終行のテキストを置き換え
+    
+    :call setline(line("."), "replace current line text.")
+    "# => カレント行のテキストを置き換え
+    
+    call setline(20, "replace line. 20 text")
+    "# => 20行目のテキストを「replace line. 20 text」に置き換え
+    "# => バッファが20行無い場合、処理は失敗する。
+
+- 正規表現による置換
+
+.. parsed-literal::
+    :class: program
+
+    :execute ":12 s/AAAA/BBBB/g"
+    "# => 12行目のAAAAをBBBBに置き換え
+
+- 指定した行のテキストを削除する
+
+.. parsed-literal::
+    :class: program
+
+    :execute ":normal dd"
+    "# => カーソル行のテキストが削除される。
+
+
+

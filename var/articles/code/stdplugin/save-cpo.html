@@ -1,0 +1,59 @@
+.. vim:set expandtab ff=unix ft=rest nowrap :
+
+..  vi compatibleオプションがONでも問題なく動作させる
+
+..  
+
+.. |BR| raw:: html
+
+    <br />
+
+.. |yen|    unicode:: U+000A5 .. YEN SIGN
+
+.. role:: raw-html(raw)
+    :format: html
+
+.. contents::
+
+================================================================================
+vi compatibleオプションがONでも問題なく動作させる
+================================================================================
+
+ユーザのvimエディタ環境のcompatibleオプションがONになっている場合、 |BR|
+vim特有の機能を利用したスクリプトは動作しない可能性がある。 |BR|
+そこで、次のようにユーザのオプションを一度ローカル変数に逃がして、 |BR|
+後でユーザの設定を戻してあげると、トラブルの種をつぶせる。
+
+.. parsed-literal::
+    :class: program
+
+    " ユーザの設定を変数に逃がす
+    :let s:save_cpo = &cpo
+    :set cpo&vim
+    
+    " ↓スクリプトの処理実行後
+    
+    " ユーザの設定を元に戻す
+    :let &cpo = s:save_cpo
+
+スクリプトで必要となる、他の処理も入れた最終的な形は、
+次のようになる。
+
+.. parsed-literal::
+    :class: program
+
+    :if exists("g:loaded_hello")
+        :finish
+    :endif
+    :let g:loaded_hello = 1
+    :let s:save_cpo = &cpo
+    :set cpo&vim
+    
+    :function Hello()
+        :echo "Hello World"
+    :endfunction
+    
+    :command Hello :call Hello()
+    :let &cpo = s:save_cpo
+
+

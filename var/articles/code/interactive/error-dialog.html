@@ -1,0 +1,94 @@
+.. vim:set expandtab ff=unix ft=rest nowrap :
+
+..  エラーダイアログを表示する
+
+..  
+
+.. |BR| raw:: html
+
+    <br />
+
+.. |yen|    unicode:: U+000A5 .. YEN SIGN
+
+.. role:: raw-html(raw)
+    :format: html
+
+.. contents::
+
+================================================================================
+エラーダイアログを表示する
+================================================================================
+
+- エラーダイアログ
+
+.. parsed-literal::
+    :class: program
+
+    :let choice = confirm("This is message. Which is your selection ?", "A answer\\nB answer\\nC answer", "", "Error")
+    :if choice == 0
+        :echo "user cancel daialog."
+    :elseif choice == 1
+        :echo "user select 'A answer'."
+    :elseif choice == 2
+        :echo "user select 'B answer'."
+    :elseif choice == 3
+        :echo "user select 'C answer'."
+    :else
+        :echo "ERROR"
+    :endif
+
+- 警告ダイアログ
+
+.. parsed-literal::
+    :class: program
+
+    :let choice = confirm("This is message. Which is your selection ?", "A answer\\nB answer\\nC answer", "", "Warning")
+    :if choice == 0
+        :echo "user cancel daialog."
+    :elseif choice == 1
+        :echo "user select 'A answer'."
+    :elseif choice == 2
+        :echo "user select 'B answer'."
+    :elseif choice == 3
+        :echo "user select 'C answer'."
+    :else
+        :echo "ERROR"
+    :endif
+
+- 情報ダイアログ
+
+.. parsed-literal::
+    :class: program
+
+    :let choice = confirm("This is message. Which is your selection ?", "A answer\\nB answer\\nC answer", "", "Info")
+    :if choice == 0
+        :echo "user cancel daialog."
+    :elseif choice == 1
+        :echo "user select 'A answer'."
+    :elseif choice == 2
+        :echo "user select 'B answer'."
+    :elseif choice == 3
+        :echo "user select 'C answer'."
+    :else
+        :echo "ERROR"
+    :endif
+
+- 質問ダイアログ
+
+.. parsed-literal::
+    :class: program
+
+    :let choice = confirm("This is message. Which is your selection ?", "A answer\\nB answer\\nC answer", "", "Question")
+    :if choice == 0
+        :echo "user cancel daialog."
+    :elseif choice == 1
+        :echo "user select 'A answer'."
+    :elseif choice == 2
+        :echo "user select 'B answer'."
+    :elseif choice == 3
+        :echo "user select 'C answer'."
+    :else
+        :echo "ERROR"
+    :endif
+
+

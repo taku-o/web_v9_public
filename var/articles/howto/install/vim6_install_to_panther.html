@@ -1,0 +1,109 @@
+.. vim:set expandtab ff=unix ft=rest :
+
+..  PCに昨日初めてさわった人でもわかるgvim超々入門 (Mac OSX Panther、vim6)
+
+..  gvim version 6 のインストール方法を扱った記事です。Mac OSX 1.3 Panther用。
+    (Mac)
+
+.. |BR| raw:: html
+
+    <br />
+
+.. |yen|    unicode:: U+000A5 .. YEN SIGN
+
+.. role:: raw-html(raw)
+    :format: html
+
+.. contents::
+
+================================================================================
+gvimの入手
+================================================================================
+
+まず、アプリケーションを入手します。 |BR|
+`KaoriYa.net`_ というサイトで、
+`KoRoNさん`_ という方がMacOSX 10.3 Panther用の
+gvimを配布されています。 |BR|
+このgvimアプリケーションを入手すると良いでしょう。
+
+.. _`KaoriYa.net`: http://www.kaoriya.net/
+
+.. _`KoRoNさん`: mailto:koron@tka.att.ne.jp
+
+`KaoriYa.net`__ の
+「Vim 6.#.### for MacOSX」というリンクをクリックしてください。
+
+__ http://www.kaoriya.net/#VIM
+
+ダウンロードしているファイルは圧縮ファイルという形式です。 |BR|
+Mac OSXではブラウザによる圧縮ファイルのダウンロードが終了すると、自動的に解凍が行われます。
+
+.. image:: /dist/img/howto/vim6_install_to_panther/expanding.jpg
+    :alt:  解凍中
+
+圧縮ファイルの解凍に失敗した場合
+-------------------------------------------------------------------------------
+
+Mac OSXでは tar形式の圧縮ファイルをうまく解凍できない時があって、
+たまに圧縮ファイルが壊れてしまうことがあります。 |BR|
+もし何度やっても、圧縮ファイルが壊れてしまう場合は、
+ターミナルというアプリケーションを使用して圧縮ファイルを解凍してください。
+
+
+
+================================================================================
+vimアプリケーションの配置
+================================================================================
+
+解凍が終わると、デスクトップに下のようなフォルダが作成されていると思います。
+このフォルダにvimアプリケーションが入っています。
+
+.. image:: /dist/img/howto/vim6_install_to_panther/folder.jpg
+    :alt:  解凍後のフォルダ
+
+このフォルダをダブルクリックすると、フォルダが開きます。
+
+.. image:: /dist/img/howto/vim6_install_to_panther/open_folder.jpg
+    :alt:  ファルダを開いた所
+
+このvimアプリケーションのアイコンを
+
+.. image:: /dist/img/howto/vim6_install_to_panther/icon.jpg
+    :alt:  vimアイコン
+
+アプリケーションというディレクトリに移動します。
+
+.. image:: /dist/img/howto/vim6_install_to_panther/to_application_dir.jpg
+    :alt:  アプリケーションに登録
+
+Dockにvimアプリケーションのアイコンを登録しておくと、後々便利です。
+
+.. image:: /dist/img/howto/vim6_install_to_panther/to_dock.jpg
+    :alt:  Dockに登録
+
+
+
+================================================================================
+動作確認
+================================================================================
+
+そこまで終わったら、実際にvimアプリケーションを動かして、
+動作確認を取ってみましょう。 |BR|
+先ほど、登録したDock上のアイコンをクリックするか、
+アプリケーションディレクトリのvimアイコンをクリックします。
+
+.. image:: ../../dist/img/howto/vim6_install_to_panther/open_application.jpg
+    :alt:  gvim動作確認
+
+上のような画面が表示されましたか？ |BR|
+動作確認できたら、メニューからアプリケーションを終了させましょう。
+
+.. image:: /dist/img/howto/vim6_install_to_panther/close.jpg
+    :alt:  メニューからの終了
+
+お疲れ様でした。 |BR|
+インストール作業はこれで終了です。
+
+
+
+

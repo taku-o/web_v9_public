@@ -1,0 +1,592 @@
+.. vim:set expandtab ff=unix ft=rest :
+
+..  パワーランチ（2010/04/09） Vimの話
+
+..  お昼の勉強会パワーランチ（2010/04/09）。
+
+.. |BR| raw:: html
+
+    <br />
+
+.. |yen|    unicode:: U+000A5 .. YEN SIGN
+
+.. role:: raw-html(raw)
+    :format: html
+
+.. contents::
+
+====================================================================
+参考情報
+====================================================================
+
+Vimエディタがどのようなものか、あるいは、基本的な操作などは別の資料で。
+
+
+====================================================================
+Vimプラグインの仕組みと開発方法
+====================================================================
+
+Vimプラグインとは
+--------------------------------------------------------------------
+
+- Vimエディタの機能を拡張する仕組み。
+- 利用すると便利なプラグインなどは別の資料で。
+
+
+Vimのファイルの構成
+--------------------------------------------------------------------
+
+Vimの設定ファイル、プラグインなどの置き場所には決まりがあります。
+
+Debian、Mac OSX環境など
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+.. parsed-literal::
+    :class: program
+
+    $HOME/
+    ├─ **.vimrc** もしくは **_vimrc**       vimエディタ設定ファイル（共通）
+    ├─ **.gvimrc** もしくは **_gvimrc**     GUI用の設定ファイル
+    ├─ .viminfo                     履歴情報などがVimエディタによって格納される。
+    └─ **.vim/**                        vimエディタの設定ファイルディレクトリ
+         ├─ filetype.vim            ファイル名パターンごとに、ファイルタイプを設定したい場合に用意する。
+         ├─ scripts.vim             ファイルのデータによって、ファイルタイプを設定したい場合に用意する。
+         ├─ colors/                 カラースキーマ用のファイルは、このディレクトリに入れる。
+         ├─ doc/                    ドキュメント用のディレクトリ。
+         ├─ ftplugin/               ファイルタイププラグイン用のディレクトリ。
+         ├─ indent/                 インデントスクリプト用のディレクトリ。
+         ├─ plugin/                 プラグイン用のディレクトリ。プラグインは大抵このディレクトリに入れると動作する。
+         ├─ syntax/                 シンタックスファイル用のディレクトリ。
+         ├─ autoload/               Vimスクリプトで書かれたライブラリが置かれる。特定の書式で書くと、
+         ｜    ｜                     必要になるまで、ファイルのロードが遅延される。
+         ｜    └─ ....
+         └─ after/                  このディレクトリ以下に置いたスクリプトは、システムのスクリプトが読み込まれた後、読み込まれる。
+              ├─ftplugin/
+              ├─indent/
+              └─ ....
+
+Windows環境
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+.. parsed-literal::
+    :class: program
+
+    $HOME/
+    ├─ **_vimrc** もしくは **.vimrc**       vimエディタ設定ファイル（共通）
+    ├─ **_gvimrc** もしくは **.gvimrc**     GUI用の設定ファイル
+    ├─ _viminfo                     履歴情報などがvimエディタによって格納される。
+    └─ **vimfiles/**                    vimエディタの設定ファイルディレクトリ
+         ├─ filetype.vim            ファイル名パターンごとに、ファイルタイプを設定したい場合に用意する。
+         ├─ scripts.vim             ファイルのデータによって、ファイルタイプを設定したい場合に用意する。
+         ├─ colors/                 カラースキーマ用のファイルは、このディレクトリに入れる。
+         ├─ ....
+         ├─ ....                    以下、同じ構造。
+
+プラグインのロード
+--------------------------------------------------------------------
+
+- 特定のディレクトリに作ったプラグインを置いておくと、勝手に読み込まれる。
+- もしくは、 **:source** コマンドか、 **:runtime** コマンドで読み込んでロードする。
+
+Vimスクリプトの処理順
+--------------------------------------------------------------------
+
+- Vimスクリプトが記載されたファイルが読み込まれると、上からVimのコマンドが順番に実行される。
+- 文法はVimの設定ファイルと同じ。
+
+なので、
+
+- コマンドを定義しておいて、そのコマンドを呼び出し時に処理を実行する。
+- イベント発生時（特定のファイルが読み込まれた時など）に、処理を実行する。
+- キーに処理をマッピングして（CTRL-Aなど）、キーが押された時に実行する。
+- あるいは、その組み合わせ。
+
+として、プラグインの機能を作っていきます。
+
+
+参考資料：Vimスクリプトでハローワールド
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+http://nanasi.jp/code/helloworld.html
+
+プラグインのサンプル
+--------------------------------------------------------------------
+
+- :view $VIMRUNTIME/plugin/tohtml.vim
+
+.. parsed-literal::
+    :class: program
+
+    " Vim plugin for converting a syntax highlighted file to HTML.
+    " Maintainer: Bram Moolenaar <Bram@vim.org>
+    " Last Change: 2003 Apr 06
+    
+    " Don't do this when:
+    " - when 'compatible' is set
+    " - this plugin was already loaded
+    " - user commands are not available.
+    if !&cp && !exists(":TOhtml") && has("user_commands")
+      command -range=% TOhtml :call Convert2HTML(<line1>, <line2>)
+    
+      func Convert2HTML(line1, line2)
+        if a:line2 >= a:line1
+          let g:html_start_line = a:line1
+          let g:html_end_line = a:line2
+        else
+          let g:html_start_line = a:line2
+          let g:html_end_line = a:line1
+        endif
+    
+        runtime syntax/2html.vim
+    
+        unlet g:html_start_line
+        unlet g:html_end_line
+      endfunc
+    
+    endif
+
+Vimプラグインの作り方
+--------------------------------------------------------------------
+
+基本的にはVimのヘルプを見て作ります。
+
+- プラグインの基本的な作り方について
+
+.. parsed-literal::
+    :class: console
+
+    :help usr_41
+
+- Vimで利用できる関数一覧。List、Dictionaryなどの操作方法。
+
+.. parsed-literal::
+    :class: console
+
+    :help eval
+
+- 処理のトリガーになるイベントの定義一覧
+
+.. parsed-literal::
+    :class: console
+
+    :help event
+
+- Vimのオプションの一覧
+
+.. parsed-literal::
+    :class: console
+
+    :help options
+
+プラグイン作成におけるトラブル
+--------------------------------------------------------------------
+
+作ったプラグインを実行したらエラーが出る
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+- → **:help エラーコード** すると、エラーの原因がわかる（かもしれない）。
+
+.. parsed-literal::
+    :class: console
+
+    :help E492
+    " #=> Not an editor command
+    " #=> 
+    " #=> You tried to execute a command that is neither an Ex command nor
+    " #=> a user-defined command.
+
+プラグインを置いたのに、読み込まれない
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+- → **:scriptnames** コマンドを叩くと、それまでにロードされたファイルの一覧が出るので、実際にロードされているかをチェックしてください。
+
+.. parsed-literal::
+    :class: console
+
+    :scriptnames
+    " #=> 1: C:/Users/omi/local/vim72-kaoriya-w64j/vimrc
+    " #=> 2: C:/Users/omi/local/vim72-kaoriya-w64j/runtime/encode_japan.vim
+    " #=> 3: C:/Users/omi/local/vim72-kaoriya-w64j/runtime/vimrc_example.vim
+    " #=> 4: C:/Users/omi/local/vim72-kaoriya-w64j/runtime/syntax/syntax.vim
+    " #=> 5: C:/Users/omi/local/vim72-kaoriya-w64j/runtime/syntax/synload.vim
+    " #=> 6: C:/Users/omi/local/vim72-kaoriya-w64j/runtime/syntax/syncolor.vim
+    " #=> 7: C:/Users/omi/local/vim72-kaoriya-w64j/runtime/filetype.vim
+    " ...
+
+あるはずの機能が無いというエラーがでる
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+- → **:version** コマンドを叩いて、コンパイルオプションを確認。
+- +が使える機能。-が使えない機能。
+
+.. parsed-literal::
+    :class: console
+
+    :version
+    " #=> VIM - Vi IMproved 7.2 (2008 Aug 9, compiled Mar 25 2010 01:10:31)
+    " #=> MS-Windows 64 ビット GUI 版
+    " #=> 適用済パッチ: 1-411
+    " #=> Modified by koron.kaoriya@gmail.com
+    " #=> Compiled by koron.kaoriya@gmail.com
+    " #=> Big 版 with GUI.  機能の一覧 有効(+)/無効(-)
+    " #=> +arabic +autocmd +balloon_eval +browse ++builtin_terms +byte_offset +cindent +clientserver +clipboard +cmdline_compl
+    " #=> +cmdline_hist +cmdline_info +comments +cryptv +cscope +cursorshape +dialog_con_gui +diff +digraphs -dnd -ebcdic
+    " #=> +emacs_tags +eval +ex_extra +extra_search +farsi +file_in_path +find_in_path +float +folding -footer +gettext/dyn
+    " #=> ....
+
+http://www.vim.org/ に作ったプラグインをアップロードする
+--------------------------------------------------------------------
+
+- http://www.vim.org/login.php にアクセスしてユーザ作成
+- 作ったユーザで **vim.org** にログイン。
+- http://www.vim.org/scripts/add_script.php にアクセスして、プラグインのバージョン、使い方など書いてアップする。
+- 公開される。
+
+
+====================================================================
+ポータブルなVim設定ファイルの書き方
+====================================================================
+
+- 特定の環境に依存した設定ファイルにしてしまうと、環境を移るたびに設定の手間がかかってしまう。
+- 書き方を工夫すると面倒がない。
+- ポータブルにしておくと、複数メンバで共有できる。（理想論）
+
+vim設定ファイル(.vimrc)でハンドリングする
+--------------------------------------------------------------------
+
+Vimのバージョンで分岐
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+- v:versionを参照する。
+- いくつかのマシンを使っている時や、同じOSで複数Vimを入れている時などに使いやすい。
+
+.. parsed-literal::
+    :class: program
+
+    if version >= 700
+        " **Vim 7.0用のコード**
+    elseif version >= 701
+        " **Vim 7.1用のコード**
+    elseif version >= 702
+        " **Vim 7.2用のコード**
+    endif
+
+OSで分岐
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+- has()を使う。
+- 正しい結果を返してくれなくても泣かない。
+
+.. parsed-literal::
+    :class: program
+
+    if has("unix")
+        " **UNIX環境用のコード**
+    elsef has('mac')
+        " **Mac用のコード**
+    elseif has("win32")
+        " **Windows環境用のコード**
+    endif
+
+GUIか、CUIかで分岐
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+- gui_runningをチェックする。
+
+.. parsed-literal::
+    :class: program
+
+    if has("gui_running")
+       " **GUI版Vim用のコード**
+    else
+       " **CUI版Vim用のコード**
+    endif
+
+コンパイルオプションなどで分岐
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+- 同じく、has()を使う。
+
+.. parsed-literal::
+    :class: console
+
+    :version
+    " #=> VIM - Vi IMproved 7.2 (2008 Aug 9, compiled Mar 25 2010 01:10:31)
+    " #=> MS-Windows 64 ビット GUI 版
+    " #=> 適用済パッチ: 1-411
+    " #=> Modified by koron.kaoriya@gmail.com
+    " #=> Compiled by koron.kaoriya@gmail.com
+    " #=> Big 版 with GUI.  機能の一覧 有効(+)/無効(-)
+    " #=> +arabic +autocmd +balloon_eval +browse ++builtin_terms +byte_offset +cindent +clientserver +clipboard +cmdline_compl
+    " #=> +cmdline_hist +cmdline_info +comments +cryptv +cscope +cursorshape +dialog_con_gui +diff +digraphs -dnd -ebcdic
+    " #=> +emacs_tags +eval +ex_extra +extra_search +farsi +file_in_path +find_in_path +float +folding -footer +gettext/dyn
+    " #=> ....
+
+- clipboardが使えるか、どうかで分岐
+
+.. parsed-literal::
+    :class: program
+
+    if has("clipboard")
+       " **clipboardを使うコード**
+    endif
+
+変数で分岐
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+- exists()を使う。
+- プラグインが入っているかいないか、の判断に使えることが多い。
+
+.. parsed-literal::
+    :class: program
+
+    if exists("$LANG")
+       " **LANG環境変数が設定されている場合のコード**
+    endif
+
+読み込む設定ファイル自体を切り替える
+--------------------------------------------------------------------
+
+- **runtimepath** オプションを設定すると、Vim設定ファイルディレクトリの位置を変更できるので、
+- 読み込むべきファイルをまとめて指定できる。
+- **source** コマンドで、読み込むファイルを指定できる。
+
+小見例
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+- 環境に依存する設定だけ、vimrcに記述している。
+- 残りはruntimeパスの切り替えでハンドリング。
+
+開発環境
+____________________________________________________________________
+
+- /home/omi/.vimrc
+
+.. parsed-literal::
+    :class: program
+
+    " **greeユーザのVim設定ファイルを読込**
+    source /home/gree/.vimrc
+    
+    set rtp+=$HOME/.vim/kaoriya
+    " **開発環境にはVim7.1が入っているので、fuzzyfinderの3は動かない**
+    set rtp+=$HOME/.vim/vim-fuzzyfinder2
+    set rtp+=$HOME/.vim/runtime
+    source $HOME/.vim/runtime/vimrc.vim
+    
+    " **開発環境用のカスタム設定**
+    syntax on
+    set incsearch
+    set noexpandtab
+    set iminsert=0
+    set foldmethod=marker
+    set viminfo='100,<50,s10,h,rA:,rB:
+    set wildmode=longest,full
+
+ローカル環境
+____________________________________________________________________
+
+- C:/Users/omi/_vimrc
+
+.. parsed-literal::
+    :class: program
+
+    set rtp+=$HOME/vimfiles/vim-fuzzyfinder3
+    set rtp+=$HOME/vimfiles/runtime
+    set rtp+=$HOME/vimfiles/spinner-vim-plugin
+    source $HOME/vimfiles/runtime/vimrc.vim
+
+そもそも持ち運ぶのが面倒
+--------------------------------------------------------------------
+
+- 同期をとるのも面倒。
+- → バージョン管理ツールで管理してしまうのが良い。
+- mercurial、gitなど。
+
+
+====================================================================
+おまけ・覚えても邪魔にならない、ツール的なVimの使い方
+====================================================================
+
+- 別のドキュメントで多数使い方が紹介されているので、一括操作、ビューワ的な使い方だけをご紹介。
+- less、sedコマンドのような感覚で使えるVimコマンド集。
+
+検索
+--------------------------------------------------------------------
+\*、#検索
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+- \*、#を使うと、カーソル下の語を完全一致で検索できる。
+
+.. parsed-literal::
+    :class: console
+
+     \*     → 前方に検索。/\<keyword\>と同じ
+     #     → 後方に検索。?\<keyword\>と同じ
+
+- gを付けると、部分一致で検索できる。
+
+.. parsed-literal::
+    :class: console
+
+    g\*     → 前方に検索。/keywordと同じ
+    g#     → 後方に検索。?keywordと同じ
+
+/、?検索
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+- /、?で、ワードを指定して、検索できる。
+
+.. parsed-literal::
+    :class: console
+
+    /keyword
+    ?keyword
+
+- バックスラッシュエスケープでOR、AND検索
+
+.. parsed-literal::
+    :class: console
+
+    /foo\|bar     → OR検索。バックスラッシュでエスケープ。
+    /foo\&bar     → AND検索。同じ場所でマッチしなくてはならないので、ひどく使いづらい。
+
+- AND検索は正規表現と組み合わせてマッチさせるか、
+
+.. parsed-literal::
+    :class: console
+
+    /.\*foo\&.\*bar
+
+- **:global** コマンドと一緒に使います。
+
+.. parsed-literal::
+    :class: console
+
+    " **fooとbarが含まれる行を置換。**
+    :g/.\*foo\&.\*bar/ s/foo/xxx/g
+
+検索した行に対して置換
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+- g/foo_pattern/ {command}    foo_patternにマッチした行にcommandを適用
+- v/foo_pattern/ {command}    foo_patternにマッチしない行にcommandを適用
+
+.. parsed-literal::
+    :class: console
+
+    " **例。検索してマッチした行に置換処理。**
+    g/foo_pattern/ s/foo/var/g
+
+grep
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+- **:vimgrep {検索ワード} {ファイル}** でgrep
+- もしくは、 **:vimgrep /{検索ワード}/{検索オプション} {ファイル}** でgrep
+
+.. parsed-literal::
+    :class: console
+
+    :vimgrep service \*\*/\*.php
+
+- **:copen** で検索結果を表示
+
+ジャンプリスト
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+- CTRL-o     カーソルの位置を一つ前の位置に移動する。
+- CTRL-i     カーソルの位置を一つ後の位置に移動する。
+
+比較
+--------------------------------------------------------------------
+
+- **:diffsplit** を使うと、diffの結果で比較できる。
+
+.. parsed-literal::
+    :class: console
+
+    :vert diffsplit sampleA.txt sampleB.txt
+
+- まったく違うファイルの一部を並べて比較したい時はscrollbindが便利。
+    - **:vsplit** でウィンドウを分割。
+    - 左右のウィンドウで比較したい箇所を並べる。
+    - 左右のウィンドウで、 **:set scrollbind** を実行する。
+    - **:windo** を使うと良い。（:windoは全てのウィンドウでコマンドを実行。）
+
+.. parsed-literal::
+    :class: console
+
+    :windo se scb
+
+    - 解除は左右のウィンドウで、 **:set noscrollbind**
+    - **:windo** を使うと楽。
+
+.. parsed-literal::
+    :class: console
+
+    :windo se noscb
+
+変換
+--------------------------------------------------------------------
+
+- **:windo** 、 **:bufdo** でまとめてコマンド実行できる。
+
+.. parsed-literal::
+    :class: console
+
+    " **変換したいファイルを読み込んでから**
+    args \*\*/\*.php
+    
+    " **まとめて置換**
+    :bufdo! :%s/foo/var/gc
+    
+    " **終わったら、まとめて保存**
+    :wa
+
+外部コマンドで変換する
+--------------------------------------------------------------------
+
+- vimエディタから外部のプログラムやコマンドを実行する。
+    - http://nanasi.jp/articles/howto/editing/external-program.html
+
+- 持っていると便利な本
+    - Perlデータマンジング データ加工のテクニック集
+    - http://www.amazon.co.jp/dp/4894715589
+
+
+====================================================================
+おまけのおまけ・アンドゥ
+====================================================================
+
+- もしもの時のために覚えておくべきこと。
+    - u            アンドゥ
+    - CTRL-r       リドゥ
+
+- 入力 → アンドゥ → 入力すると、単純なアンドゥでは古いコードに戻れなくなる。
+    - g- 古いアンドゥブランチに移動
+    - g+ 新しいアンドゥブランチに移動
+
+- ブランチをひとつずつ戻すのは面倒なので、
+    - :earlier {N}m
+        - {N}分前の状態に戻す
+    - :earlier {N}h
+        - {N}時間前の状態に戻す
+
+- **:earlier** の賭けが失敗したら、
+    - :later {N}m
+        - {N}分後の状態に戻す。
+    - :later {N}h
+        - {N}時間後の状態に戻す。
+
+
+====================================================================
+まとめ
+====================================================================
+
+- プラグインを作れると、Vimでできることが大きく広がる。
+- 設定ファイルをポータブルにすると、作業マシンがたくさんあっても平気。
+- プラグインをたくさんいれなければ、Vimは起動が速いので、ツールのように使っても問題ない。
+
+
+
+

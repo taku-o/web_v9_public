@@ -1,0 +1,162 @@
+.. vim:set expandtab ff=unix ft=rest nowrap :
+
+..  リスト型
+
+..  
+
+.. |BR| raw:: html
+
+    <br />
+
+.. |yen|    unicode:: U+000A5 .. YEN SIGN
+
+.. role:: raw-html(raw)
+    :format: html
+
+.. contents::
+
+================================================================================
+リスト型
+================================================================================
+
+- リストの作成。
+
+.. parsed-literal::
+    :class: program
+
+    :let var_list_1 = [ "one", "two", "three", "four" ]
+    :echo var_list_1
+    "# => ['one', 'two', 'three', 'four']
+    
+    :let var_list_2 = []
+    :echo var_list_2
+    "# => []
+
+- リストに追加。
+
+.. parsed-literal::
+    :class: program
+
+    :let var_list_1 = [ "one", "two", "three", "four" ]
+    :call add(var_list_1, "five")
+    :echo var_list_1
+    "# => ['one', 'two', 'three', 'four', 'five']
+    
+    :let var_list_2 = [ "one", "two", "three", "four" ]
+    :call insert(var_list_2, "five", 2)
+    :echo var_list_2
+    "# => ['one', 'two', 'five', 'three', 'four']
+
+- リストから削除。
+
+.. parsed-literal::
+    :class: program
+
+    :let var_list_1 = [ "one", "two", "three", "four" ]
+    :call remove(var_list_1, 2)
+    :echo var_list_1
+    "# => ['one', 'two', 'four']
+    
+    :let var_list_2 = [ "one", "two", "three", "four" ]
+    :unlet var_list_2[2]
+    :echo var_list_2
+    "# => ['one', 'two', 'four']
+
+- リストに格納されたアイテムの取得。
+
+.. parsed-literal::
+    :class: program
+
+    :let var_list = [ "one", "two", "three", "four", "five", "six" ]
+    :echo var_list[2]
+    "# => three
+    :echo var_list[-1]
+    "# => six
+    :echo var_list[3:]
+    "# => ['four', 'five', 'six']
+    :echo var_list[1:3]
+    "# => ['two', 'three', 'four']
+
+- リストのアイテム数の取得。
+
+.. parsed-literal::
+    :class: program
+
+    :let var_list = [ "one", "two", "three", "four", "five", "six" ]
+    :echo len(var_list)
+    "# => 6
+
+- リスト内のアイテムの検索。
+
+.. parsed-literal::
+    :class: program
+
+    :let var_list = [ "one", "two", "three", "four", "five", "six" ]
+    :echo match(var_list, "four")
+    "# => 3
+
+- リスト内のアイテムの結合。
+
+.. parsed-literal::
+    :class: program
+
+    :let var_list = [ "one", "two", "three", "four", "five", "six" ]
+    :echo join(var_list, "/")
+    "# => one/two/three/four/five/six
+
+- リストとリストの連結。
+
+.. parsed-literal::
+    :class: program
+
+    :let var_list_1 = [ "one", "two", "three" ]
+    :let var_list_2 = [ "four", "five", "six" ]
+    :let var_plus = var_list_1 + var_list_2
+    :echo var_plus
+    "# => ['one', 'two', 'three', 'four', 'five', 'six']
+
+- ループ。
+
+.. parsed-literal::
+    :class: program
+
+    :let var_list = [ "one", "two", "three", "four", "five", "six" ]
+    
+    " while loop
+    :let i = 0
+    :while i < len(var_list)
+    :let item = var_list[i]
+        :echo item
+        :let i = i + 1
+    :endwhile
+    "# => one
+    "# => two
+    "# => three
+    "# => four
+    "# => ...
+    
+    " for loop
+    :for item in var_list
+        :echo item
+    :endfor
+    "# => one
+    "# => two
+    "# => three
+    "# => four
+    "# => ...
+
+- フィルタ。
+
+.. parsed-literal::
+    :class: program
+
+    :let var_list = [ "one", "two", "three", "four", "five", "six" ]
+    
+    " リストから条件にマッチしないアイテムを取り除く
+    " アイテムの値はv:valに入る
+    :call filter(var_list, "v:val =~ '^t'")
+    :echo var_list
+    "# => ['two', 'three']
+
+
+

@@ -1,0 +1,102 @@
+.. vim:set expandtab ff=unix ft=rest nowrap :
+
+..  確認ダイアログを表示し、ボタンで選択させる
+
+..  
+
+.. |BR| raw:: html
+
+    <br />
+
+.. |yen|    unicode:: U+000A5 .. YEN SIGN
+
+.. role:: raw-html(raw)
+    :format: html
+
+.. contents::
+
+================================================================================
+確認ダイアログを表示し、ボタンで選択させる
+================================================================================
+
+- ダイアログの表示と、選択値の取得
+
+.. parsed-literal::
+    :class: program
+
+    :let choice = confirm("This is message. Which is your selection ?", "A answer\\nB answer\\nC answer")
+    :if choice == 0
+        :echo "user cancel daialog."
+    :elseif choice == 1
+        :echo "user select 'A answer'."
+    :elseif choice == 2
+        :echo "user select 'B answer'."
+    :elseif choice == 3
+        :echo "user select 'C answer'."
+    :else
+        :echo "ERROR"
+    :endif
+
+- 「&」で、回答候補にショートカットキーを設定
+
+.. parsed-literal::
+    :class: program
+
+    :let choice = confirm("This is message. Which is your selection ?", "&A answer\\n&B answer\\n&C answer")
+    :if choice == 0
+        :echo "user cancel daialog."
+    :elseif choice == 1
+        :echo "user select 'A answer'."
+    :elseif choice == 2
+        :echo "user select 'B answer'."
+    :elseif choice == 3
+        :echo "user select 'C answer'."
+    :else
+        :echo "ERROR"
+    :endif
+    "# => A、B、Cのどれかを押すだけで、選択したことになる
+
+- ダイアログのボタンを縦一列に配置
+
+.. parsed-literal::
+    :class: program
+
+    :let user_option = &guioptions
+    :set guioptions+=v
+    :let choice = confirm("This is message. Which is your selection ?", "A answer\\nB answer\\nC answer")
+    :if choice == 0
+        :echo "user cancel daialog."
+    :elseif choice == 1
+        :echo "user select 'A answer'."
+    :elseif choice == 2
+        :echo "user select 'B answer'."
+    :elseif choice == 3
+        :echo "user select 'C answer'."
+    :else
+        :echo "ERROR"
+    :endif
+    :let &guioptions = user_option
+
+- ダイアログのボタンを横一列に配置
+
+.. parsed-literal::
+    :class: program
+
+    :let user_option = &guioptions
+    :set guioptions-=v
+    :let choice = confirm("This is message. Which is your selection ?", "A answer\\nB answer\\nC answer")
+    :if choice == 0
+        :echo "user cancel daialog."
+    :elseif choice == 1
+        :echo "user select 'A answer'."
+    :elseif choice == 2
+        :echo "user select 'B answer'."
+    :elseif choice == 3
+        :echo "user select 'C answer'."
+    :else
+        :echo "ERROR"
+    :endif
+    :let &guioptions = user_option
+
+
+

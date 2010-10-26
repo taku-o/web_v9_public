@@ -1,0 +1,53 @@
+.. vim:set expandtab ff=unix ft=rest nowrap :
+
+..  pythonのコードで、vimスクリプトの変数を変更する
+
+..  
+
+.. |BR| raw:: html
+
+    <br />
+
+.. |yen|    unicode:: U+000A5 .. YEN SIGN
+
+.. role:: raw-html(raw)
+    :format: html
+
+.. contents::
+
+================================================================================
+pythonのコードで、vimスクリプトの変数を変更する
+================================================================================
+
+- 変数の値を変更する
+
+.. parsed-literal::
+    :class: program
+
+    :let var = "initial value"
+    :echo var
+    "# => initial value
+    
+    :python import vim
+    :python vim.command(':let var = "updated value"')
+    
+    :echo var
+    "# => updated value
+
+
+- vimエディタのオプションの値を変更する
+
+.. parsed-literal::
+    :class: program
+
+    :echo &guifont
+    "# => MS_Mincho:h12:cSHIFTJIS
+    
+    :python import vim
+    :python vim.command("set guifont=MS_Mincho:h14:cSHIFTJIS")
+    
+    :echo &guifont
+    "# => MS_Mincho:h14:cSHIFTJIS
+
+
+

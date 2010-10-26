@@ -1,0 +1,50 @@
+.. vim:set expandtab ff=unix ft=rest nowrap :
+
+..  ファクトリメソッド
+
+..  
+
+.. |BR| raw:: html
+
+    <br />
+
+.. |yen|    unicode:: U+000A5 .. YEN SIGN
+
+.. role:: raw-html(raw)
+    :format: html
+
+.. contents::
+
+================================================================================
+ファクトリメソッド
+================================================================================
+
+- ディクショナリにファンクションを紐付ける。
+
+.. parsed-literal::
+    :class: program
+
+    :function! New()
+        :let object = {}
+        :function! object.setVar(var) dict
+            :let self.var = a:var
+        :endfunction
+        :function! object.getVar() dict
+            :return self.var
+        :endfunction
+        :return object
+    :endfunction
+
+    :let instance1 = New()
+    :let instance2 = New()
+
+    :call instance1.setVar("ONE")
+    :call instance2.setVar("TWO")
+
+    :echo instance1.getVar()
+    "# => ONE
+    :echo instance2.getVar()
+    "# => TWO
+
+
+

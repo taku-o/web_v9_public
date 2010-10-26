@@ -1,0 +1,49 @@
+.. vim:set expandtab ff=unix ft=rest nowrap :
+
+..  カーソル位置情報を操作する
+
+..  
+
+.. |BR| raw:: html
+
+    <br />
+
+.. |yen|    unicode:: U+000A5 .. YEN SIGN
+
+.. role:: raw-html(raw)
+    :format: html
+
+.. contents::
+
+================================================================================
+カーソル位置情報を操作する
+================================================================================
+
+- カーソル位置の取得
+
+.. parsed-literal::
+    :class: program
+
+    :echo line(".")
+    :echo col(".")
+    "# => 行
+    "# => 列
+
+- カーソル位置の変更
+
+.. parsed-literal::
+    :class: program
+
+    :call cursor(5, 10)
+    "# => 5, 10の位置にカーソルを移動
+
+- カーソル位置を移動、処理実行後、元の位置にカーソルを戻す
+
+.. parsed-literal::
+    :class: program
+
+    :let pos = getpos(".")
+    :call cursor(40, 0)
+    :call setpos('.', pos)
+
+

@@ -1,0 +1,448 @@
+.. vim:set expandtab ff=unix ft=rest :
+
+..  Vimwiki : Vimベースの個人用Wiki環境 #3 Wikiページ記法
+
+..  このページでは、VimwikiのWikiページの記述方法について説明します。
+    「Vimwiki : Vimベースの個人用Wiki環境 #1 インストールから基本的な使い方まで」の続きとなる記事です。
+    (Windows, Mac)
+
+.. |BR| raw:: html
+
+    <br />
+
+.. |yen|    unicode:: U+000A5 .. YEN SIGN
+
+.. role:: raw-html(raw)
+    :format: html
+
+.. contents::
+
+================================================================================
+概要
+================================================================================
+
+Vimwiki : Personal Wiki for Vim |BR|
+http://www.vim.org/scripts/script.php?script_id=2226
+
+このページでは、VimwikiのWikiページの記述方法について説明します。 |BR|
+「 `Vimwiki : Vimベースの個人用Wiki環境 #1 インストールから基本的な使い方まで`_ 」の続きとなる記事です。
+
+
+
+================================================================================
+見出し・タイトル
+================================================================================
+
+見出しやタイトルは、行を同数の「=」で囲むことで表現します。 |BR|
+「=」の数が多いほどに小さな見出しになります。
+
+.. parsed-literal::
+    :class: program
+
+    = 見出し Level 1 =
+    == 見出し Level 2 ==
+    === 見出し Level 3 ===
+    ==== 見出し Level 4 ====
+    ===== 見出し Level 5 =====
+    ====== 見出し Level 6 ======
+
+HTML化した時には、次のように表現されます。
+
+.. parsed-literal::
+    :class: program
+
+    <h1>見出し Level 1</h1>
+    <h2>見出し Level 2</h2>
+    <h3>見出し Level 3</h3>
+    <h4>見出し Level 4</h4>
+    <h5>見出し Level 5</h5>
+    <h6>見出し Level 6</h6>
+
+
+
+================================================================================
+テーブル
+================================================================================
+
+テーブル構造は各セルを「||」で区切って、値を並べることで表現します。
+
+.. parsed-literal::
+    :class: program
+
+    \|\|Years\|\|Temperature (low)\|\|Temperature (high)\|\|
+    \|\|1900 \|\|-10              \|\|25                \|\|
+    \|\|1910 \|\|-15              \|\|30                \|\|
+    \|\|1920 \|\|-10              \|\|32                \|\|
+    \|\|1930 \|\|-20              \|\|29                \|\|
+    \|\|1940 \|\|-2               \|\|40                \|\|
+
+.. raw:: html
+
+    <pre class="program literal-block" style="line-height: 0.5;">
+    <table>
+    <tr>
+    <td style="border: 1px solid #ccc; padding: 0.3em;">Years</td><td style="border: 1px solid #ccc; padding: 0.3em;">Temperature (low)</td><td style="border: 1px solid #ccc; padding: 0.3em;">Temperature (high)</td>
+    </tr>
+    <tr>
+    <td style="border: 1px solid #ccc; padding: 0.3em;">1900 </td><td style="border: 1px solid #ccc; padding: 0.3em;">-10              </td><td style="border: 1px solid #ccc; padding: 0.3em;">25                </td>
+    </tr>
+    <tr>
+    <td style="border: 1px solid #ccc; padding: 0.3em;">1910 </td><td style="border: 1px solid #ccc; padding: 0.3em;">-15              </td><td style="border: 1px solid #ccc; padding: 0.3em;">30                </td>
+    </tr>
+    <tr>
+    <td style="border: 1px solid #ccc; padding: 0.3em;">1920 </td><td style="border: 1px solid #ccc; padding: 0.3em;">-10              </td><td style="border: 1px solid #ccc; padding: 0.3em;">32                </td>
+    </tr>
+    <tr>
+    <td style="border: 1px solid #ccc; padding: 0.3em;">1930 </td><td style="border: 1px solid #ccc; padding: 0.3em;">-20              </td><td style="border: 1px solid #ccc; padding: 0.3em;">29                </td>
+    </tr>
+    <tr>
+    <td style="border: 1px solid #ccc; padding: 0.3em;">1940 </td><td style="border: 1px solid #ccc; padding: 0.3em;">-2               </td><td style="border: 1px solid #ccc; padding: 0.3em;">40                </td>
+    </tr>
+    </table>
+    </pre>
+
+テーブルのセルの中でも、リンクやボールド書体を扱えます。 |BR|
+左寄せ、右寄せ、センタリングは、セルの左端右端、どちらに半角スペースがあるか、両方にあるか、でコントロールします。
+
+.. parsed-literal::
+    :class: program
+
+    \|\| Sequence \|\| セル内のコントロール \|\| 文字装飾、リンク  \|\|
+    \|\|090518001 \|\|左寄せ                \|\| \*ボールド\*        \|\|
+    \|\|090518002 \|\|                右寄せ\|\| _イタリック_      \|\|
+    \|\|090518003 \|\| センタリング         \|\| ``http://nanasi.jp/`` \|\|
+
+
+
+================================================================================
+リスト
+================================================================================
+
+通常リスト
+--------------------------------------------------------------------------------
+
+行の先頭を「空白文字」と「*」で始めると、その行はリストとして表現されます。
+
+.. parsed-literal::
+    :class: program
+
+    * Bulleted list item 1
+    * Bulleted list item 2
+       * Bulleted list sub item 1
+       * Bulleted list sub item 2
+       * more ...
+         * and more ...
+         * ...
+       * Bulleted list sub item 3
+       * etc.
+
+.. parsed-literal::
+    :class: program
+
+    <ul>
+        <li>Bulleted list item 1</li>
+        <li>Bulleted list item 2</li>
+        <ul>
+            <li>Bulleted list sub item 1</li>
+            <li>Bulleted list sub item 2</li>
+            <li>more ...</li>
+        <ul>
+            <li>and more ...</li>
+            <li>...</li>
+        </ul>
+            <li>Bulleted list sub item 3</li>
+            <li>etc.</li>
+        </ul>
+    </ul>
+
+
+数字付きリスト
+--------------------------------------------------------------------------------
+
+行の先頭を「空白文字」と「*」ではなく、「空白文字」と「#」にすると、
+番号付きのリストになります。
+
+.. parsed-literal::
+    :class: program
+
+    # Numbered list item 1
+    # Numbered list item 2
+        # Numbered list sub item 1
+        # Numbered list sub item 2
+        # more ...
+            # and more ...
+            # ...
+        # Numbered list sub item 3
+        # etc.
+
+.. parsed-literal::
+    :class: program
+
+    <ol>
+        <li>Numbered list item 1</li>
+        <li>Numbered list item 2</li>
+        <ol>
+            <li>Numbered list sub item 1</li>
+            <li>Numbered list sub item 2</li>
+            <li>more ...</li>
+        <ol>
+            <li>and more ...</li>
+            <li>...</li>
+        </ol>
+            <li>Numbered list sub item 3</li>
+            <li>etc.</li>
+        </ol>
+    </ol>
+
+
+================================================================================
+TODOリスト
+================================================================================
+
+リストの先頭に「\[ ]」を入れると、そのリスト項目はTODOリストとして扱われます。
+
+.. parsed-literal::
+    :class: program
+
+    * \[ ] Bulleted list item 1
+    * \[ ] Bulleted list item 2
+       * \[ ] Bulleted list sub item 1
+       * \[ ] Bulleted list sub item 2
+       * \[ ] more ...
+         * \[ ] and more ...
+         * \[ ] ...
+       * \[ ] Bulleted list sub item 3
+       * \[ ] etc.
+
+TODOリストの項目の上では、Controlキーを押しながらSpaceキーを押下することで、 |BR|
+\[ ] の中にチェックを入れたり、外したりできます。
+
+.. raw:: html
+
+    <pre class="program literal-block">
+    * [<span class="code_high">x</span>] Bulleted list item 1
+    * [ ] Bulleted list item 2
+       * [ ] Bulleted list sub item 1
+    </pre>
+
+.. image:: /dist/img/vim/vimwiki_todolist_with_indent.png
+    :alt:  TODOリスト画像
+    :class: image-border
+
+
+
+================================================================================
+内部リンク
+================================================================================
+
+Wikiページ間でリンクを張るには、
+英語大文字始まりのキャメルケースの綴りの語を書くか、
+
+.. parsed-literal::
+    :class: program
+
+    LinkToTopPage
+
+角括弧２つでリンクを張りたい語を囲みます。
+
+.. parsed-literal::
+    :class: program
+
+    \[\[link to Top Page]]
+
+
+.. image:: /dist/img/vim/vimwiki_pre_link.png
+    :alt:  リンク前画像
+
+↑↓ リンクは、リンク先のページが無いと、Wikiページ上でハイライト表示されます。
+
+.. image:: /dist/img/vim/vimwiki_post_link.png
+    :alt:  リンク後画像
+
+
+
+================================================================================
+外部リンク
+================================================================================
+
+テキストリンク
+--------------------------------------------------------------------------------
+
+Vimwiki外部のドキュメントに対してハイパーリンクを張るには、 |BR|
+URLを直接記述するか、各括弧でURLを囲みます。
+
+.. parsed-literal::
+    :class: program
+
+    <!-- テキストリンク 方法1 -->
+    ``http://nanasi.jp/var/articles/vim/vimwiki/vimwiki_vim.html``
+    
+    <!-- テキストリンク 方法2 -->
+    \[``http://nanasi.jp/``]
+    
+    <!-- テキストリンク 方法3 テキストにリンクを張る -->
+    \[``http://nanasi.jp/`` 名無しのvim使い]
+
+    <!-- テキストリンク 方法4 テキストにリンクを張る。相対パス。 -->
+    \[\[``./index.html``\|名無しのvim使い]]
+
+
+画像リンク
+--------------------------------------------------------------------------------
+
+VimwikiのWikiページをHTML化した際に、画像を表示する方法は、テキストリンクを張る方法と似ています。 |BR|
+Wikiページに表示したい画像のURLを書くか、角括弧2つでURLを囲みます。
+
+.. parsed-literal::
+    :class: program
+
+    <!-- 画像リンク 方法1 -->
+    ``http://nanasi.jp/logo.png``
+    
+    <!-- 画像リンク 方法2 -->
+    \[\[``http://nanasi.jp/logo.png``]]
+    
+    <!-- 画像リンク 方法3 相対パス -->
+    \[\[``image/logo.png``]]
+    
+    <!-- 画像リンク 方法4 サムネイル画像 -->
+    \[\[``http://nanasi.jp/logo.png``\|http://nanasi.jp/log_thumbnail.png]]
+    
+    <!-- 画像リンク 方法5 スタイル指定 -->
+    \[\[``http://nanasi.jp/logo.png``\||width:150px; height:120px;]]
+    
+    <!-- 画像リンク 方法6 サムネイル＋スタイル指定 -->
+    \[\[``http://nanasi.jp/logo.png``\|http://nanasi.jp/log_thumbnail.png\|width:150px; height:120px;]]
+
+Vimwikiでサポートされるのは、
+拡張子が「.png」「.jpg」「.gif」「.jpeg」の画像です。
+
+
+
+================================================================================
+書体
+================================================================================
+
+Vimwikiで、書体を扱うには次のように記述します。
+
+.. parsed-literal::
+    :class: program
+
+    \*ボールド\*
+    
+    _イタリック_
+    
+    ~~取り消し線~~
+    
+    \`書体なし（コード記述用）\`
+    
+    本文^上付文字^
+    
+    本文,,下付文字,,
+
+HTML化した際には、それぞれ次のように表示されます。
+
+.. raw:: html
+
+    <pre class="program literal-block">
+    <p><strong>ボールド</strong></p>
+    <p><em>イタリック</em></p>
+    <p><span style="text-decoration: line-through;">取り消し線</span></p>
+    <p><code>書体なし（コード記述用）</code></p>
+    <p>本文<sup><small>上付文字</small></sup></p>
+    <p>本文<sup><small>下付文字</small></sup></p>
+    </pre>
+
+
+
+================================================================================
+パラグラフ
+================================================================================
+
+行頭が空白文字から始まらない場合、その行をパラグラフとして扱います。 |BR|
+例外は整形済みテキスト、テーブルの場合です。
+
+
+
+================================================================================
+整形済みテキスト
+================================================================================
+
+行頭を空白文字で始めるか、指定範囲を「{{{」「}}}」で囲むと、 |BR|
+それらテキストを整形済みテキストとして扱います。
+
+.. parsed-literal::
+    :class: program
+
+    {{{
+    行頭を空白文字で始めるか、指定範囲を「{{{」「}}}」で囲むと、
+    それらテキストは整形済みテキストとして扱います。
+    }}}
+
+HTML化すると、次のようなHTMLソースが生成されます。
+
+.. parsed-literal::
+    :class: program
+
+    <code><pre>
+    行頭を空白文字で始めるか、指定範囲を「{{{」「}}}」で囲むと、
+    それらテキストは整形済みテキストとして扱います。
+    </pre></code>
+
+
+整形済みテキストのスタイル指定
+--------------------------------------------------------------------------------
+
+整形済みテキストには属性を設定できます。
+主にスタイルシートのためのクラスやIDを設定することになると思います。
+
+.. raw:: html
+
+    <pre class="program literal-block">
+    {{{<span class="code_high">class="pre_class" id="pre_txt"</span>
+    行頭を空白文字で始めるか、指定範囲を「{{{」「}}}」で囲むと、
+    それらテキストは整形済みテキストとして扱います。
+    }}}
+    </pre>
+
+
+
+================================================================================
+コメント
+================================================================================
+
+コメントアウトの書式は、HTML、XMLのコメントアウトと同じです。 |BR|
+「<!--」と「-->」で囲まれたエリアは、HTML化された際に無視されます。
+
+.. parsed-literal::
+    :class: program
+
+    <!--
+    このエリアに書かれたテキストは
+    HTML化する際、出力されません。
+    -->
+
+
+
+================================================================================
+ページリンク
+================================================================================
+
+#. `Vimwiki : Vimベースの個人用Wiki環境 #1 インストールから基本的な使い方まで`_
+#. `Vimwiki : Vimベースの個人用Wiki環境 #2 Vimwikiの操作`_
+#. - `Vimwiki : Vimベースの個人用Wiki環境 #3 Wikiページ記法`_
+#. `Vimwiki : Vimベースの個人用Wiki環境 #4 設定・カスタマイズ`_
+
+.. _`Vimwiki : Vimベースの個人用Wiki環境 #1 インストールから基本的な使い方まで`: `doc_vimwiki`_
+.. _`Vimwiki : Vimベースの個人用Wiki環境 #2 Vimwikiの操作`: `doc_vimwiki_usage`_
+.. _`Vimwiki : Vimベースの個人用Wiki環境 #3 Wikiページ記法`: `doc_vimwiki_syntax`_
+.. _`Vimwiki : Vimベースの個人用Wiki環境 #4 設定・カスタマイズ`: `doc_vimwiki_config`_
+
+.. _`Vimwiki`: http://www.vim.org/scripts/script.php?script_id=2226
+.. _`doc_vimwiki`: /articles/vim/vimwiki/vimwiki_vim.html
+.. _`doc_vimwiki_usage`: /articles/vim/vimwiki/vimwiki_vim_usage.html
+.. _`doc_vimwiki_syntax`: /articles/vim/vimwiki/vimwiki_vim_syntax.html
+.. _`doc_vimwiki_config`: /articles/vim/vimwiki/vimwiki_vim_config.html
+
+
+

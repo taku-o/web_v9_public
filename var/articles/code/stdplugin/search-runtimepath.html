@@ -1,0 +1,50 @@
+.. vim:set expandtab ff=unix ft=rest nowrap :
+
+..  runtimepathに置いた特定の名前のファイルを検索する
+
+..  
+
+.. |BR| raw:: html
+
+    <br />
+
+.. |yen|    unicode:: U+000A5 .. YEN SIGN
+
+.. role:: raw-html(raw)
+    :format: html
+
+.. contents::
+
+================================================================================
+runtimepathに置いた特定の名前のファイルを検索する
+================================================================================
+
+- 例えば、pluginディレクトリに置いたsendmail.pyファイルを検索する場合、次のようにして検索できる。
+
+.. parsed-literal::
+    :class: program
+
+    :for f in split(globpath(&runtimepath, "plugin/sendmail.py"), '\\n')
+        :echo f
+    :endfor
+    "# sendmail.pyファイルのパスが出力される
+    "# （例）
+    "# => /home/taku/.vim/plugin/sendmail.py
+
+- ワイルドカードを使用してパターンにマッチするファイルを検索
+
+.. parsed-literal::
+    :class: program
+
+    :for f in split(globpath(&runtimepath, "after/ftplugin/\*_snippets.vim"), '\\n')
+        " 見つかったファイルに対して、ここで何らかの処理を行う
+        :echo f
+    :endfor
+    "# after/ftpluginディレクトリ以下の、パターンにあうファイルのパスが出力される
+    "# => /home/taku/.vim/after/ftplugin/java_snippets.vim
+    "# => /home/taku/.vim/after/ftplugin/javascript_snippets.vim
+    "# => /home/taku/.vim/after/ftplugin/latex_snippets.vim
+    "# => ....
+
+
+

@@ -1,0 +1,46 @@
+.. vim:set expandtab ff=unix ft=rest nowrap :
+
+..  選択項目のリストの中から数字で選択させる
+
+..  
+
+.. |BR| raw:: html
+
+    <br />
+
+.. |yen|    unicode:: U+000A5 .. YEN SIGN
+
+.. role:: raw-html(raw)
+    :format: html
+
+.. contents::
+
+================================================================================
+選択項目のリストの中から数字で選択させる
+================================================================================
+
+.. parsed-literal::
+    :class: program
+
+    :let lines = [
+        \\ "回答を選択してください。",
+        \\ "1 : A answer",
+        \\ "2 : B answer",
+        \\ "3 : C answer",
+        \\ "4 : D answer"
+        \\ ]
+    :let choice = inputlist(lines)
+    :if choice == 1
+        :echo "user select 'A answer'"
+    :elseif choice == 2
+        :echo "user select 'B answer'"
+    :elseif choice == 3
+        :echo "user select 'C answer'"
+    :elseif choice == 4
+        :echo "user select 'D answer'"
+    :else
+        :echo "1から4までのどれかを選択してください"
+    :endif
+
+
+

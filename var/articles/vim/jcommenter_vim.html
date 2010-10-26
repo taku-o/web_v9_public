@@ -1,0 +1,172 @@
+.. vim:set expandtab ff=unix ft=rest :
+
+..  jcommenter.vim : JavaDocコメントを生成
+
+..  指定した変数、メソッドのJavaDocコメントの雛形を生成するスクリプトです。
+    (Windows, Mac)
+
+.. |BR| raw:: html
+
+    <br />
+
+.. |yen|    unicode:: U+000A5 .. YEN SIGN
+
+.. role:: raw-html(raw)
+    :format: html
+
+.. contents::
+
+================================================================================
+概要
+================================================================================
+
+jcommenter.vim : A script for automatically generating JavaDoc comments |BR|
+http://www.vim.org/script.php?script_id=20
+
+JavaDoc用のコメントの雛型を書きこんでくれるスクリプトです。
+
+.. image:: /dist/img/vim/jcommenter_def.jpg
+
+上の、このJavaソースに対して、スクリプトを使用すると
+
+.. image:: /dist/img/vim/jcommenter_add.jpg
+
+この様なJavaDocコメントの雛型を作り出します。
+
+
+
+================================================================================
+インストール方法
+================================================================================
+
+$VIMRUNTIME/macrosにjcommenter.vimスクリプトをコピーしてください。
+
+.. csv-table::
+    :header: "ファイル", "URL"
+
+    "jcommenter.vim", "http://www.vim.org/script.php?script_id=20"
+
+
+次に_vimrc設定ファイルに次の設定を追加します。
+
+.. parsed-literal::
+    :class: program
+
+    :autocmd FileType java source $VIMRUNTIME/macros/jcommenter.vim
+    :autocmd FileType java map <C-c> :call JCommentWriter()<CR>
+
+jcommenter.vimをテキストエディタで開き、
+80～100行目の範囲にある(version 1.2.1)
+
+.. parsed-literal::
+    :class: program
+
+    :let b:jcommenter_class_author = ""
+    :let b:jcommenter_class_version = ""
+    :let b:jcommenter_file_author = ""
+    :let b:jcommenter_file_copyright = ""
+
+を、例えば下記のように書きかえてください。
+
+.. parsed-literal::
+    :class: program
+
+    :let b:jcommenter_class_author = "作者名"
+    :let b:jcommenter_class_version = "$Revision: 1.6 $"
+    :let b:jcommenter_file_author = "作者名"
+    :let b:jcommenter_file_copyright = "作者名"
+
+
+
+================================================================================
+使用方法
+================================================================================
+
+下記のような個所と同じ行で Ctrl-c と入力すると、
+コメントが挿入されます。
+
+.. parsed-literal::
+    :class: program
+
+    public class Main {
+
+.. parsed-literal::
+    :class: program
+
+    public String toString(){
+
+.. parsed-literal::
+    :class: program
+
+    public void setString(String str){
+
+上のソースが、下のようになります。↓
+
+.. parsed-literal::
+    :class: program
+
+    /\*\* 
+     \* 
+     \* 
+     \* @author 作者名
+     \* @version $Revision: 1.6 $
+     \*/
+    public class Main {
+
+.. parsed-literal::
+    :class: program
+
+    /\*\* 
+     \* 
+     \* 
+     \* @return 
+     \*/
+    public String toString(){
+
+.. parsed-literal::
+    :class: program
+
+    /\*\* 
+     \* 
+     \* 
+     \* @param str 
+     \*/
+    public void setString(String str){
+
+また、ソースの一行目（最上段）で Ctrl-c を押すと、
+下のようなコメントを生成します。
+
+.. parsed-literal::
+    :class: program
+
+    /\* file name  : c:/usr/root/tmp/tmp.java
+     \* authors    : 作者名
+     \* created    : 02/08/12 0:19:18
+     \* copyright  : 作者名
+     \*
+     \* modifications:
+     \*
+     \*/
+
+さらに、ブレースの対応コメントも挿入できます。 |BR|
+下のソースの３行目で Ctrl-c を押すと、
+
+.. raw:: html
+
+    <pre>public void do(){
+        somemethod();
+    <span class="code_high">}</span></pre>
+
+次のようなコメントを生成します。
+
+.. raw:: html
+
+    <pre>public void do(){
+        somemethod();
+    <span class="code_high">} // END: do</span></pre>
+
+
+
+
+
+

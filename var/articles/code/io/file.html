@@ -1,0 +1,92 @@
+.. vim:set expandtab ff=unix ft=rest nowrap :
+
+..  ファイル操作
+
+..  
+
+.. |BR| raw:: html
+
+    <br />
+
+.. |yen|    unicode:: U+000A5 .. YEN SIGN
+
+.. role:: raw-html(raw)
+    :format: html
+
+.. contents::
+
+================================================================================
+ファイル操作
+================================================================================
+
+- ファイルの作成
+
+.. parsed-literal::
+    :class: program
+
+    :let outputfile = "test.txt"
+    :execute "redir > " . outputfile
+    :redir END
+
+- ファイルの削除
+
+.. parsed-literal::
+    :class: program
+
+    :let deletefile = "test.txt"
+    :call delete(deletefile)
+
+- ファイルのリネーム
+
+.. parsed-literal::
+    :class: program
+
+    :let fromname = "test1.txt"
+    :let toname   = "test2.txt"
+    :call rename(fromname, toname)
+
+- 一時ファイルの作成
+
+.. parsed-literal::
+    :class: program
+
+    :let tmpfile = tempname()
+    :execute "redir > " . tmpfile
+    :redir END
+
+- ディレクトリの作成
+
+.. parsed-literal::
+    :class: program
+
+    :call mkdir("ONE")
+    "# => ディレクトリ「ONE」を作成
+    
+    :call mkdir("ONE/TWO/THREE", "p")
+    "# => ディレクトリ「THREE」を作成。無ければ「ONE」「TWO」ディレクトリも作成する。
+
+- ファイルがあるか、読み込めるか。
+
+.. parsed-literal::
+    :class: program
+
+    :let readfile = "test.txt"
+    :if filereadable(readfile)
+        echo "FILE test.txt does exist."
+    :else
+        echo "file test.txt does not exist."
+    :endif
+
+- ファイルの検索
+
+.. parsed-literal::
+    :class: program
+
+    :let filelist = glob("\*\*/test\*")
+    :let splitted = split(filelist, "\\n")
+    for file in splitted
+        :echo file
+    :endfor
+    "# => 発見されたファイルのリストを表示。
+
+

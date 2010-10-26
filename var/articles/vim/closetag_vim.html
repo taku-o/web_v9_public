@@ -1,0 +1,131 @@
+.. vim:set expandtab ff=unix ft=rest :
+
+..  closetag.vim : HTML／XML 閉じタグを挿入
+
+..  XML、HTML編集用のスクリプトで、
+    XML、HTMLの閉じタグを簡単に挿入できるようにします。
+    (Windows, Mac)
+
+.. |BR| raw:: html
+
+    <br />
+
+.. |yen|    unicode:: U+000A5 .. YEN SIGN
+
+.. role:: raw-html(raw)
+    :format: html
+
+.. contents::
+
+================================================================================
+概要
+================================================================================
+
+closetag.vim : Functions and mappings to close open HTML／XML tags |BR|
+http://www.vim.org/script.php?script_id=13
+
+HTML、XMLの閉じタグを自動的に入力してくれるスクリプトです。
+XML、HTMLの閉じタグを書くのが面倒だという人は使用してみてください。
+
+
+
+================================================================================
+インストール方法
+================================================================================
+
+現在(2003年2月9日)の最新のversionは0.9です。 |BR| 
+`vim online`__ から
+ダウンロードして入手するわけですが、 |BR|
+**Windows版Gvimを使用している人はversion 0.9ではなく、version 0.8をダウンロードしてください。**
+
+__ http://www.vim.org/script.php?script_id=13
+
+.. csv-table::
+    :header: "ファイル", "URL"
+
+    "closetag.vim", "http://www.vim.org/script.php?script_id=13"
+
+入手したclosetag.vimを$VIMRUNTIME/macrosディレクトリ辺りにコピー後、
+_vimrc設定ファイルに、以下の設定を書きこみます。
+
+
+.. parsed-literal::
+    :class: console
+
+    :let g:closetag_html_style=1
+    source $VIMRUNTIME/macros/closetag.vim
+
+もしくは、こう書きます。
+
+.. parsed-literal::
+    :class: console
+
+    :let g:closetag_html_style=1
+    au Filetype html,xml,xsl,ant source $VIMRUNTIME/macros/closetag.vim
+
+
+
+================================================================================
+使用方法
+================================================================================
+
+閉じタグの欲しいところにカーソルを持っていき、
+insertモードで、Ctrl-_を入力します。
+
+.. raw:: html
+
+    <pre>1: &lt;plugin name="%pluginName" id="net.sourceforge.vim.eclipse" provider-name="%providerName"&gt;
+    2:     &lt;runtime&gt;
+    3:         &lt;library name="vim-eclipse-0.0.4.jar"&gt;
+    4:             &lt;export name="*"/&gt;</pre>
+
+上のようなXMLドキュメントがある時に、4行目の最後でCtrl-_を入力すると、
+
+.. raw:: html
+
+    <pre>1: &lt;plugin name="%pluginName" id="net.sourceforge.vim.eclipse" provider-name="%providerName"&gt;
+    2:     &lt;runtime&gt;
+    3:         &lt;library name="vim-eclipse-0.0.4.jar"&gt;
+    4:<span class="code_high">             &lt;export name="*"/&gt;&lt;/library&gt;</span></pre>
+
+↓( 続けて、Ctrl-_ )
+
+
+.. raw:: html
+
+    <pre>1: &lt;plugin name="%pluginName" id="net.sourceforge.vim.eclipse" provider-name="%providerName"&gt;
+    2:     &lt;runtime&gt;
+    3:         &lt;library name="vim-eclipse-0.0.4.jar"&gt;
+    4:<span class="code_high">             &lt;export name="*"/&gt;&lt;/library&gt;&lt;/runtime&gt;</span></pre>
+
+↓( 続けて、Ctrl-_ )
+
+
+.. raw:: html
+
+    <pre>1: &lt;plugin name="%pluginName" id="net.sourceforge.vim.eclipse" provider-name="%providerName"&gt;
+    2:     &lt;runtime&gt;
+    3:         &lt;library name="vim-eclipse-0.0.4.jar"&gt;
+    4:<span class="code_high">             &lt;export name="*"/&gt;&lt;/library&gt;&lt;/runtime&gt;&lt;/plugin&gt;</span></pre>
+
+と、Ctrl-_を押すたびに閉じタグが挿入されていきます。
+
+
+
+================================================================================
+注意事項など
+================================================================================
+
+閉じタグが挿入されるのは、入力モードの時です。
+
+なお、入力個所の後ろに閉じタグがあっても、
+気にせず、閉じタグを挿入されてしまいます。
+
+**Vim 6.2だとWin、Mac共、動かないかも？**
+
+代替手段としては、 `xml-plugin`__ が面白そうです。
+
+__ http://www.vim.org/scripts/script.php?script_id=301
+
+
+

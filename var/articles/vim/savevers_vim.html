@@ -1,0 +1,143 @@
+.. vim:set expandtab ff=unix ft=rest :
+
+..  savevers.vim : ファイルの編集履歴を自動的にナンバリングして記録
+
+..  ファイルの編集履歴をローカル・ヒストリーとして記録し、
+    少し前の作業までファイルの状態を戻したり、
+    バージョンの違うファイル同士で差分を取ることができるようにします。
+    (Mac)
+
+.. |BR| raw:: html
+
+    <br />
+
+.. |yen|    unicode:: U+000A5 .. YEN SIGN
+
+.. role:: raw-html(raw)
+    :format: html
+
+.. contents::
+
+================================================================================
+概要
+================================================================================
+
+savevers.vim : Automatically save and diff multiple, sequentially numbered revisions (like VMS) |BR|
+http://www.vim.org/scripts/script.php?script_id=89
+
+ファイルの編集履歴をローカル・ヒストリーとして記録し、
+少し前の作業までファイルの状態を戻したり、
+バージョンの違うファイル同士で差分を取ることができるようにする
+vimスクリプトです。
+
+JavaIDE eclipseに、このスクリプトと似たような機能があります。
+
+.. image:: /dist/img/vim/savevers_eclipse_his.jpg
+    :alt:  eclipse ローカル・ヒストリー
+
+
+
+================================================================================
+インストール方法
+================================================================================
+
+`vim online`__ から、
+スクリプトをダウンロードしてきてください。
+
+__ http://www.vim.org/scripts/script.php?script_id=89
+
+.. csv-table::
+    :header: "ファイル", "URL"
+
+    savevers.vim, http://www.vim.org/scripts/script.php?script_id=89
+
+ダウンロードしたスクリプトは、
+$VIMRUNTIME/plugin
+などのプラグインディレクトリにコピーします。
+
+次に_vimrc設定ファイルに、savevers.vimの設定を追加します。 |BR|
+とりあえずで使用したいのであれば、_vimrcファイルに以下の設定を追加してください。
+
+.. parsed-literal::
+    :class: program
+
+    :set backup
+    :set patchmode=.clean
+    :let savevers_types = "\*"
+    :let savevers_dirs = &backupdir
+    :let versdiff_no_resize=1
+    :nmap <silent> <F5> :VersDiff -<cr>
+    :nmap <silent> <F6> :VersDiff +<cr>
+    :nmap <silent> <F8> :VersDiff -c<cr>
+
+
+savevers.vimプラグインに関わる設定各種の説明です。
+
+.. csv-table::
+    :header: "設定", "効果", "設定例(1行で書く)"
+    :quote: #
+
+    #backup#,             #バックアップを有効にするかどうか。このスクリプトを使うためには有効にしなければならない。Vimの基本設定の1つ。#, #:set backup#
+    #backupdir#,          #バックアップを保存するディレクトリ。Vimの基本設定の1つ。#,                                                     #:set backupdir=/private/tmp#
+    #savevers_types#,     #バージョンの管理をするファイルの種類#,                                                                         #:let savevers_types = "\*.java,\*.xml"#
+    #savevers_dirs#,      #バージョン管理ファイルを保存するディレクトリ。#,                                                               #:let savevers_dirs = "/private/tmp"#
+    #versdiff_no_resize#, #各バージョンとのdiffを表示する時に、ウィンドウサイズを変化させるかどうか。#,                                   #:let versdiff_no_resize=1#
+    #versdiff_max_cols#,  #versdiff_no_resizeのオプションで、ウィンドウサイズの変化を許している時に、どれくらいの幅まで許容するか。#,     #:let versdiff_no_resize=120#
+
+
+
+================================================================================
+使用方法
+================================================================================
+
+編集しているファイルを保存するたびに、ナンバー付きのヒストリーファイルが作られます。 |BR|
+前のバージョンと、現行のファイルを比べたい時は、「<F5>」キーを押してください。
+
+.. image:: /dist/img/vim/savevers_1_back.jpg
+    :alt:  1つの前のファイルとの比較。
+
+「<F5>」キーを押すたびに、より前のバージョンとの比較が表示されます。
+
+.. image:: /dist/img/vim/savevers_2_back.jpg
+    :alt:  2つの前のファイルとの比較。
+
+↓更に「<F5>」キー
+
+.. image:: /dist/img/vim/savevers_3_back.jpg
+    :alt:  3つの前のファイルとの比較。
+
+「<F6>」キーは逆方向にヒストリーを見ていきます。 |BR|
+「<F8>」キーでdiffの画面から元の画面に戻ります。
+
+編集中のファイルの履歴ファイルを消すには、
+
+.. parsed-literal::
+    :class: console
+
+    :Purge 0
+
+全ての履歴ファイルを消去には、
+
+.. parsed-literal::
+    :class: console
+
+    :Purge -a 0
+
+と、コマンドを実行してください。
+
+
+
+================================================================================
+注意事項など
+================================================================================
+
+このスクリプトを動作テストしたところ、
+
+- CVSとの比較がうまく動作しない。
+- Windowsでは、diffが機能しなかった。
+- MacOSXで、長いファイル名のヒストリー管理ができない。
+
+という問題点が見つかりました。
+
+
+

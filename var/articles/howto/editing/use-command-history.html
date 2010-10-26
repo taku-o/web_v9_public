@@ -1,0 +1,194 @@
+.. vim:set expandtab ff=unix ft=rest :
+
+..  コマンド履歴、検索履歴を活用して、作業効率を上げよう。
+
+..  「q:」「q/ 」「q?」を入力すると表示される、コマンド実行履歴、検索履歴の表示機能が邪魔だ、という意見をたまに聞くことがありますが、
+    その考えは非常にもったいない考えです。
+    コマンドラインウィンドウ上でのコマンド履歴、検索履歴の扱い方を学び、Vimエディタによる作業効率を上げましょう。
+    (Windows, Mac)
+
+.. |BR| raw:: html
+
+    <br />
+
+.. |yen|    unicode:: U+000A5 .. YEN SIGN
+
+.. role:: raw-html(raw)
+    :format: html
+
+.. contents::
+
+================================================================================
+概要
+================================================================================
+
+:raw-html:`<kbd>q:</kbd>` 、 :raw-html:`<kbd>q/</kbd>` 、 :raw-html:`<kbd>q?</kbd>` を入力すると表示される、
+コマンド実行履歴、検索履歴の表示機能が邪魔だ、という意見をたまに聞くことがありますが、 |BR|
+その考えは非常にもったいない考えです。 |BR|
+コマンドラインウィンドウ上でのコマンド履歴、検索履歴の扱い方を学び、Vimエディタによる作業効率を上げましょう。
+
+
+
+================================================================================
+履歴の表示
+================================================================================
+
+Vimエディタには、ノーマルモードで、
+:raw-html:`<kbd>q:</kbd>` 、 :raw-html:`<kbd>q/</kbd>` 、 :raw-html:`<kbd>q?</kbd>` を入力すると、 |BR|
+それまでのコマンドの実行履歴、または、検索に使用した検索ワードの履歴を別ウィンドウに表示する機能があります。
+
+:raw-html:`<kbd>q:</kbd>` を入力するとコマンドの実行履歴を表示し、
+
+.. parsed-literal::
+    :class: console
+
+    **" コマンド履歴を表示する**
+    q:
+
+.. image:: /dist/img/howto/editing/use-command-history/view-command-history.png
+    :alt:  コマンド履歴の表示
+
+:raw-html:`<kbd>q/</kbd>` か、 :raw-html:`<kbd>q?</kbd>` を入力すると検索の履歴を表示します。 |BR|
+（履歴を見るだけであれば、どちらのコマンドを利用しても良い。）
+
+.. parsed-literal::
+    :class: console
+
+    **" 検索履歴を表示する**
+    q/
+
+.. image:: /dist/img/howto/editing/use-command-history/view-search-history.png
+    :alt:  検索履歴の表示
+
+この時、履歴が表示されるウィンドウは、コマンドラインウィンドウと呼ばれています。 |BR|
+このコマンドラインウィンドウを閉じるには、 :raw-html:`<kbd>:q</kbd>` と入力してください。
+
+
+
+================================================================================
+履歴の操作
+================================================================================
+
+コマンド、検索の再実行
+--------------------------------------------------------------------------------
+
+コマンド履歴、検索履歴が表示されているコマンドラインウィンドウで、 |BR|
+履歴の上にカーソルを移動し、 :raw-html:`<kbd>Enter</kbd>` キーを押下すると、
+そのカーソル行のコマンド、検索を再度、実行できます。
+
+例えば、次の画面はコマンド履歴の画面ですが、 |BR|
+この状態で :raw-html:`<kbd>Enter</kbd>` キーを押下すると、カーソル行にある「:e global-head.html」が実行されます。
+
+.. image:: /dist/img/howto/editing/use-command-history/select-command-history.png
+    :alt:  コマンド履歴の表示
+
+|BR|
+検索履歴の場合は :raw-html:`<kbd>Enter</kbd>` キーを押下すると、カーソル下の検索を再度実行します。 |BR|
+:raw-html:`<kbd>q/</kbd>` で検索履歴を開いたなら前方（↓）を、 :raw-html:`<kbd>q?</kbd>` で検索履歴を開いたなら後方（↑）を検索します。
+
+.. image:: /dist/img/howto/editing/use-command-history/select-search-history.png
+    :alt:  検索履歴の表示
+
+.. note::
+
+    直近のコマンド、検索の単純な再実行であれば、
+    :raw-html:`<kbd>↑</kbd>` 、 :raw-html:`<kbd>↓</kbd>` キーによる
+    履歴機能を使用する方がお手軽です。
+
+    .. image:: /dist/img/howto/editing/use-command-history/command-wait.png
+        :alt:  コマンドラインモード
+
+    ↓ 上下（ :raw-html:`<kbd>↑</kbd>` :raw-html:`<kbd>↓</kbd>` ）キーで、過去の履歴を表示して実行する。
+
+    .. image:: /dist/img/howto/editing/use-command-history/command-with-history.png
+        :alt:  コマンドの履歴を検索
+
+    |BR|
+
+    .. image:: /dist/img/howto/editing/use-command-history/search-wait.png
+        :alt:  検索
+
+    ↓ 検索も同様に、過去の履歴を引ける。
+
+    .. image:: /dist/img/howto/editing/use-command-history/search-with-history.png
+        :alt:  検索の履歴を検索
+
+
+履歴を編集して再実行
+--------------------------------------------------------------------------------
+
+コマンドラインウィンドウで表示されているコマンド履歴、検索履歴をエディタで編集して、
+その編集加工したコマンド、検索を実行することもできます。 |BR|
+編集したコマンド、検索の実行は、履歴の再実行の時と同じく、 :raw-html:`<kbd>Enter</kbd>` キーで行います。 |BR|
+コマンドミスを修正したり、コマンドを少し変更してから実行したい場合などに有効です。
+
+.. image:: /dist/img/howto/editing/use-command-history/edit-command.png
+    :alt:  コマンドを編集
+
+.. image:: /dist/img/howto/editing/use-command-history/edit-command-done.png
+    :alt:  編集したコマンドを実行
+
+.. note::
+
+    コマンドラインウィンドウで、履歴を編集する時はタブによる補完が効くので、 |BR|
+    タブキーを有効活用しましょう。
+
+    .. image:: /dist/img/howto/editing/use-command-history/tab-completion.png
+        :alt:  コマンド編集のタブ補完
+
+
+コマンドラインに履歴を送る
+--------------------------------------------------------------------------------
+
+コマンドラインウィンドウで、特定の履歴の上にカーソルを移動し、
+:raw-html:`<kbd>Control-c</kbd>` キーを押下すると、 |BR|
+カーソル行のコマンドを、コマンドラインにコピーできます。
+
+.. image:: /dist/img/howto/editing/use-command-history/send-to-commandline-pre.png
+    :alt:  コマンド一覧
+
+↓ :raw-html:`<kbd>Control-c</kbd>` でカーソル下のテキストを、コマンドラインに送れる。
+
+.. image:: /dist/img/howto/editing/use-command-history/send-to-commandline-post.png
+    :alt:  コマンドを送る
+
+|BR|
+検索履歴でも同じく、 :raw-html:`<kbd>Control-c</kbd>` で、カーソル下のテキストを、
+コマンドラインに送れます。
+
+.. image:: /dist/img/howto/editing/use-command-history/send-to-searchword.png
+    :alt:  検索を送る
+
+コマンドラインモードで、過去のコマンドに追加のコマンドを入力して実行したい場合や、 |BR|
+「incsearch」オプションを設定している状態で、
+過去の検索に、検索条件を追加して、検索対象がどう変わるか確認しながら操作したい場合に役に立ちます。
+
+
+
+================================================================================
+履歴表示の暴発を防ぐ
+================================================================================
+
+以上のように活用すれば便利な履歴機能ですが、
+特に、コマンド履歴表示の :raw-html:`<kbd>q:</kbd>` は、
+カレントウィンドウを閉じる :raw-html:`<kbd>:q</kbd>` とコマンドが似ているため、 |BR|
+Vimエディタの操作に不慣れなうちは、不必要にコマンド履歴を開いてしまうことも多いのではないでしょうか。
+
+どうしても、履歴表示が暴発しがちな場合には、例えば、次のような設定をVimエディタの設定ファイルに追加し、 |BR|
+マッピングを変更してしまえば、押し間違いによる履歴表示の暴発は防げます。
+
+.. parsed-literal::
+    :class: console
+
+    **" F5キーでコマンド履歴を開く**
+    **" F6キーで検索履歴を開く**
+    :nnoremap <F5> <CR>q:
+    :nnoremap <F6> <CR>q/
+    **" q:、q/、q? は無効化**
+    :nnoremap q: <NOP>
+    :nnoremap q/ <NOP>
+    :nnoremap q? <NOP>
+
+
+
+

@@ -1,0 +1,314 @@
+.. vim:set expandtab ff=unix ft=rest :
+
+..  ファイル内の各行ごとに編集処理を実行する、何行かおきに編集処理を実行する。
+
+..  編集中のテキストの各行それぞれに対して処理を行う方法と、
+    テキストの何行かおきにVimエディタの編集処理を実行する方法を紹介します。
+    この記事では、
+    各行をそれぞれ複製する方法、
+    各行間に空行を挿入する方法、
+    何行かおきにVimエディタの編集処理を実行する方法
+    を紹介していますが、これらの編集技法をセットで覚えておくと、非常に役に立ちます。
+    (Windows, Mac)
+
+.. |BR| raw:: html
+
+    <br />
+
+.. |yen|    unicode:: U+000A5 .. YEN SIGN
+
+.. role:: raw-html(raw)
+    :format: html
+
+.. contents::
+
+================================================================================
+概要
+================================================================================
+
+編集中のテキストの `各行それぞれに対して処理を行う`_ 方法と、 |BR|
+テキストの `何行かおきにVimエディタの編集処理を実行する`_ 方法を紹介します。
+
+この記事では、
+
+- `各行をそれぞれ複製する`_ 方法
+- `各行間に空行を挿入する`_ 方法
+- `何行かおきにVimエディタの編集処理を実行する`_ 方法
+
+を紹介していますが、これらの編集技法をセットで覚えておくと、非常に役に立ちます。
+
+
+
+================================================================================
+各行それぞれに対して処理を行う
+================================================================================
+
+「:global」と検索パターン「/^/」を組み合わせると、 |BR|
+バッファ内の各行それぞれに対して任意の処理を行えます。
+
+.. parsed-literal::
+    :class: console
+
+    **" バッファ内の各行に「コマンド」を実行する。**
+    :global/^/ {コマンド}
+    
+    **" 「:global」は、「:g」と省略しても実行できます。**
+    :g/^/ {コマンド}
+    
+    **" 「:global」は範囲指定可能。選択した範囲のみを処理の対象にできる。**
+    **"  20行目から159行目にコマンドを適用する。**
+    :20,159 global/^/ {コマンド}
+
+上のフォーマットの中の「コマンド」の部分では、置換の「:substitute」コマンドや、 |BR|
+ノーマルモードの機能を呼び出す「:normal」コマンドなどが使用できます。
+
+.. parsed-literal::
+    :class: console
+
+    **" 20行目から159行目に、置換処理を実行。**
+    **" (この例の場合は、:20,159 s/置換前テキスト/置換後テキスト/g と結果は変わりませんが、**
+    **" 後にでてくる、条件指定と組み合わせると、利用価値が出てくるので覚えておいてください。）**
+    :20,159 global/^/ s/置換前テキスト/置換後テキスト/g
+    
+    **" 各行の文字「S」までを削除する。**
+    :20,159 global/^/ normal dfS
+
+
+各行をそれぞれ複製する
+--------------------------------------------------------------------------------
+
+各行のテキストを、1行1行それぞれ複製します。
+
+.. parsed-literal::
+    :class: program
+
+    jp.nanasi.gui.header.color=green
+    jp.nanasi.gui.menu.color=green
+    jp.nanasi.gui.leftContent.color=green
+    jp.nanasi.gui.body.color=green
+    jp.nanasi.gui.footer.color=green
+
+上図(↑)のようなテキストを、下図(↓)のように加工します。
+
+.. parsed-literal::
+    :class: program
+
+    jp.nanasi.gui.header.color=green
+    jp.nanasi.gui.header.color=green
+    jp.nanasi.gui.header.color=green
+    jp.nanasi.gui.header.color=green
+    jp.nanasi.gui.header.color=green
+    jp.nanasi.gui.menu.color=green
+    jp.nanasi.gui.menu.color=green
+    jp.nanasi.gui.menu.color=green
+    jp.nanasi.gui.menu.color=green
+    jp.nanasi.gui.menu.color=green
+    jp.nanasi.gui.leftContent.color=green
+    jp.nanasi.gui.leftContent.color=green
+    jp.nanasi.gui.leftContent.color=green
+    jp.nanasi.gui.leftContent.color=green
+    jp.nanasi.gui.leftContent.color=green
+    jp.nanasi.gui.body.color=green
+    jp.nanasi.gui.body.color=green
+    jp.nanasi.gui.body.color=green
+    jp.nanasi.gui.body.color=green
+    jp.nanasi.gui.body.color=green
+    jp.nanasi.gui.footer.color=green
+    jp.nanasi.gui.footer.color=green
+    jp.nanasi.gui.footer.color=green
+    jp.nanasi.gui.footer.color=green
+    jp.nanasi.gui.footer.color=green
+    ....
+
+上の章で紹介している「:global/^/」と「normal」を組み合わせて使えば、
+行の複製を実現できます。
+
+.. parsed-literal::
+    :class: console
+
+    **" ファイル全体の行を複製する。**
+    :global/^/ normal yyp
+
+この複製処理が利用されるような状況では、範囲の指定と、コピーする行数の指定が必要になる場合がほとんどなので、 |BR|
+実際には、次のようにコマンドを実行することになるでしょう。
+
+.. parsed-literal::
+    :class: console
+
+    **" 24行目から98行目までの行を、それぞれ4行ずつ複製する。**
+    :24,98 global/^/ normal yy4p
+
+.. note::
+
+    複製したい行の数が1行だけである場合は、下記コマンドのどちらかを使用しても良い。
+
+    .. parsed-literal::
+        :class: console
+
+        :g/^/copy .
+        :g/^/t .
+
+
+各行間に空行を挿入する
+--------------------------------------------------------------------------------
+
+テキストの各行の間に、空行を入れる方法を紹介します。
+
+.. parsed-literal::
+    :class: program
+
+    jp.nanasi.gui.header.color=green
+    jp.nanasi.gui.menu.color=green
+    jp.nanasi.gui.leftContent.color=green
+    jp.nanasi.gui.body.color=green
+    jp.nanasi.gui.footer.color=green
+
+上図（↑）のテキストを、下図（↓）のテキストに加工します。
+
+.. parsed-literal::
+    :class: program
+
+    jp.nanasi.gui.header.color=green
+    
+    jp.nanasi.gui.menu.color=green
+    
+    jp.nanasi.gui.leftContent.color=green
+    
+    jp.nanasi.gui.body.color=green
+    
+    jp.nanasi.gui.footer.color=green
+
+この処理の場合もやはり、「:global/^/」と「normal」を利用して実現します。
+
+.. parsed-literal::
+    :class: console
+
+    **" ファイル全体の行を複製する。**
+    :global/^/ normal i^M
+
+.. note::
+
+    「^M」は、 :raw-html:`<kbd>Control-v</kbd>` :raw-html:`<kbd>Enter</kbd>` と順に押下すると入力できます。
+
+    .. image:: /dist/img/howto/editing/global-head-meta-lf.png
+        :alt:  制御文字入力
+
+
+挿入する空白行の数を調節するには、繰り返しを利用するのが良いと思います。
+
+.. parsed-literal::
+    :class: console
+
+    **" 4行ずつ、空白行を挿入する。**
+    :global/^/ normal 4i^M
+
+
+
+================================================================================
+何行かおきにVimエディタの編集処理を実行する
+================================================================================
+
+ある行数の間隔で、Vimエディタのテキスト編集処理を実行する方法を紹介します。 |BR|
+
+まず、下記のコマンド入力を見てください。 |BR|
+この式では、「:global」で範囲を指定し、「if」で条件を指定し、最後に実行したい処理を「|」で繋げていますが、
+
+.. parsed-literal::
+    :class: console
+
+    **" 「条件」にマッチした行に「コマンド」を実行する。**
+    :global/^/ if {条件} | {コマンド}
+
+この「条件」の部分に、「line(".") % 2 == 0」のような条件を指定すれば、 |BR|
+何行おきかでのVimエディタコマンドの実行を実現できます。
+
+.. parsed-literal::
+    :class: console
+
+    **" 1行おきに、処理を実行する。**
+    :global/^/ if line(".") % 2 == 0 | {コマンド}
+
+
+実行例
+--------------------------------------------------------------------------------
+
+実行例です。 |BR|
+次の式は、7行おきに置換処理を実行します。
+
+.. parsed-literal::
+    :class: console
+
+    **" 7で割り切れる行のみ、後半の置換処理を実行する。**
+    :global/^/ if line(".") % 7 == 0 | s/加工前テキスト/置換テキスト/g
+
+処理対象の行の調整は、ifの条件でコントロールします。
+
+.. parsed-literal::
+    :class: console
+
+    **" 例。57行目から、3行に1行ごとに、置換処理を実行する。**
+    **" 最初に、57行目移行を指定して、かつ、57行目から、3行ごとに置換されるように調整。**
+    :57,$g/^/ if (line(".") - 57) % 3 == 0 | s/加工前テキスト/加工後テキスト/g
+
+
+条件判定の式
+--------------------------------------------------------------------------------
+
+条件判定の式に利用できそうなVimスクリプトのコードを一覧します。
+
+.. csv-table::
+    :header: ファンクション, 説明
+
+    line('.'), カレント行の行番号を返す。
+    line('$'), 最終行の行番号を返す。
+    getline(68), 68行目のテキストを返す。
+
+.. csv-table::
+    :header: 式, 説明
+
+    X + Y,  加算。
+    X - Y,  減算。
+    X \* Y, 乗算。
+    X / Y,  除算。
+    X % Y,  剰余演算。余りを返す。
+
+
+複数の条件を指定
+--------------------------------------------------------------------------------
+
+複数の条件を指定する場合は、各条件式を「|」で区切ります。
+
+.. parsed-literal::
+    :class: console
+
+    **" 「条件」にマッチした行に「コマンド」を実行する。**
+    :global/^/ if {条件1} | if {条件2} | {コマンド}
+
+
+略語を用意する
+--------------------------------------------------------------------------------
+
+しかし、ここで紹介したコマンド入力は長くて、たまに利用する程度なら良いが、
+頻繁に使用するには面倒です。 |BR|
+さらに、Vimを使う人全員がVimスクリプトをすらすら書けるわけでもありません。 |BR|
+（できる人は原理さえ知っておけば、即組み立てられる。）
+
+そこで、上のテクニックを有効に活用するために、 |BR|
+入力を簡単にするための略語を定義しておくと、良いかもしれません。
+
+.. parsed-literal::
+    :class: program
+
+    " 略語の設定の例
+    " コマンドラインモードで「ga」や「ga2」と入力すると、展開される。
+    :cabbrev ga  g/^/
+    :cabbrev ga2 g/^/ if (line(".") % 2 == 1) <BAR>
+    :cabbrev ga3 g/^/ if (line(".") % 3 == 1) <BAR>
+    :cabbrev ga4 g/^/ if (line(".") % 4 == 1) <BAR>
+    :cabbrev ga5 g/^/ if (line(".") % 5 == 1) <BAR>
+
+作成したスクリプトを置いておきます。 |BR|
+http://indefero.taku-o.net/index.php/p/download/source/file/master/interval-linecommand.vim
+
+
+

@@ -1,0 +1,137 @@
+.. vim:set expandtab ff=unix ft=rest nowrap :
+
+..  ディクショナリ型
+
+..  
+
+.. |BR| raw:: html
+
+    <br />
+
+.. |yen|    unicode:: U+000A5 .. YEN SIGN
+
+.. role:: raw-html(raw)
+    :format: html
+
+.. contents::
+
+================================================================================
+ディクショナリ型
+================================================================================
+
+- ディクショナリの作成。
+
+.. parsed-literal::
+    :class: program
+
+    :let var_dict_1 = { "one":"item 1", "two":"item 2", "three":"item 3", "four":"item 4" }
+    :echo var_dict_1
+    "# => {'four': 'item 4', 'one': 'item 1', 'two': 'item 2', 'three': 'item 3'}
+    
+    :let var_dict_2 = {}
+    :echo var_dict_2
+    "# => {}
+
+- ディクショナリに追加。
+
+.. parsed-literal::
+    :class: program
+
+    :let var_dict = { "one":"item 1", "two":"item 2" }
+    
+    :let var_dict["three"] = "item 3"
+    :echo var_dict
+    "# => {'one': 'item 1', 'two': 'item 2', 'three': 'item 3'}
+    
+    :let var_dict.four = "item 4"
+    :echo var_dict
+    "# => {'four': 'item 4', 'one': 'item 1', 'two': 'item 2', 'three': 'item 3'}
+
+- ディクショナリから削除。
+
+.. parsed-literal::
+    :class: program
+
+    :let var_dict = { "one":"item 1", "two":"item 2", "three":"item 3", "four":"item 4" }
+    
+    :call remove(var_dict, 'one')
+    :echo var_dict
+    "# => {'four': 'item 4', 'two': 'item 2', 'three': 'item 3'}
+    
+    :unlet var_dict["three"]
+    :echo var_dict
+    "# => {'four': 'item 4', 'two': 'item 2'}
+    
+    :unlet var_dict.two
+    :echo var_dict
+    "# => {'four': 'item 4'}
+
+- ディクショナリに格納されたアイテムの取得。
+
+.. parsed-literal::
+    :class: program
+
+    :let var_dict = { "one":"item 1", "two":"item 2", "three":"item 3", "four":"item 4" }
+    
+    :echo var_dict["two"]
+    "# => item 2
+    
+    :echo var_dict.two
+    "# => item 2
+
+- ディクショナリのアイテム数の取得。
+
+.. parsed-literal::
+    :class: program
+
+    :let var_dict = { "one":"item 1", "two":"item 2", "three":"item 3", "four":"item 4" }
+    :echo len(var_dict)
+    "# => 4
+
+- ディクショナリのキーのリスト。
+
+.. parsed-literal::
+    :class: program
+
+    :let var_dict = { "one":"item 1", "two":"item 2", "three":"item 3", "four":"item 4" }
+    :echo keys(var_dict)
+    "# => ['four', 'one', 'two', 'three']
+
+- ディクショナリの値のリスト。
+
+.. parsed-literal::
+    :class: program
+
+    :let var_dict = { "one":"item 1", "two":"item 2", "three":"item 3", "four":"item 4" }
+    :echo values(var_dict)
+    "# => ['item 4', 'item 1', 'item 2', 'item 3']
+
+- ループ。
+
+.. parsed-literal::
+    :class: program
+
+    :let var_dict = { "one":"item 1", "two":"item 2", "three":"item 3", "four":"item 4" }
+    :for k in keys(var_dict)
+        :echo k . ":" . var_dict[k]
+    :endfor
+    "# => four:item 4
+    "# => one:item 1
+    "# => two:item 2
+    "# => three:item 3
+
+- フィルタ。
+
+.. parsed-literal::
+    :class: program
+
+    :let var_dict = { "one":"item 1", "two":"item 2", "three":"item 3", "four":"item 4" }
+    
+    " リストから条件にマッチしないアイテムを取り除く
+    " アイテムのキーはv:key、値はv:valに入る
+    :call filter(var_dict, "v:key =~ '^t'")
+    :echo var_dict
+    "# => {'two': 'item 2', 'three': 'item 3'}
+
+
+

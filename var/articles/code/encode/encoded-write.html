@@ -1,0 +1,85 @@
+.. vim:set expandtab ff=unix ft=rest nowrap :
+
+..  特定のエンコードでファイルに書き込む
+
+..  
+
+.. |BR| raw:: html
+
+    <br />
+
+.. |yen|    unicode:: U+000A5 .. YEN SIGN
+
+.. role:: raw-html(raw)
+    :format: html
+
+.. contents::
+
+================================================================================
+特定のエンコードでファイルに書き込む
+================================================================================
+
+- エンコーディングを変換後、ファイルに書き込む
+
+.. parsed-literal::
+    :class: program
+
+    :let outputfile = "test.txt"
+    :let str = "これは日本語テキストです。"
+    
+    :let encoded = iconv(str, "cp932", "euc-jp")
+    :let list = [ encoded ]
+    :call writefile(list, outputfile)
+    "# => euc-jpのエンコードのテキストを書き込む
+
+- &encodingでvimエディタ内部で使用しているエンコーディングを取得できる
+
+.. parsed-literal::
+    :class: program
+
+    :let outputfile = "test.txt"
+    :let str = "これは日本語テキストです。"
+    
+    :let encoded = iconv(str, &encoding, "euc-jp")
+    :let list = [ encoded ]
+    :call writefile(list, outputfile)
+    "# => euc-jpのエンコードのテキストを書き込む
+
+- cp932のエンコードで書き込む
+
+.. parsed-literal::
+    :class: program
+
+    :let outputfile = ........
+    :let text = ........
+    :call writefile([ iconv(text, &encoding, "cp932")  ], outputfile)
+
+- euc-jpのエンコードで書き込む
+
+.. parsed-literal::
+    :class: program
+
+    :let outputfile = ........
+    :let text = ........
+    :call writefile([ iconv(text, &encoding, "euc-jp")  ], outputfile)
+
+- utf-8のエンコードで書き込む
+
+.. parsed-literal::
+    :class: program
+
+    :let outputfile = ........
+    :let text = ........
+    :call writefile([ iconv(text, &encoding, "utf-8")  ], outputfile)
+
+- エンコードを指定して、バッファをファイルに書き出す
+
+.. parsed-literal::
+    :class: program
+
+    :let outputfile = "test.txt"
+    :execute ":w ++enc=utf-8 " . outputfile
+    "# => バッファの内容をutf-8エンコードでファイルに書き込む
+
+
+

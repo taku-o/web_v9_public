@@ -1,0 +1,130 @@
+.. vim:set expandtab ff=unix ft=rest :
+
+..  cvscommand.vim : vimエディタをCVSフロントエンドに
+
+..  vimエディタを、CVSクライアントとして振る舞わせるためのスクリプトです。
+    
+    編集したファイルのCVSへのコミットを行ったり、
+    CVS上のバージョンとの差分を取得して、
+    vimエディタ上で確認することができます。
+    (Windows, Mac)
+
+.. |BR| raw:: html
+
+    <br />
+
+.. |yen|    unicode:: U+000A5 .. YEN SIGN
+
+.. role:: raw-html(raw)
+    :format: html
+
+.. contents::
+
+================================================================================
+概要
+================================================================================
+
+cvscommand.vim : CVS integration plugin |BR|
+http://www.vim.org/scripts/script.php?script_id=90
+
+CVSをvimエディタ上でコントロールするプラグインスクリプトです。
+
+.. image:: /dist/img/vim/cvscommand.jpg
+    :alt:  CVS コマンド各種
+
+メニューも付いています。
+
+.. image:: /dist/img/vim/cvsmenu.jpg
+    :alt:  メニュー項目
+
+
+
+================================================================================
+インストール方法
+================================================================================
+
+$VIMRUNTIME/pluginにcvscommand.vimファイルをコピーします。 |BR|
+メニューにもCVSという項目が現れてくれます。 |BR| 
+**このスクリプトを使用するために、cvsが必要です。**
+
+.. csv-table::
+    :header: "ファイル", "URL"
+
+    "CVS (Concurrent Versions System)", "https://www.cvshome.org/"
+    "cvscommand.vim", "http://www.vim.org/scripts/script.php?script_id=90"
+
+
+
+================================================================================
+使用方法
+================================================================================
+
+このスクリプトは、現在開いているファイルのみを
+コントロールできます。 |BR|
+まず、CVSで扱いたいファイルを開きましょう。
+
+.. parsed-literal::
+    :class: console
+
+    :CVSStatus
+
+.. image:: /dist/img/vim/cvsstatus.jpg
+    :alt:  cvs status
+
+CVSサーバー上のファイルと作業ファイルを比べます。
+
+.. parsed-literal::
+    :class: console
+
+    :CVSLog
+
+.. image:: /dist/img/vim/cvslog.jpg
+    :alt:  cvs log
+
+CVSサーバー上のファイルの履歴を問い合わせます。
+
+.. parsed-literal::
+    :class: console
+
+    :CVSDiff
+
+.. image:: /dist/img/vim/cvsdiff.jpg
+    :alt:  cvs diff
+
+作業ファイルと、同バージョンのファイルの差分を表示します。
+
+.. parsed-literal::
+    :class: console
+
+    :CVSVimDiff
+
+.. image:: /dist/img/vim/cvsvimdiff.jpg
+    :alt:  cvs diff スプリット
+
+作業ファイルと、同バージョンのファイルを
+別々のウインドウに開いて違いを明らかにします。 |BR|
+上下分割、左右分割可能。
+
+.. parsed-literal::
+    :class: console
+
+    :CVSAdd
+    :CVSCommit
+    :CVSUpdate
+
+これらのコマンドは、名前から想像されるとおりの動作をします。 |BR|
+ただし、現在開いているファイルのみを対象とします。
+
+
+
+================================================================================
+注意事項など
+================================================================================
+
+動作確認。2003年3月24日。 |BR|
+Windows、MacOSX10.2、共に動作。 |BR|
+このスクリプトを使用するためには、コマンドラインのcvsが必要です。
+
+
+
+

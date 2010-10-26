@@ -1,0 +1,72 @@
+.. vim:set expandtab ff=unix ft=rest nowrap :
+
+..  修正したvimスクリプトを再読込する
+
+..  
+
+.. |BR| raw:: html
+
+    <br />
+
+.. |yen|    unicode:: U+000A5 .. YEN SIGN
+
+.. role:: raw-html(raw)
+    :format: html
+
+.. contents::
+
+================================================================================
+修正したvimスクリプトを再読込する
+================================================================================
+
+vimスクリプトの開発中などで、
+修正したvimスクリプトを読み込み直したい時は「:source」コマンドを使用する。
+
+.. parsed-literal::
+    :class: program
+
+    :source {vimスクリプトファイル}
+
+- 「!」を付けて、ファンクション定義を上書き可能にする
+
+.. parsed-literal::
+    :class: program
+
+    :function! SimpleFunction()
+        :return "SimpleFunction() is called."
+    :endfunction
+
+- 「!」を付けて、コマンド定義を上書き可能にする
+
+.. parsed-literal::
+    :class: program
+
+    :command! WriteCommand :w test.txt
+
+- autocmdを再読込可能にするなら「:augroup」を使用した方が良い
+
+.. parsed-literal::
+    :class: program
+
+    :augroup Head
+        :autocmd!
+        :execute ":autocmd BufReadCmd   head" .s:spc. "\*,head" .s:spc. "\*/\* HeadRead  <afile>"
+        :execute ":autocmd FileReadCmd  head" .s:spc. "\*,head" .s:spc. "\*/\* HeadRead  <afile>"
+        :execute ":autocmd BufWriteCmd  head" .s:spc. "\*,head" .s:spc. "\*/\* HeadWrite <afile>"
+        :execute ":autocmd FileWriteCmd head" .s:spc. "\*,head" .s:spc. "\*/\* HeadWrite <afile>"
+    :augroup END
+
+- ファンクション参照はいったん「:unlet」すれば再読込可能。
+
+.. parsed-literal::
+    :class: program
+
+    :function! SampleFunction()
+        :return "SampleFunction() is called."
+    :endfunction
+    
+    :unlet Func
+    :let Func = function("SampleFunction")
+    :echo Func()
+
+

@@ -1,0 +1,301 @@
+.. vim:set expandtab ff=unix ft=rest :
+
+..  EnhCommentify.vim : 複数のファイルタイプに対応したソースコメントアウト、コメントアウト解除スクリプト
+
+..  指定の範囲のプログラムのコードを、
+    コメントアウトすることのできるスクリプトです。
+    
+    コメントアウトの形式は、プログラムのコードの種類に応じて、
+    適切な形式が選択されます。
+    (Windows, Mac)
+
+.. |BR| raw:: html
+
+    <br />
+
+.. |yen|    unicode:: U+000A5 .. YEN SIGN
+
+.. role:: raw-html(raw)
+    :format: html
+
+.. contents::
+
+================================================================================
+概要
+================================================================================
+
+EnhCommentify.vim : comment lines in a program |BR|
+http://www.vim.org/script.php?script_id=23
+
+指定の範囲のプログラムソースにコメントを付与したり、
+逆に指定の範囲のコメントを取り外すことができるVimプラグインです。
+
+コメントの形式はプログラムの種類ごとに異なっていますが、
+このプラグインは編集中のソースのファイルタイプに合わせて、
+適切なコメント形式を自動的に選択してくれます。
+
+現在の時点でも、既にかなりの数のファイルタイプに対応しています。
+(2003年2月1日)
+
+
+
+================================================================================
+インストール方法
+================================================================================
+
+`vim online`__ で配布ファイルを入手後、
+ダウンロードした圧縮ファイルを解凍します。
+
+__ http://www.vim.org/script.php?script_id=23
+
+.. csv-table::
+    :header: "ファイル", "URL"
+
+    "EnhCommentify.vim", "http://www.vim.org/script.php?script_id=23"
+
+docディレクトリのEnhancedCommentify.txtを$VIMRUNTIME/docに、 |BR|
+ftpluginディレクトリのphp_enhcomm.vimを$VIMRUNTIME/ftpluginに、 |BR|
+pluginディレクトリのEnhancedCommentify.vimを$VIMRUNTIME/pluginに |BR|
+それぞれコピーします。
+
+.. parsed-literal::
+    :class: console
+
+    :helptags $VIMRUNTIME/doc
+
+最後にEnhancedCommentifyのドキュメントを有効にするために、
+VIMを起動して上のコマンドを実行します。
+
+
+
+================================================================================
+使用方法
+================================================================================
+
+ビジュアルモードでJavaソースファイルのコメントアウトしたい範囲を選択して、
+
+.. image:: /dist/img/vim/enhancedcommentify-java-off.jpg
+    :alt:  Javaソースの範囲を指定
+
+.. parsed-literal::
+    :class: console
+
+    \\x
+
+を実行すると、指定された範囲をコメントアウトできます。
+
+.. image:: /dist/img/vim/enhancedcommentify-java-on.jpg
+    :alt:  Javaソースをコメントアウト
+
+逆にコメントを外したい場合は、コメントを外したい範囲を指定して、
+
+.. image:: /dist/img/vim/enhancedcommentify-java-select.jpg
+    :alt:  Javaソースのコメントを外す範囲を指定
+
+.. parsed-literal::
+    :class: console
+
+    \\x
+
+と実行することで、コメントを取り除けます。
+
+.. image:: /dist/img/vim/enhancedcommentify-java-clear.jpg
+    :alt:  Javaソースのコメントを外した画面
+
+どちらもコマンドは「 |yen| x 」なので、
+「 |yen| x 」を実行する毎に、コメントを付けたり、外したりできます。
+
+.. image:: /dist/img/vim/enhancedcommentify-xml.jpg
+    :alt:  XML形式もコメントアウト可能
+
+コメントの形式はファイルタイプに応じて、同一のコマンドでも変化します。
+XML形式のファイルには、XML形式のコメントアウトを行えます。
+
+.. parsed-literal::
+    :class: console
+
+    \\c
+
+上のコマンドも、「 |yen| x 」と同じくコメントの付け外しができますが、スクリプトの実行後に、一行下に移動します。
+
+
+
+================================================================================
+プラグインの拡張
+================================================================================
+
+このプラグインは、ファイルタイプに応じてコメントの形式を変更してくれます。
+コメントの形式はプラグインが管理しています。
+
+しかし、逆に言うと、プラグインが編集中のファイルタイプを知らない場合、
+コメントの形式を決定できません。
+
+対応していないなら、スクリプトの実行時に次のようなダイアログが表示されることでしょう。(Win) |BR|
+(Mac OSX版gvimでは、有無を言わさずアプリケーションが落ちます。)
+
+.. image:: /dist/img/vim/enhancedcommentify-not-support.jpg
+    :alt:  ファイルタイプを知らないダイアログ
+
+
+ファイルタイプを設定する
+-------------------------------------------------------------------------------
+
+XML形式のファイルであっても、拡張子が違えば違うファイルタイプと認識されてしまいます。
+プラグインはそのままでは有効に働かないでしょう。
+XSL-FO、Relaxer、SmartDocファイルに対して、このプラグインはエラーを出してしまいます。
+
+そういう場合は、この解決方法をとってください。
+
+XSL-FO、Relaxer、SmartDocなどの対応していないファイルタイプのファイルに対して、
+プラグインが対応できるファイルタイプを設定してしまいます。
+
+例えば、_vimrcファイルに次の設定を追加してください。
+これでプラグインが有効に働いてくれるでしょう。
+
+.. parsed-literal::
+    :class: program
+
+    au BufNewFile,BufRead \*.fo setf xml
+    au BufNewFile,BufRead \*.sdoc setf xml
+    au BufNewFile,BufRead \*.rxm setf xml
+    au BufNewFile,BufRead \*.rlx setf xml
+
+ここでは、fo、sdoc、rxm、rlxの拡張子のファイルに、
+xmlのファイルタイプを設定しています。
+
+
+コメントの形式を設定する
+-------------------------------------------------------------------------------
+
+Javaプラグラムを組む人であれば、すぐに気づかれることだと思いますが、
+**build.xml** という名前のファイルに、このプラグインは現状、対応できません。
+
+pure Javaコンパイルツールのデフォルトのビルドファイルとなるbuild.xmlファイルは、
+ファイルタイプ **ant** として認識されています。
+
+この問題は上の方法では解決できません。
+そこで、EnhancedCommentify.vimファイルに設定を追加します。
+
+編集するのは、EnhancedCommentifyの501行目から
+
+.. parsed-literal::
+    :class: program
+
+    function s:GetFileTypeSettings(ft)
+
+655行目、上のfunction宣言と対になる
+
+.. parsed-literal::
+    :class: program
+
+    endfunction
+
+までです。
+
+ファイルタイプantの場合であれば、
+xmlのファイルタイプと同じように扱って欲しいと考えるでしょうから、
+510行目～512行目の
+
+.. parsed-literal::
+    :class: program
+
+    elseif fileType =~ "^\\(html\\|xml\\|dtd\\|sgmllnx\\)$"
+    let b:EnhCommentifyCommentOpen = "<!--"
+    let b:EnhCommentifyCommentClose = "-->"
+
+この部分を
+
+.. parsed-literal::
+    :class: program
+
+    elseif fileType =~ "^\\(html\\|xml\\|dtd\\|sgmllnx\\|ant\\)$"
+    let b:EnhCommentifyCommentOpen = "<!--"
+    let b:EnhCommentifyCommentClose = "-->"
+
+と変更してしまいましょう。 |BR|
+**(, ), | は、 |yen| でエスケープする** 必要がありますので注意してください。
+
+
+新規のコメントの形式を追加する
+-------------------------------------------------------------------------------
+
+新規のコメントの形式が欲しい時があるかもしれません。
+新しいプログラミング言語などの場合では、上2つの方法では解決できません。
+
+そこで、EnhancedCommentify.vimに新しい形式のコメントを実行できるように、
+設定を書き足します。
+
+編集するのは、EnhancedCommentifyの501行目から
+
+.. parsed-literal::
+    :class: program
+
+    function s:GetFileTypeSettings(ft)
+
+655行目、上のfunction宣言と対になる
+
+.. parsed-literal::
+    :class: program
+
+    endfunction
+
+までです。
+
+EnhancedCommentify.vimの644行目から651行目のソースは下のようになっています。
+長く連なるif-elseif-else-endif節の最後の部分です。
+
+.. parsed-literal::
+    :class: program
+
+    elseif fileType == "texinfo"
+    let b:EnhCommentifyCommentOpen = "@c "
+    let b:EnhCommentifyCommentClose = ""
+    else
+    let b:EnhCommentifyCommentOpen = ""
+    let b:EnhCommentifyCommentClose = ""
+    endif
+
+ファイルタイプが **foo** で、 |BR|
+コメントの始めの形式が **?--** |BR|
+コメントの終わりの形式が **--?** であったなら、
+
+.. parsed-literal::
+    :class: program
+
+    elseif fileType == "texinfo"
+    let b:EnhCommentifyCommentOpen = "@c "
+    let b:EnhCommentifyCommentClose = ""
+
+    elseif fileType == "foo"
+    let b:EnhCommentifyCommentOpen = "?--"
+    let b:EnhCommentifyCommentClose = "--?"
+
+    else
+    let b:EnhCommentifyCommentOpen = ""
+    let b:EnhCommentifyCommentClose = ""
+    endif
+
+と書き足します。
+
+もし、コメントが一行コメントであり、
+コメントの終わりの形式が無い場合は、
+
+.. parsed-literal::
+    :class: program
+
+    let b:EnhCommentifyCommentClose = ""
+
+とすれば良いでしょう。
+
+
+
+================================================================================
+注意事項など
+================================================================================
+
+このページは、2003年2月1時点のEnhancedCommentify.vimを元に書いています。
+
+
+
+
+

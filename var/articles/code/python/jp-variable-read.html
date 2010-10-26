@@ -1,0 +1,62 @@
+.. vim:set expandtab ff=unix ft=rest nowrap :
+
+..  Pythonにvim変数経由で日本語文字列を渡す
+
+..  
+
+.. |BR| raw:: html
+
+    <br />
+
+.. |yen|    unicode:: U+000A5 .. YEN SIGN
+
+.. role:: raw-html(raw)
+    :format: html
+
+.. contents::
+
+================================================================================
+Pythonにvimエディタ変数経由で日本語文字列を渡す
+================================================================================
+
+vimスクリプト側
+--------------------------------------------------------------------------------
+
+Pythonに日本語文字列を渡す前に、
+Pythonの処理に都合の良いエンコーディングの文字列に変換しておく。 |BR|
+（迷った場合は、「utf-8」あたりを推奨。）
+
+.. parsed-literal::
+    :class: program
+
+    :let jptext = "日本語文字列"
+    
+    " utf-8エンコーディングの文字列に変換。
+    :let var = iconv(jptext, &encoding, "utf-8")
+
+
+Pythonコード側
+--------------------------------------------------------------------------------
+
+Pythonでvimスクリプトから日本語入りデータを受け取ったら、Pythonのユニコード文字列に変換する。 |BR|
+（ユニコード文字列に変換する際のエンコーディングは、先ほど決めたエンコーディング。）
+
+.. parsed-literal::
+    :class: program
+
+    :python << EOF
+
+    import vim
+
+    # read "var" value.
+    ntext = vim.eval("var")
+
+    # convert to Python unicode
+    unicodetext = unicode(ntext, 'utf-8')
+
+    EOF
+
+このユニコード文字列を使用して、Pythonの処理を行うと良い。
+
+
+

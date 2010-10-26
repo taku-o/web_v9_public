@@ -1,0 +1,56 @@
+.. vim:set expandtab ff=unix ft=rest nowrap :
+
+..  リストのループ
+
+..  
+
+.. |BR| raw:: html
+
+    <br />
+
+.. |yen|    unicode:: U+000A5 .. YEN SIGN
+
+.. role:: raw-html(raw)
+    :format: html
+
+.. contents::
+
+================================================================================
+リストのループ
+================================================================================
+
+- while文を使用したループ。
+
+.. parsed-literal::
+    :class: program
+
+    :let var_list = [ "one", "two", "three", "four", "five", "six" ]
+    :let i = 0
+    :while i < len(var_list)
+    :let item = var_list[i]
+        :echo item
+        :let i = i + 1
+    :endwhile
+    "# => one
+    "# => two
+    "# => three
+    "# => four
+    "# => ...
+
+- for文を使用したループ。
+
+.. parsed-literal::
+    :class: program
+
+    :let var_list = [ "one", "two", "three", "four", "five", "six" ]
+    :for item in var_list
+        :echo item
+    :endfor
+    "# => one
+    "# => two
+    "# => three
+    "# => four
+    "# => ...
+
+
+

@@ -1,0 +1,139 @@
+.. vim:set expandtab ff=unix ft=rest :
+
+..  Package Maker #1 （インストーラー作成までの流れ）
+
+..  「Package Maker」は、
+    Mac OSX用のアプリケーションのインストーラーを作成するためのアプリケーションです。
+    この記事では「Package Maker」でインストーラ作成するまでのフローを説明します。
+    (Mac)
+
+.. |BR| raw:: html
+
+    <br />
+
+.. |yen|    unicode:: U+000A5 .. YEN SIGN
+
+.. role:: raw-html(raw)
+    :format: html
+
+.. contents::
+
+================================================================================
+概要
+================================================================================
+
+「Package Maker」は、
+Mac OSX用のアプリケーションのインストーラーを作成するためのアプリケーションです。 |BR|
+この記事では「Package Maker」でインストーラ作成するまでのフローを説明します。
+
+
+
+================================================================================
+「Package Maker」はどこにあるのか
+================================================================================
+
+「Package Maker」アプリケーションは、
+デベロッパーツールをインストールすると、
+「/Developer/Applications/Utilities」ディレクトリに用意されます。 |BR|
+「Package Maker」を使うには、まず、
+デベロッパーツールをインストールしてください。
+
+.. image:: /dist/img/others/packagemaker/packagemaker_dir.jpg
+    :alt:  Package Makerディレクトリ
+
+
+
+================================================================================
+「Package Maker」の各画面の紹介
+================================================================================
+
+Descriptionタブ
+-------------------------------------------------------------------------------
+
+Descriptionタブでは、
+パッケージの名前と情報を入力します。
+
+.. image:: /dist/img/others/packagemaker/description.jpg
+    :alt:  Package Maker descriptionタブ
+
+
+Filesタブ
+-------------------------------------------------------------------------------
+
+Filesタブで選択したディレクトリ以下のファイルが
+パッケージでインストールされます。
+
+.. image:: /dist/img/others/packagemaker/files.jpg
+    :alt:  Package Maker filesタブ
+
+
+Resourcesタブ
+-------------------------------------------------------------------------------
+
+Resourcesタブではインストール時に実行したいスクリプトを入れたディレクトリを指定します。 |BR|
+ここで指定したディレクトリに、例えば、
+「postinstall」という名前のシェルスクリプトファイルを入れておくと、
+そのスクリプトはインストール時に実行されます。 |BR|
+アンインストール用パッケージの作成にも、このディレクトリ
+（と、そのディレクトリに入れたスクリプト）を使います。
+
+.. image:: /dist/img/others/packagemaker/resources.jpg
+    :alt:  Package Maker resourceタブ
+
+
+Infoタブ
+-------------------------------------------------------------------------------
+
+Infoタブではインストール先の情報を入力します。 |BR|
+このタブで、どこにアプリケーションをインストールするか、
+ルート権限の認証は必要かどうか、などを指定します。
+
+.. image:: /dist/img/others/packagemaker/info.jpg
+    :alt:  Package Maker infoタブ
+
+
+Versionタブ
+-------------------------------------------------------------------------------
+
+Versionタブでは、
+パッケージのバージョンと、
+パッケージを一意に特定するための名前を入力します。
+
+.. image:: /dist/img/others/packagemaker/version.jpg
+    :alt:  Package Maker versionタブ
+
+
+
+================================================================================
+パッケージの作成
+================================================================================
+
+設定が終わったら、「Package Maker」のメニューからパッケージを作成できます。
+
+.. image:: /dist/img/others/packagemaker/create_package.jpg
+    :alt:  Package Maker パッケージ作成
+
+
+
+================================================================================
+ページリンク
+================================================================================
+
+#. - `Package Maker #1 （インストーラー作成までの流れ）`__
+#. `Package Maker #2 （Filesタブ）`__
+#. `Package Maker #3 （インストール中に実行されるスクリプト）`__
+#. `Package Maker #4 （インストールの必須条件のチェック）`__
+#. `Package Maker #5 （ドキュメント）`__
+#. `Package Maker #6 （Infoタブ）`__
+#. `Package Maker #7 （パッケージの作成）`__
+
+__ /articles/others/packagemaker/packagemaker.html
+__ /articles/others/packagemaker/packagemaker_files.html
+__ /articles/others/packagemaker/packagemaker_script.html
+__ /articles/others/packagemaker/packagemaker_validate.html
+__ /articles/others/packagemaker/packagemaker_document.html
+__ /articles/others/packagemaker/packagemaker_info.html
+__ /articles/others/packagemaker/packagemaker_package.html
+
+
+

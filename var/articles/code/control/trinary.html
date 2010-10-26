@@ -1,0 +1,43 @@
+.. vim:set expandtab ff=unix ft=rest nowrap :
+
+..  3項演算子
+
+..  
+
+.. |BR| raw:: html
+
+    <br />
+
+.. |yen|    unicode:: U+000A5 .. YEN SIGN
+
+.. role:: raw-html(raw)
+    :format: html
+
+.. contents::
+
+================================================================================
+3項演算子
+================================================================================
+
+- 3項演算子のサンプル。
+
+.. parsed-literal::
+    :class: program
+
+    :let var = 500
+    :echo var == 500 ? "var is 500" : "var is not 500"
+    "# => var is 500
+
+- 文が長くなる場合は、「\\」を使用して次の行に書くと良い。
+
+.. parsed-literal::
+    :class: program
+
+    :let var = 500
+    :echo var == 500 ?
+        \\ "var is 500" :
+        \\ "var is not 500"
+    "# => var is 500
+
+
+

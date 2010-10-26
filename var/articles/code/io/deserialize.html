@@ -1,0 +1,66 @@
+.. vim:set expandtab ff=unix ft=rest nowrap :
+
+.. オブジェクトの文字列表現から、オブジェクトを復元する
+
+..  
+
+.. |BR| raw:: html
+
+    <br />
+
+.. |yen|    unicode:: U+000A5 .. YEN SIGN
+
+.. role:: raw-html(raw)
+    :format: html
+
+.. contents::
+
+================================================================================
+オブジェクトの文字列表現から、オブジェクトを復元する
+================================================================================
+
+- プロパティファイルを読み込んで、オブジェクトを生成する
+
+.. parsed-literal::
+    :class: program
+
+    " プロパティファイル'filename'を読み込んで、
+    " オブジェクトを生成するファンクション
+    :function! Load(filename)
+        
+        " ファイルからオブジェクトの文字列表現を読み込む
+        :let l:stored = ""
+        :for l:line in readfile(a:filename)
+            :let l:stored .= l:line
+        :endfor
+        
+        " eval()でオブジェクトを復元する
+        :let l:self = eval(l:stored)
+        :return l:self
+        
+    :endfunction
+    
+    
+    :let filename = $HOME . "/store.properties"
+    :let value = Load(filename)
+    
+    :echo value
+    "# => {'key1': 'value1', 'key2': 4, 'key3': [4, 5, 6, 7]}
+    
+    :echo value.key1
+    "# => value1
+    
+    echo value.key3
+    "# => [4, 5, 6, 7]
+
+- プロパティファイル"$HOME/store.properties"。オブジェクトを文字列表現で記述。ルートオブジェクトはリストか、ディクショナリが良い。
+
+.. parsed-literal::
+    :class: program
+
+    { "key1":"value1", "key2":4, "key3":[ 4, 5, 6, 7 ] }
+
+
+
+
+

@@ -1,0 +1,68 @@
+.. vim:set expandtab ff=unix ft=rest nowrap :
+
+..  文字列の比較
+
+..  
+
+.. |BR| raw:: html
+
+    <br />
+
+.. |yen|    unicode:: U+000A5 .. YEN SIGN
+
+.. role:: raw-html(raw)
+    :format: html
+
+.. contents::
+
+================================================================================
+文字列の比較
+================================================================================
+
+- 文字列の単純な比較。
+
+.. parsed-literal::
+    :class: program
+
+    :let var = "text"
+    :echo var == "text"
+    "# => 1
+    :echo var != "text"
+    "# => 0
+
+- 大文字、小文字を区別しない文字列の比較。
+
+.. parsed-literal::
+    :class: program
+
+    :let var = "text"
+    :echo var ==? "text"
+    "# => 1
+    :echo var ==? "TEXT"
+    "# => 1
+
+- 大文字、小文字を区別する文字列の比較。
+
+.. parsed-literal::
+    :class: program
+
+    :let var = "text"
+    :echo var ==# "text"
+    "# => 1
+    :echo var ==# "TEXT"
+    "# => 0
+
+- 正規表現を使用した文字列の比較。
+
+.. parsed-literal::
+    :class: program
+
+    :let var = "text"
+    :echo var =~ "^t"
+    "# => 1
+    :echo var !~ "^t"
+    "# => 0
+
+
+
+

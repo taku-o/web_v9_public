@@ -1,0 +1,47 @@
+.. vim:set expandtab ff=unix ft=rest nowrap :
+
+..  バッファのテキストを読む
+
+..  
+
+.. |BR| raw:: html
+
+    <br />
+
+.. |yen|    unicode:: U+000A5 .. YEN SIGN
+
+.. role:: raw-html(raw)
+    :format: html
+
+.. contents::
+
+================================================================================
+バッファのテキストを読む
+================================================================================
+
+- 一行ずつ読む
+
+.. parsed-literal::
+    :class: program
+
+    :let lastlineno = line("$")
+    :let i = 0
+    :while i < lastlineno
+      :let i = i + 1
+      :echo getline(i)
+    :endwhile
+    "# => バッファのテキストを出力
+
+- 一度に全行読み込んで、リスト型で取得
+
+.. parsed-literal::
+    :class: program
+
+    :let lines = getline(0, line("$"))
+    :for i in lines
+        :echo i
+    :endfor
+    "# => バッファのテキストを出力
+
+
+

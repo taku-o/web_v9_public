@@ -1,0 +1,102 @@
+.. vim:set expandtab ff=unix ft=rest nowrap :
+
+..  呼び出されたpythonのコードから、vimのデータを読み取る
+
+..  
+
+.. |BR| raw:: html
+
+    <br />
+
+.. |yen|    unicode:: U+000A5 .. YEN SIGN
+
+.. role:: raw-html(raw)
+    :format: html
+
+.. contents::
+
+================================================================================
+呼び出されたpythonのコードから、vimのデータを読み取る
+================================================================================
+
+- カレント行テキストを取得する
+
+.. parsed-literal::
+    :class: program
+
+    from vim import *
+    print current.line
+
+- 選択範囲テキストを取得する
+
+.. parsed-literal::
+    :class: program
+
+    # -\*- coding: shift_jis -\*-
+    from vim import *
+    
+    # 選択範囲3行目のデータを出力
+    print current.range[2]
+
+.. parsed-literal::
+    :class: program
+
+    # -\*- coding: shift_jis -\*-
+    from vim import *
+    
+    # 選択範囲のテキストを全て出力
+    for i in current.range:
+        print i
+
+- カレントバッファのテキストを取得する
+
+.. parsed-literal::
+    :class: program
+
+    # -\*- coding: shift_jis -\*-
+    from vim import *
+    
+    # 3行目のデータを出力
+    print current.buffer[2]
+
+.. parsed-literal::
+    :class: program
+
+    # -\*- coding: shift_jis -\*-
+    from vim import *
+    
+    # カレントバッファのテキストを全て出力
+    for i in current.buffer:
+        print i
+
+- 全てのバッファのテキストを取得する
+
+.. parsed-literal::
+    :class: program
+
+    # -\*- coding: shift_jis -\*-
+    from vim import *
+    import vim
+    
+    # 全てのバッファ
+    for buffer in vim.buffers:
+        # 全ての行
+        for i in buffer:
+            print i
+
+- 全てのウィンドウのバッファのテキストを取得する
+
+.. parsed-literal::
+    :class: program
+
+    # -\*- coding: shift_jis -\*-
+    from vim import *
+    import vim
+
+    # 全てのウィンドウ
+    for window in vim.windows:
+        # ウィンドウのバッファの全ての行
+        for i in window.buffer:
+            print i
+
+

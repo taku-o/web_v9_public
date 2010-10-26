@@ -1,0 +1,38 @@
+.. vim:set expandtab ff=unix ft=rest nowrap :
+
+..  ユーザ定義ファンクションを実行する
+
+..  
+
+.. |BR| raw:: html
+
+    <br />
+
+.. |yen|    unicode:: U+000A5 .. YEN SIGN
+
+.. role:: raw-html(raw)
+    :format: html
+
+.. contents::
+
+================================================================================
+ユーザ定義ファンクションを実行する
+================================================================================
+
+.. parsed-literal::
+    :class: program
+
+    :function ReturnFunction()
+        :return "ReturnFunction() is called"
+    :endfunction
+    :echo ReturnFunction()
+    "# => ReturnFunction() is called
+    
+    :function EchoFunction()
+        :echo "EchoFunction() is called"
+    :endfunction
+    :call EchoFunction()
+    "# => EchoFunction() is called
+
+
+

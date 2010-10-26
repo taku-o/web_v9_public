@@ -1,0 +1,181 @@
+.. vim:set expandtab ff=unix ft=rest :
+
+..  xmllintによる XMLの検証と整形
+
+..  指定のXML文書が正しいフォーマットであるかをチェックする、
+    いわゆるLintツールです。
+    XML文書のインデントを整えることもできます。
+    (Windows, Mac)
+
+.. |BR| raw:: html
+
+    <br />
+
+.. |yen|    unicode:: U+000A5 .. YEN SIGN
+
+.. role:: raw-html(raw)
+    :format: html
+
+.. contents::
+
+================================================================================
+概要
+================================================================================
+
+xmllintは、xmlの検証を行うLintツールです。 |BR|
+指定したXMLが、正しいかどうかを判定することができます。 |BR|
+また、XMLファイルを整形することもできます。
+
+vimエディタではビジュアルモードで、行を選択して「=」キーを押せば、
+ドキュメントを整形することはできるのですが、それにも限界があります。
+
+.. parsed-literal::
+    :class: console
+
+    **" 全行フォーマットのコマンド例**
+    vgG=
+
+例えば、次のような形式のXMLドキュメントは、
+上記の方法では正しく整形できません。
+
+.. parsed-literal::
+    :class: program
+
+    <root><parent><child><subchild>DOCUMENT</subchild></child><child>
+    <subchild>TEXT</subchild></child></parent></root>
+
+プログラミングのソースコードでは、それほどフォーマットが崩れることは無い筈ですから、
+vimの「=」キーによるフォーマットで充分間に合うはずです。 |BR|
+しかしながら、XMLドキュメントでは、この崩れたフォーマット(カノニカルフォームと言います。)になることは良くあることです。 |BR|
+(例えば、RelaxオブジェクトをXML形式で出力した時、XTというXSLTプロセッサーで変換した時、その他いろいろ。)
+
+人間にとっては読みづらいXMLドキュメントなので、ツールで変換してしまいましょう、 |BR|
+というのが、今回の記事です。
+xmllintはこのXMLドキュメントを人が読み易い形式に整形することができます。
+
+.. parsed-literal::
+    :class: program
+
+    **リフォーマット後**
+    <?xml version="1.0"?>
+    <root>
+      <parent>
+        <child>
+          <subchild>DOCUMENT</subchild>
+        </child>
+        <child>
+          <subchild>TEXT</subchild>
+        </child>
+      </parent>
+    </root>
+
+
+
+================================================================================
+インストール方法 (Windows)
+================================================================================
+
+xmllintを入手します。 |BR|
+大変わかりづらいのですが、 `The XML C library for Gnome`__ の
+「libxml」というC言語のライブラリに、xmllintが含まれています。
+
+__ http://xmlsoft.org/index.html
+
+Windows版xmllintは、 `このサイト`__
+から、libxml2 バイナリをダウンロードしてください。
+
+__ http://www.zlatkovic.com/libxml.en.html
+
+ダウンロードした圧縮ファイルを解凍したら、
+utilディレクトリにある「xmllint.exe」と、
+libディレクトリにある「libxml2.dll」をPATHの通ったディレクトリに配置してください。
+
+
+
+================================================================================
+インストール方法 (Mac)
+================================================================================
+
+Mac OSX Panther以降の場合は、インストールする必要はありません。
+
+.. note::
+
+    下記は古いバージョンのMacOSXにxmllintをインストールする場合の
+    ドキュメントです。
+
+xmllintを入手します。 |BR|
+`このサイトから`__
+Mac OSX用xmllintバイナリをダウンロードして下さい。
+
+__ http://www.zveno.com/open_source/libxml2xslt.html
+
+圧縮ファイルを解凍後、dmgファイルをダブルクリックすると、
+/Volumes/ ディレクトリにイメージが展開されます。 |BR|
+その中の「xmllint」を、~/binに、
+「libxml.frameworkフォルダ」を、~/Library/Frameworksに、
+それぞれ配置して下さい。
+
+
+
+================================================================================
+使用方法
+================================================================================
+
+XMLの検証
+-------------------------------------------------------------------------------
+
+正しさを検証したいXMLファイルに対して下のコマンドを実行すると、
+XMLファイルを検証して、その検証結果を出力します。
+
+.. parsed-literal::
+    :class: console
+
+    xmllint --noout --valid XMLファイル
+
+XMLの整形
+-------------------------------------------------------------------------------
+
+整形したいXMLファイルに対して次のコマンドを実行すると、
+整形後のXMLを標準出力に出力します。
+
+.. parsed-literal::
+    :class: console
+
+    xmllint --format XMLファイル
+
+
+
+================================================================================
+使い方 (vimエディタ編) vim online Tips #349
+================================================================================
+
+`(vim online Tip #349 より)`__
+
+__ http://www.vim.org/tip_view.php?tip_id=349
+
+    If you open an xml document that is either totally or partially unindented, you can use the GNU libxml2 libary's xmllint to reformat and align your document.  This is especially good if you want to save your xml documents using as little space as possible (which would be totally unindented).  Just add this under the autocmd section of your .vimrc file 
+
+全体もしくは部分的にインデントが崩れているXMLドキュメントを扱うのであれば、
+GNU libxml2 libraryのxmllintで、そのXMLドキュメントをリフォーマットして、
+インデントを修正することが出来ます。 |BR|
+xmllintでインデントを修正するという手段は、XMLドキュメントにたいして手を加えずに編集、保存する場合、
+とても有効です。(おそらく保存後はXMLドキュメントのインデントが崩れてしまっているでしょう。) |BR|
+vim設定ファイルの_vimrcファイルのautocmdの設定部に、次の一文を加えてみて下さい。
+
+.. parsed-literal::
+    :class: program
+
+    au FileType xml exe ":silent 1,$!xmllint --format --recover - 2>/dev/null" 
+
+This instructs vim to take the entire contents of a \*.xml file and pass it through xmllint, using the --format and --recover flags and silencing any errors that may occur.  This is generally a very effective process and will only mess up on very poorly typed (a large amout of incorrect syntax) xml documents.  Please note that xmllint only adds and removes structural space.  It does not remove space from regular text nodes (as doing so would be incorrect).
+
+この一文により、XMLドキュメントを開いた時に、
+vimは自動的に、XMLドキュメント全体に対して、--format、--recover (エラーが発生しても無視する)オプションを
+つけてxmllintを実行するようになります。 |BR|
+このオプションは、インデントが崩れていたり、編集中の(文法的に正しくない状態にある)XMLファイルに対しても
+有効に働くでしょう。 |BR|
+覚えていて欲しいのは、xmllintは構造上のスペースを追加、もしくは削除するだけだ、ということです。
+テキストノードのドキュメントを変更してしまうようなことはありません。 |BR|
+(もし、テキストノードを変更されてしまったなら困るでしょう？しかし、そんな心配はいりません。)
+
+

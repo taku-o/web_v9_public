@@ -1,0 +1,50 @@
+.. vim:set expandtab ff=unix ft=rest nowrap :
+
+..  メッセージを表示する
+
+..  
+
+.. |BR| raw:: html
+
+    <br />
+
+.. |yen|    unicode:: U+000A5 .. YEN SIGN
+
+.. role:: raw-html(raw)
+    :format: html
+
+.. contents::
+
+================================================================================
+メッセージを表示する
+================================================================================
+
+- 通常メッセージの表示
+
+.. parsed-literal::
+    :class: program
+
+    :echomsg "this is a message."
+    "# => this is a message.
+    
+    :echohl None | echo "this is a message." | echohl None
+    "# => this is a message.
+
+- 警告メッセージの表示
+
+.. parsed-literal::
+    :class: program
+
+    :echohl WarningMsg | echo "this is a message." | echohl None
+    "# => this is a message.
+
+- エラーメッセージの表示
+
+.. parsed-literal::
+    :class: program
+
+    :echohl ErrorMsg | echo "this is a message." | echohl None
+    "# => this is a message.
+
+
+

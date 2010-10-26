@@ -1,0 +1,305 @@
+.. vim:set expandtab ff=unix ft=rest nowrap :
+
+..  マーカー文字列を埋め込んで、ソースコードを折り畳み表示する
+
+..  vimエディタの折り畳み機能をコードに埋め込んだマーカー文字列で
+    コントロールする方法を説明します。
+    vimエディタには、コードの中にある目印となるマーカー
+    （デフォルトでは「{{{」と「}}}」）
+    を書いておくことで、そのマーカーに囲まれた範囲を折り畳む機能があります。
+    このマーカー文字列による折り畳み機能は、vimエディタの「foldmethod」オプションが
+    「marker」に設定されている時のみ、使用できます。
+    (Windows, Mac)
+
+.. |BR| raw:: html
+
+    <br />
+
+.. |yen|    unicode:: U+000A5 .. YEN SIGN
+
+.. role:: raw-html(raw)
+    :format: html
+
+.. contents::
+
+================================================================================
+概要
+================================================================================
+
+vimエディタの折り畳み機能をコードに埋め込んだマーカー文字列で
+コントロールする方法を説明します。 |BR|
+vimエディタには、コードの中にある目印となるマーカー
+（デフォルトでは「{{{」と「}}}」） |BR|
+を書いておくことで、そのマーカーに囲まれた範囲を折り畳む機能があります。 |BR|
+このマーカー文字列による折り畳み機能は、vimエディタの「foldmethod」オプションが
+「marker」に設定されている時のみ、使用できます。
+
+.. parsed-literal::
+    :class: program
+
+    :set foldmethod=marker
+
+
+.. image:: /dist/img/howto/fold/fold-marker-fold-pre.jpg
+    :alt:  折り畳みの範囲をマーカーで指定する。
+
+↓ マーカーで囲んだエリアが折り畳まれます。
+
+.. image:: /dist/img/howto/fold/fold-marker-fold-post.jpg
+    :alt:  指定した箇所が折り畳まれた。
+
+
+
+================================================================================
+マーカー埋め込みによる折り畳み機能の基本的な使い方
+================================================================================
+
+モードラインで「foldmethod=marker」を指定する
+--------------------------------------------------------------------------------
+
+マーカー埋め込みによる折り畳み機能を使用する場合は、
+まず、モードラインで「foldmethod」オプションに「marker」と設定することを検討してください。 |BR|
+折り畳み箇所の目印となるマーカーをコードに埋め込んでも、
+「foldmethod」オプションに「marker」を設定しない限り、埋め込んだマーカーでの折り畳みはできません。
+しかし、モードラインを使用すれば、設定が変わっても、他の人が開いても、設定した折り畳みを有効にできます。
+
+モードラインで「foldmethod」を指定するには、次のようなコードをファイルの上か下に追加します。
+
+.. parsed-literal::
+    :class: program
+
+    **モードラインの例 その1（C言語風コメント）**
+    /\* vim:set foldmethod=marker: \*/
+    
+    **モードラインの例 その2（vimスクリプト風コメント）**
+    " vim:set foldmethod=marker:
+    
+    **モードラインの例 その3（シェルスクリプト風コメント）**
+    # vim:set foldmethod=marker:
+
+参考： `モードラインを使って、ファイルごとにvimエディタのオプションを指定する。`__
+
+__ http://nanasi.jp/articles/howto/file/modeline.html
+
+
+折り畳みを行う箇所にマーカーを埋め込む
+--------------------------------------------------------------------------------
+
+折り畳みを行いたい範囲の開始行の位置に「{{{」を、終わりの行に「}}}」の文字列を埋め込みます。
+
+.. raw:: html
+
+    <pre class="program">package test.hello;
+
+    public class HelloWorld {
+
+        public HelloWorld() {}
+
+        public void hello() { <span class="code_high">{{{</span>
+            System.out.println("Hello World");
+        } <span class="code_high">}}}</span>
+
+        public static void main(String[] argv) {
+            HelloWorld instance = new HelloWorld();
+            instance.hello();
+        }
+
+    }
+    <span class="code_high">/* vim:set foldmethod=marker: */</span> </pre>
+
+プログラムのコードにマーカー文字列を埋め込む場合、
+単純にマーカーを書いただけではプログラムが文法的にエラーになることが多いので、
+通常はマーカーをコメントで囲みます。
+
+.. raw:: html
+
+    <pre class="program">package test.hello;
+
+    public class HelloWorld {
+
+        public HelloWorld() {}
+
+        public void hello() { <span class="code_high">/* {{{ */</span>
+            System.out.println("Hello World");
+        } <span class="code_high">/* }}} */</span>
+
+        public static void main(String[] argv) {
+            HelloWorld instance = new HelloWorld();
+            instance.hello();
+        }
+
+    }
+    <span class="code_high">/* vim:set foldmethod=marker: */</span> </pre>
+
+埋め込んだマーカーで正しくフォールディングが行われるかを確認するには、
+ファイルを読み込みなおすか、次のコマンドを実行します。
+
+.. parsed-literal::
+    :class: console
+
+    :%foldclose
+
+.. image:: /dist/img/howto/fold/fold-marker-sample-fold-java.jpg
+    :alt:  折り畳み箇所の確認。
+
+
+
+================================================================================
+コマンドでマーカーを埋め込む、取り除く
+================================================================================
+
+{Visual}zf
+--------------------------------------------------------------------------------
+
+「foldmethod」に「marker」を設定している場合、
+ビジュアルモードで範囲を指定して :raw-html:`<kbd>zf</kbd>` と入力すると、 |BR|
+選択した範囲の最初と最後の行に折り畳みのマーカーを埋め込めます。
+
+.. image:: /dist/img/howto/fold/fold-marker-zf-select.jpg
+    :alt:  折り畳みを行いたい範囲をビジュアルモードで選択
+
+↓ 折り畳みを行いたい範囲をビジュアルモードで選択し、 :raw-html:`<kbd>zf</kbd>` で最初の行、最後の行にマーカーを埋め込める。
+
+.. image:: /dist/img/howto/fold/fold-marker-zf-write.jpg
+    :alt:  選択範囲の最初の行、最後の行にマーカーが埋め込まれた
+
+
+zd
+--------------------------------------------------------------------------------
+
+同じく、「foldmethod」に「marker」を設定している場合、
+削除したい折り畳みのマーカーの位置にカーソルを持って行き、
+:raw-html:`<kbd>zd</kbd>` でコード中に埋め込まれたマーカーを除去できます。
+
+.. image:: /dist/img/howto/fold/fold-marker-zd.jpg
+    :alt:  折り畳みのマーカーの範囲内にカーソルを持って行く
+
+↓ 削除したい折り畳みの範囲にカーソルを移動し、 :raw-html:`<kbd>zd</kbd>` でマーカーを削除できる。
+
+.. image:: /dist/img/howto/fold/fold-marker-zd-remove.jpg
+    :alt:  折り畳みのマーカーが削除された
+
+
+埋め込まれるマーカーを囲むコメントの形式を変更する
+--------------------------------------------------------------------------------
+
+:raw-html:`<kbd>zf</kbd>` でマーカーを埋め込むと、マーカーはコメントで囲まれた形でコードに追加されます。
+このコメントの形式を変更するには、vimエディタの「commentstring」オプションでコメントの形式を指定します。
+
+.. parsed-literal::
+    :class: program
+
+    **" コメントの形式をスラッシュ2つの形式に変更**
+    :set commentstring=//%s
+
+この「commentstring」オプションの設定も「foldmethod」の設定と同じく、
+ユーザの設定が異なると折り畳みが機能しなくなってしまう類の設定なので、
+変更する場合はモードラインでオプションを指定するのが良いでしょう。
+
+.. parsed-literal::
+    :class: program
+
+    **モードラインの例 その1（C言語風コメント）**
+    /\* vim:set foldmethod=marker commentstring=//%s : \*/
+    
+    **モードラインの例 その2（vimスクリプト風コメント）**
+    " vim:set foldmethod=marker commentstring=//%s :
+    
+    **モードラインの例 その3（シェルスクリプト風コメント）**
+    # vim:set foldmethod=marker commentstring=//%s :
+
+参考： `モードラインを使って、ファイルごとにvimエディタのオプションを指定する。`__
+
+__ http://nanasi.jp/articles/howto/file/modeline.html
+
+
+
+================================================================================
+折り畳みのマーカー文字列を変更する
+================================================================================
+
+折り畳みを使用するコードに文法的な問題などがあり、
+デフォルトの折り畳みのマーカー「{{{」「}}}」が使用できない場合には、
+「foldmarker」オプションでマーカーとして使用する文字列を変更できます。
+「foldmarker」オプションに、カンマで区切って、前後のマーカー文字列を指定します。
+
+.. parsed-literal::
+    :class: program
+
+    **" カンマで区切って、マーカー文字列の対を指定する**
+    :set foldmarker=\[\[\[,]]]
+
+この「foldmarker」の設定も、vimエディタの設定が異なれば、折り畳みが全く機能しなくなるので、
+変更する場合は、やはり、モードラインで指定しておくのが良いと考えられます。
+
+.. parsed-literal::
+    :class: program
+
+    **モードラインの例 その1（C言語風コメント）**
+    /\* vim:set foldmethod=marker foldmarker=\[\[\[,]]] : \*/
+    
+    **モードラインの例 その2（vimスクリプト風コメント）**
+    " vim:set foldmethod=marker foldmarker=\[\[\[,]]] :
+    
+    **モードラインの例 その3（シェルスクリプト風コメント）**
+    # vim:set foldmethod=marker foldmarker=\[\[\[,]]] :
+
+参考： `モードラインを使って、ファイルごとにvimエディタのオプションを指定する。`__
+
+__ http://nanasi.jp/articles/howto/file/modeline.html
+
+
+
+================================================================================
+折り畳まれた時の見え方と、マーカーの埋め込み位置についての考慮
+================================================================================
+
+コードを折り畳むと、当然、折り畳まれた範囲のコードの大半が読めなくなりますが、
+しかし、折り畳まれた一行目の文字列に関してはいくらか見ることができます。
+
+.. image:: /dist/img/howto/fold/fold-marker-foldtop.jpg
+    :alt:  折り畳まれた箇所のズーム
+
+そこで、折り畳み範囲の最初の行には、折り畳まれた場所がどんなコードがわかる内容を含めると、
+コードの保守性が高くなります。 |BR|
+具体例としては、
+
+- メソッド名の宣言を1行目に持ってくる
+
+.. raw:: html
+
+    <pre class="program">    public void hello() { <span class="code_high">/* {{{ */</span>
+            System.out.println("Hello World");
+        }
+        <span class="code_high">/* }}} */</span> </pre>
+
+- コメントを最初の行として、その行に簡易な説明を書く
+
+.. raw:: html
+
+    <pre class="program">    /* これはhello()メソッドです。 <span class="code_high">{{{</span> */
+        public void hello() {
+            System.out.println("Hello World");
+        }
+        <span class="code_high">/* }}} */</span> </pre>
+
+などがあります。
+
+
+
+================================================================================
+注意事項など
+================================================================================
+
+このドキュメントの中では、モードラインで「foldmethod」を設定することを推奨していますが、
+それ以外の方法だと、
+
+- ファイルタイププラグインで設定する。
+- vimエディタの設定ファイルで設定する。
+- 毎回、 :raw-html:`<kbd>:set foldmethod=marker</kbd>` を指定する。
+
+といった手段もとれます。
+
+
+
+

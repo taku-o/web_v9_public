@@ -1,0 +1,53 @@
+.. vim:set expandtab ff=unix ft=rest nowrap :
+
+..  発生したエラーの情報を取得する
+
+..  
+
+.. |BR| raw:: html
+
+    <br />
+
+.. |yen|    unicode:: U+000A5 .. YEN SIGN
+
+.. role:: raw-html(raw)
+    :format: html
+
+.. contents::
+
+================================================================================
+発生したエラーの情報を取得する
+================================================================================
+
+- エラーの原因を取得する
+
+.. parsed-literal::
+    :class: program
+
+    :try
+        :throw "ERROR"
+    :catch
+        :echo v:exception
+    :endtry
+    "# => ERROR
+    
+    :try
+        :echoerr "ERROR"
+    :catch
+        :echo v:exception
+    :endtry
+    "# => Vim(echoerr):ERROR
+
+- エラーの起きた場所を特定する
+
+.. parsed-literal::
+    :class: program
+
+    :try
+        :echoerr "ERROR"
+    :catch
+        :echo v:throwpoint
+    :endtry
+    "# => C:\\user\\Desktop\\code\\error\\test.vim, 行 20
+
+

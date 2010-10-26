@@ -1,0 +1,93 @@
+.. vim:set expandtab ff=unix ft=rest nowrap :
+
+..  ファンクション参照
+
+..  
+
+.. |BR| raw:: html
+
+    <br />
+
+.. |yen|    unicode:: U+000A5 .. YEN SIGN
+
+.. role:: raw-html(raw)
+    :format: html
+
+.. contents::
+
+================================================================================
+ファンクション参照
+================================================================================
+
+- 変数の作成。
+
+.. parsed-literal::
+    :class: program
+
+    :function SampleFunction()
+        :return "SampleFunction() is called"
+    :endfunction
+    
+    :let VarFunc = function("SampleFunction")
+
+- ファンクションの実行。
+
+.. parsed-literal::
+    :class: program
+
+    :function SampleFunction1()
+        :return "SampleFunction1() is called"
+    :endfunction
+    :let VarFunc1 = function("SampleFunction1")
+    :echo call(VarFunc1, [])
+    "# => SampleFunction1() is called
+    
+    :function SampleFunction2(arg1, arg2)
+        :return "SampleFunction2() is called. p1:" . a:arg1 . ", p2:" . a:arg2
+    :endfunction
+    :let VarFunc2 = function("SampleFunction2")
+    :echo call(VarFunc2, [ "parameter1", "parameter2" ])
+    "# => SampleFunction2() is called. p1:parameter1, p2:parameter2
+
+- ファンクションの名前の取得。
+
+.. parsed-literal::
+    :class: program
+
+    :function SampleFunction()
+        :echo "SampleFunction() is called"
+    :endfunction
+    
+    :let VarFunc = function("SampleFunction")
+    :echo string(VarFunc)
+    "# => function('SampleFunction')
+    
+    :let VarFunc = function("SampleFunction")
+    :echo VarFunc
+    "# => SampleFunction
+
+- ファンクション参照をグローバルなスコープで使用する場合は、大文字から始める必要がある
+
+.. parsed-literal::
+    :class: program
+
+    :function! SampleFunction()
+        :echo "SampleFunction() is called"
+    :endfunction
+    
+    :let varFunc = function("SampleFunction")
+    "# => E704: 関数参照型変数名は大文字で始まらなければなりません: varFunc
+    
+    :let s:varFunc = function("SampleFunction")
+    :echo string(s:varFunc)
+    "# => function('SampleFunction')
+    
+    :let g:varFunc = function("SampleFunction")
+    "# => E704: 関数参照型変数名は大文字で始まらなければなりません: g:varFunc
+    
+    :let g:VarFunc = function("SampleFunction")
+    :echo string(g:VarFunc)
+    "# => function('SampleFunction')
+
+
+

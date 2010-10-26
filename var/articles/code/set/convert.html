@@ -1,0 +1,61 @@
+.. vim:set expandtab ff=unix ft=rest nowrap :
+
+..  変数の型を変換する
+
+..  
+
+.. |BR| raw:: html
+
+    <br />
+
+.. |yen|    unicode:: U+000A5 .. YEN SIGN
+
+.. role:: raw-html(raw)
+    :format: html
+
+.. contents::
+
+================================================================================
+変数の型を変換する
+================================================================================
+
+- 文字列から数値に変換。
+
+.. parsed-literal::
+    :class: program
+
+    :echo str2nr("400", 8)
+    "# => 256
+    :echo str2nr("400", 16)
+    "# => 1024
+
+- 数値から文字列に変換。
+
+.. parsed-literal::
+    :class: program
+
+    :echo printf("%o", 256)
+    "# => 400
+    :echo printf("%x", 1024)
+    "# => 400
+
+- ディクショナリからキーのリスト作成。
+
+.. parsed-literal::
+    :class: program
+
+    :let var_dict = { "one":"item 1", "two":"item 2", "three":"item 3", "four":"item 4" }
+    :echo keys(var_dict)
+    "# => ['four', 'one', 'two', 'three']
+
+- ディクショナリから値のリスト作成。
+
+.. parsed-literal::
+    :class: program
+
+    :let var_dict = { "one":"item 1", "two":"item 2", "three":"item 3", "four":"item 4" }
+    :echo values(var_dict)
+    "# => ['item 4', 'item 1', 'item 2', 'item 3']
+
+
+

@@ -1,0 +1,150 @@
+.. vim:set expandtab ff=unix ft=rest :
+
+..  高性能なテキスト整形ツールAlignの使い方 #6 Alignの使い方を簡潔に説明
+
+..  高性能、多機能整形用プラグインである、Alignの使い方を簡単に、覚えるべきところだけ説明します。
+    #1 から #5 の記事の分量が多すぎて読む気が起きない人向け。
+    (Windows, Mac)
+
+.. |BR| raw:: html
+
+    <br />
+
+.. |yen|    unicode:: U+000A5 .. YEN SIGN
+
+.. role:: raw-html(raw)
+    :format: html
+
+.. contents::
+
+================================================================================
+概要
+================================================================================
+
+Align : Provides commands and maps to help produce aligned text, eqns, declarations, etc |BR|
+http://www.vim.org/scripts/script.php?script_id=294
+
+Alignは、Vimエディタ上で使える、高機能な整形機能実行用プラグインです。 |BR|
+Alignの機能は豊富ですが、とりあえず、このページで紹介する3つの使い方だけ覚えておきましょう。
+
+
+
+================================================================================
+:Alignコマンドで整形
+================================================================================
+
+「:Align {区切り文字}」とコマンドを入力すると、指定した文字を区切りにして整形を行います。
+
+.. parsed-literal::
+    :class: program
+
+    aa\|bb\|cc\|1
+    a\|b\|c\|2
+    aaa\|bbb\|ccc\|XX
+
+たとえば、このような文章がある時に、整形したいテキストを選択して、
+
+.. parsed-literal::
+    :class: console
+
+    :Align |
+
+と :raw-html:`<kbd>:Align</kbd>` コマンドを実行すると、
+コマンドで指定した「|」を基準に整形します。
+
+.. parsed-literal::
+    :class: program
+
+    aa  | bb  | cc  | 1
+    a   | b   | c   | 2
+    aaa | bbb | ccc | XX
+
+|BR|
+
+.. parsed-literal::
+    :class: console
+
+    " コマンドのフォーマット
+    :Align {区切り文字}
+
+
+
+================================================================================
+空白文字ベースの整形
+================================================================================
+
+空白文字を区切りにした整形は行う場合は、 :raw-html:`<kbd>:Align</kbd>` コマンドではなく、
+代わりに用意されている組み込みコマンドを使用して整形します。 |BR|
+紹介するコマンドは2つ、 :raw-html:`<kbd>\tsp</kbd>` と、 :raw-html:`<kbd>\tab</kbd>` です。
+
+.. raw:: html
+
+    <pre class="program">
+    one<span class="tab_char">&gt;&gt;---</span>two<span class="tab_char">&gt;&gt;---&gt;---</span>three<span class="tab_char">&gt;---&gt;---</span>four<span class="tab_char">&gt;--</span>five
+    six<span class="tab_char">&gt;&gt;---&gt;---</span>seven<span class="tab_char">&gt;--</span>eight<span class="tab_char">&gt;--</span>nine<span class="tab_char">&gt;---</span>ten
+    eleven<span class="tab_char">&gt;-</span>twelve<span class="tab_char">&gt;--</span>thirteen<span class="tab_char">&gt;---&gt;---&gt;---</span>fourteen<span class="tab_char">&gt;---</span>fifteen
+    </pre>
+
+:raw-html:`<kbd>\tsp</kbd>` は、選択したテキストを、空白文字を基準に整形し、
+
+.. parsed-literal::
+    :class: program
+
+    one    two    three    four     five
+    six    seven  eight    nine     ten
+    eleven twelve thirteen fourteen fifteen
+
+:raw-html:`<kbd>\tab</kbd>` はタブ文字を基準に整形します。
+
+.. parsed-literal::
+    :class: program
+
+    one               two                        three                four   five
+    six                          seven   eight   nine       ten
+    eleven   twelve   thirteen                   fourteen   fifteen
+
+.. csv-table::
+    :header: コマンド, 説明
+
+    \tsp, 空白文字を境目にして整形
+    \tab, タブ文字を使用して整形。TSV整形用。
+
+
+
+================================================================================
+注意事項など
+================================================================================
+
+Alignプラグインに興味が湧きましたら、もしくは、Alignプラグインの使い方の詳細がわからない場合は、 |BR|
+用意してある他のページも読んでみてください。
+
+
+
+================================================================================
+ページリンク
+================================================================================
+
+#. `高性能なテキスト整形ツールAlignの使い方 #1 インストールから設定まで`_
+#. `高性能なテキスト整形ツールAlignの使い方 #2 組み込みマッピングでテーブル構造を整形する`_
+#. `高性能なテキスト整形ツールAlignの使い方 #3 組み込みマッピングでプログラムのソースを整形する`_
+#. `高性能なテキスト整形ツールAlignの使い方 #4 「:Align」コマンドを使用して整形処理を行う`_
+#. `高性能なテキスト整形ツールAlignの使い方 #5 ここまで紹介していない残りの機能の紹介`_
+#. - `高性能なテキスト整形ツールAlignの使い方 #6 Alignの使い方を簡潔に説明`_
+
+.. _`高性能なテキスト整形ツールAlignの使い方 #1 インストールから設定まで`: `doc_align`_
+.. _`高性能なテキスト整形ツールAlignの使い方 #2 組み込みマッピングでテーブル構造を整形する`: `doc_align_mapt`_
+.. _`高性能なテキスト整形ツールAlignの使い方 #3 組み込みマッピングでプログラムのソースを整形する`: `doc_align_mapa`_
+.. _`高性能なテキスト整形ツールAlignの使い方 #4 「:Align」コマンドを使用して整形処理を行う`: `doc_align_ctrl`_
+.. _`高性能なテキスト整形ツールAlignの使い方 #5 ここまで紹介していない残りの機能の紹介`: `doc_align_ext`_
+.. _`高性能なテキスト整形ツールAlignの使い方 #6 Alignの使い方を簡潔に説明`: `doc_align_summary`_
+
+.. _`Align`: http://www.vim.org/scripts/script.php?script_id=294
+.. _`doc_align`: /articles/vim/align/align_vim.html
+.. _`doc_align_mapt`: /articles/vim/align/align_vim_mapt.html
+.. _`doc_align_mapa`: /articles/vim/align/align_vim_mapa.html
+.. _`doc_align_ctrl`: /articles/vim/align/align_vim_ctrl.html
+.. _`doc_align_ext`: /articles/vim/align/align_vim_ext.html
+.. _`doc_align_summary`: /articles/vim/align/align_vim_summary.html
+
+
+

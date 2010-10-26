@@ -1,0 +1,42 @@
+.. vim:set expandtab ff=unix ft=rest nowrap :
+
+..  変数に値をセットする
+
+..  
+
+.. |BR| raw:: html
+
+    <br />
+
+.. |yen|    unicode:: U+000A5 .. YEN SIGN
+
+.. role:: raw-html(raw)
+    :format: html
+
+.. contents::
+
+================================================================================
+変数に値をセットする
+================================================================================
+
+- 値をセットする。
+
+.. parsed-literal::
+    :class: program
+
+    :let var = "text value"
+    :echo var
+    "# => text value
+
+- 変数をクリアする。
+
+.. parsed-literal::
+    :class: program
+
+    :let var = "text value"
+    :unlet var
+    :echo var
+    "# => E121: 未定義の変数です: var
+    "# => E15: 無効な式です: var
+
+

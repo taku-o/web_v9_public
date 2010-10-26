@@ -1,0 +1,68 @@
+.. vim:set expandtab ff=unix ft=rest nowrap :
+
+..  ファイル名、ファイルパス情報の取得
+
+..  
+
+.. |BR| raw:: html
+
+    <br />
+
+.. |yen|    unicode:: U+000A5 .. YEN SIGN
+
+.. role:: raw-html(raw)
+    :format: html
+
+.. contents::
+
+================================================================================
+ファイル名、ファイルパス情報の取得
+================================================================================
+
+- expandを使う
+
+.. parsed-literal::
+    :class: program
+
+    :echo expand("%")
+    "# => カレントファイルの名前を出力
+    
+    :echo expand("%:p")
+    "# => カレントファイルのフルパスを出力
+    
+    :echo expand("%:r")
+    "# => カレントファイルの名前、拡張子抜きを出力
+    
+    :echo expand("%:e")
+    "# => カレントファイルの拡張子を出力
+
+- fnamemodifyを使う
+
+.. parsed-literal::
+    :class: program
+
+    :let filepath = "C:/var/articles/code/io/file-path.html"
+    :echo fnamemodify(filepath, ":t")
+    "# => file-path.html
+    
+    :let filepath = "C:/var/articles/code/io/file-path.html"
+    :echo fnamemodify(filepath, ":t:r")
+    "# => file-path
+    
+    :let filepath = "C:/var/articles/code/io/file-path.html"
+    :echo fnamemodify(filepath, ":e")
+    "# => html
+    
+    :let filepath = "file-path.html"
+    :echo fnamemodify(filepath, ":p")
+    "# => C:\\var\\articles\\code\\io\\file-path.html
+    
+    :let filepath = "file-path.html"
+    :let usr_ss_opt = &shellslash
+    :set shellslash
+    :echo fnamemodify(filepath, ":p")
+    :let &shellslash = usr_ss_opt
+    "# => C:/var/articles/code/io/file-path.html
+
+
+

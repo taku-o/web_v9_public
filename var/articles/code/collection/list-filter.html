@@ -1,0 +1,34 @@
+.. vim:set expandtab ff=unix ft=rest nowrap :
+
+..  リストのフィルタリング
+
+..  
+
+.. |BR| raw:: html
+
+    <br />
+
+.. |yen|    unicode:: U+000A5 .. YEN SIGN
+
+.. role:: raw-html(raw)
+    :format: html
+
+.. contents::
+
+================================================================================
+リストのフィルタリング
+================================================================================
+
+- リストの各アイテムは、「v:val」に入る。
+
+.. parsed-literal::
+    :class: program
+
+    :let var_list = [ "one", "two", "three", "four", "five", "six" ]
+    
+    :call filter(var_list, "v:val =~ '^t'")
+    :echo var_list
+    "# => ['two', 'three']
+
+
+

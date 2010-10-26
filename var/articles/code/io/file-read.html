@@ -1,0 +1,52 @@
+.. vim:set expandtab ff=unix ft=rest nowrap :
+
+..  ファイルを読み込む
+
+..  
+
+.. |BR| raw:: html
+
+    <br />
+
+.. |yen|    unicode:: U+000A5 .. YEN SIGN
+
+.. role:: raw-html(raw)
+    :format: html
+
+.. contents::
+
+================================================================================
+ファイルを読み込む
+================================================================================
+
+- 一度バッファにロードしてから読み込む
+
+.. parsed-literal::
+    :class: program
+
+    :let inputfile = "$HOME/test.txt"
+    
+    :execute ":edit " . escape(inputfile, ' ')
+    :let lastlineno = line("$")
+    
+    :let i = 0
+    :while i < lastlineno
+      :let i = i + 1
+      :echo getline(i)
+    :endwhile
+    
+    :bdelete
+    "# => $HOME/test.txtの中身が出力される
+
+- 「readfile()」ファンクションを使用してファイルを読み込む
+
+.. parsed-literal::
+    :class: program
+
+    :let inputfile = "$HOME/test.txt"
+    :for line in readfile(inputfile)
+        :echo line
+    :endfor
+    "# => $HOME/test.txtの中身が出力される
+
+

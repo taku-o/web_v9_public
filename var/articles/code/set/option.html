@@ -1,0 +1,43 @@
+.. vim:set expandtab ff=unix ft=rest nowrap :
+
+..  vimエディタの設定を操作する
+
+..  
+
+.. |BR| raw:: html
+
+    <br />
+
+.. |yen|    unicode:: U+000A5 .. YEN SIGN
+
+.. role:: raw-html(raw)
+    :format: html
+
+.. contents::
+
+================================================================================
+vimエディタの設定を操作する
+================================================================================
+
+- vimエディタのオプションの値を参照。
+
+.. parsed-literal::
+    :class: program
+
+    :echo &columns
+    "# => 159
+
+- vimエディタのオプションの値を変更。
+
+.. parsed-literal::
+    :class: program
+
+    :let &columns = 100
+    "# => 設定した瞬間にUIにも反映される。
+    
+    :let var = 80
+    :execute ":let &columns = " . var
+    "# => 設定した瞬間にUIにも反映される。
+
+
+

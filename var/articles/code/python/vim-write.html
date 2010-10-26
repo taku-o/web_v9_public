@@ -1,0 +1,74 @@
+.. vim:set expandtab ff=unix ft=rest nowrap :
+
+..  呼び出されたpythonのコードから、vimのデータを変更する
+
+..  
+
+.. |BR| raw:: html
+
+    <br />
+
+.. |yen|    unicode:: U+000A5 .. YEN SIGN
+
+.. role:: raw-html(raw)
+    :format: html
+
+.. contents::
+
+================================================================================
+呼び出されたpythonのコードから、vimのデータを変更する
+================================================================================
+
+- カレント行テキストを変更する
+
+.. parsed-literal::
+    :class: program
+
+    # -\*- coding: shift_jis -\*-
+    from vim import *
+    current.line = "カレント行テキストの変更"
+
+- 選択範囲テキストを変更する
+
+.. parsed-literal::
+    :class: program
+
+    # -\*- coding: shift_jis -\*-
+    from vim import *
+    
+    # 選択範囲3行目のデータを変更
+    current.range[2] = "選択範囲3行目のデータを変更"
+
+.. parsed-literal::
+    :class: program
+
+    # -\*- coding: shift_jis -\*-
+    from vim import *
+    import vim
+
+    # 選択範囲のテキストを全て変更
+    current.range[:] = [ "head:" + i for i in current.range ]
+
+- カレントバッファのテキストを変更する
+
+.. parsed-literal::
+    :class: program
+
+    # -\*- coding: shift_jis -\*-
+    from vim import *
+    
+    # 3行目のデータを変更
+    current.buffer[2] = "3行目のデータを変更"
+
+.. parsed-literal::
+    :class: program
+
+    # -\*- coding: shift_jis -\*-
+    from vim import *
+    import vim
+
+    # カレントバッファのテキストを全て変更
+    current.buffer[:] = [ "head:" + i for i in current.buffer ]
+
+
+

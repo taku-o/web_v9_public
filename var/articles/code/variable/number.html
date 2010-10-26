@@ -1,0 +1,93 @@
+.. vim:set expandtab ff=unix ft=rest nowrap :
+
+..  数値型
+
+..  
+
+.. |BR| raw:: html
+
+    <br />
+
+.. |yen|    unicode:: U+000A5 .. YEN SIGN
+
+.. role:: raw-html(raw)
+    :format: html
+
+.. contents::
+
+================================================================================
+数値型
+================================================================================
+
+- 10進数。
+
+.. parsed-literal::
+    :class: program
+
+    :echo 360
+    "# => 360
+    :echo -123
+    "# => -123
+
+- 8進数。
+
+.. parsed-literal::
+    :class: program
+
+    :echo 0360
+    "# => 240
+    :echo -0123
+    "# => -83
+
+- 16進数。
+
+.. parsed-literal::
+    :class: program
+
+    :echo 0x360
+    "# => 864
+    :echo -0x123
+    "# => -291
+
+数値の操作
+--------------------------------------------------------------------------------
+
+- 数値計算。
+
+.. parsed-literal::
+    :class: program
+
+    :echo 500 + 122
+    "# => 622
+    :echo 500 - 122
+    "# => 378
+    :echo 500 \* 122
+    "# => 61000
+    :echo 500 / 122
+    "# => 4
+    :echo 500 % 122
+    "# => 12
+    :echo 122 \* 4 + 12
+    "# => 500
+
+- 文字列から数値への変換。
+
+.. parsed-literal::
+    :class: program
+
+    :echo str2nr("400", 8)
+    "# => 256
+    :echo str2nr("400", 16)
+    "# => 1024
+
+- 数値から文字列への変換。
+
+.. parsed-literal::
+    :class: program
+
+    :echo printf("%o", 256)
+    "# => 400
+    :echo printf("%x", 1024)
+    "# => 400
+
+

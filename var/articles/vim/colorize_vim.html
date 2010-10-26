@@ -1,0 +1,178 @@
+.. vim:set expandtab ff=unix ft=rest :
+
+..  colorize.vim : 入力モード時は背景色を変更
+
+..  入力モード時と、それ以外のモードの時で背景色を切り替えるGUI用スクリプトです。
+    (Windows, Mac)
+
+.. |BR| raw:: html
+
+    <br />
+
+.. |yen|    unicode:: U+000A5 .. YEN SIGN
+
+.. role:: raw-html(raw)
+    :format: html
+
+.. contents::
+
+================================================================================
+概要
+================================================================================
+
+colorize.vim : Change background color when in insert mode |BR|
+http://www.vim.org/scripts/script.php?script_id=53
+
+入力モードと、それ以外のモードで背景色を切り替えるスクリプトです。
+
+
+
+================================================================================
+インストール方法
+================================================================================
+
+`colorize.vimスクリプト`__ を
+適当なディレクトリに配置します。
+
+__ http://www.vim.org/scripts/script.php?script_id=53
+
+.. csv-table::
+    :header: "ファイル", "URL"
+
+    "colorize.vim", "http://www.vim.org/scripts/script.php?script_id=53"
+
+次にvimのGUI設定ファイル、_gvimrcファイル、もしくは.gvimrcファイルで、 |BR|
+そのcolorize.vimスクリプトをロードするように設定します。
+
+スクリプトは:source命令でロードできます。
+
+.. parsed-literal::
+    :class: console
+
+    :source colorize.vimファイルを置いたディレクトリ/colorize.vim
+
+
+下記は、ユーザーのホームディレクトリにあるvim設定ファイルディレクトリの
+macrosディレクトリににcolorize.vimスクリプトを配置する時の設定例です。
+
+.. parsed-literal::
+    :class: console
+
+    **" macrosディレクトリにcolorize.vimを入れた場合の_gvimrcでの指定例 (Windows)**
+    :source $HOME/vimfiles/macros/colorize.vim
+
+
+.. parsed-literal::
+    :class: console
+
+    **" macrosディレクトリにcolorize.vimを入れた場合の.gvimrcでの指定例 (Mac OSX)**
+    :source $HOME/.vim/macros/colorize.vim
+
+
+
+Mac OSX の場合
+-------------------------------------------------------------------------------
+
+colorize.vimスクリプトで使用されている色定義に
+Mac OSXでは使用できない色定義があるので、
+そのままではエラーが発生してしまいます。
+
+colorize.vimスクリプトファイルの下の方に、
+下のような記述があるので、
+
+
+.. parsed-literal::
+    :class: program
+
+    **修正前**
+    "You need the next line to change the color back when you hit escape.
+    inoremap <Esc> <Esc>:highlight Normal guibg=Sys_Window<cr>
+
+例えば、下のように修正してください。
+
+
+.. parsed-literal::
+    :class: program
+
+    **修正後**
+    "You need the next line to change the color back when you hit escape.
+    inoremap <Esc> <Esc>:highlight Normal guibg=lightgrey<cr>
+
+
+
+================================================================================
+使用方法
+================================================================================
+
+入力モードと、その他のモードを切り替える度に、
+背景色が変化します。
+
+
+
+================================================================================
+スクリプトの改造
+================================================================================
+
+このスクリプトは、背景色を指定することができません。 |BR|
+しかも、入力モードを抜けると、元の背景色に戻るのではなく、
+colorize.vimスクリプト指定の背景色になってしまいます。
+
+これはとても良くありません。
+
+幸い、スクリプトはとても短いので、改造してしまおうと思います。
+
+.. parsed-literal::
+    :class: program
+
+    **" colorize.vimスクリプトの中身**
+    "the main keystrokes that put you into insert mode
+    noremap i :highlight Normal guibg=lightyellow<cr>i
+    noremap o :highlight Normal guibg=lightyellow<cr>o
+    noremap s :highlight Normal guibg=lightyellow<cr>s
+    noremap a :highlight Normal guibg=lightyellow<cr>a
+    noremap I :highlight Normal guibg=lightyellow<cr>I
+    noremap O :highlight Normal guibg=lightyellow<cr>O
+    noremap S :highlight Normal guibg=lightyellow<cr>S
+    noremap A :highlight Normal guibg=lightyellow<cr>A
+
+    "You need the next line to change the color back when you hit escape.
+    inoremap <Esc> <Esc>:highlight Normal guibg=Sys_Window<cr>
+
+スクリプトの定義は上のようになっているので、
+例えば、下のように変更します。
+
+
+.. parsed-literal::
+    :class: program
+
+    **" colorize.vimスクリプト変更例**
+    noremap i :colorscheme blue<cr>i
+    noremap o :colorscheme blue<cr>o
+    noremap s :colorscheme blue<cr>s
+    noremap a :colorscheme blue<cr>a
+    noremap I :colorscheme blue<cr>I
+    noremap O :colorscheme blue<cr>O
+    noremap S :colorscheme blue<cr>S
+    noremap A :colorscheme blue<cr>A
+    inoremap <Esc> <Esc>:colorscheme torte<cr>
+
+`面倒くさがりな方用`__
+
+__ http://indefero.taku-o.net/index.php/p/download/source/file/master/colorize_scheme.vim
+
+このスクリプトを使う人は、
+colorscheme blue や、 |BR|
+colorscheme torte となってる所を、 |BR|
+自分の好きなカラースキーマに変更して下さい。
+
+
+
+================================================================================
+注意事項など
+================================================================================
+
+このスクリプトは、ウィンドウが分割されている時に正しく動作しなくなります。 |BR|
+なので、残念ながら、ウィンドウマネージャー系のスクリプトとは共存できません。
+
+
+

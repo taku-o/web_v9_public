@@ -1,0 +1,50 @@
+.. vim:set expandtab ff=unix ft=rest nowrap :
+
+..  回答をテキストで入力させる
+
+..  
+
+.. |BR| raw:: html
+
+    <br />
+
+.. |yen|    unicode:: U+000A5 .. YEN SIGN
+
+.. role:: raw-html(raw)
+    :format: html
+
+.. contents::
+
+================================================================================
+回答をテキストで入力させる
+================================================================================
+
+- コマンドラインで入力させる
+
+.. parsed-literal::
+    :class: program
+
+    :let inputtext = input("What is your name ?")
+    :echo "Your name is " . inputtext
+
+- ダイアログで入力させる
+
+.. parsed-literal::
+    :class: program
+
+    :let inputtext = inputdialog("What is your name ?")
+    :echo "Your name is " . inputtext
+
+- デフォルト値
+
+.. parsed-literal::
+    :class: program
+
+    :let inputtext = input("What is your name ?", "Tanaka")
+    :echo "Your name is " . inputtext
+    
+    :let inputtext = inputdialog("What is your name ?", "Saito")
+    :echo "Your name is " . inputtext
+
+
+

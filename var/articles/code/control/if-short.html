@@ -1,0 +1,35 @@
+.. vim:set expandtab ff=unix ft=rest nowrap :
+
+..  「|」とifを組み合わせて、条件判定を短く記述する
+
+..  
+
+.. |BR| raw:: html
+
+    <br />
+
+.. |yen|    unicode:: U+000A5 .. YEN SIGN
+
+.. role:: raw-html(raw)
+    :format: html
+
+.. contents::
+
+================================================================================
+「|」とifを組み合わせて、条件判定を短く記述する
+================================================================================
+
+.. parsed-literal::
+    :class: program
+
+    :function! Func()
+        :if !has('iconv') | return | endif
+        
+        .......
+        .......
+        .......
+        .......
+    :endfuction
+
+
+

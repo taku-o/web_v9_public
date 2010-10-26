@@ -1,0 +1,57 @@
+.. vim:set expandtab ff=unix ft=rest nowrap :
+
+..  履歴情報の取得
+
+..  
+
+.. |BR| raw:: html
+
+    <br />
+
+.. |yen|    unicode:: U+000A5 .. YEN SIGN
+
+.. role:: raw-html(raw)
+    :format: html
+
+.. contents::
+
+================================================================================
+履歴を取得する
+================================================================================
+
+.. parsed-literal::
+    :class: program
+
+    " コマンドライン履歴を取得
+    let cmdhist = histget(':', -1)
+    echo cmdhist
+    "# => コマンドライン履歴テキスト
+    
+    " 検索履歴を取得
+    let searchhist = histget('/', -1)
+    echo searchhist
+    "# => 検索履歴テキスト
+    
+    " 式の履歴を取得
+    let exprhist = histget('=', -1)
+    echo exprhist
+    "# => 式履歴テキスト
+    
+    " input()の入力履歴を取得
+    let inputhist = histget('@', -1)
+    echo inputhist
+    "# => input()入力履歴テキスト
+
+
+プラグインを作成時に履歴を確認するなら、:historyの方が手軽。
+
+.. parsed-literal::
+    :class: console
+
+    :history :
+    :history /
+    :history =
+    :history @
+
+
+

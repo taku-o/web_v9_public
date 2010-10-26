@@ -1,0 +1,50 @@
+.. vim:set expandtab ff=unix ft=rest nowrap :
+
+..  vimスクリプトの実行方法
+
+..  
+
+.. |BR| raw:: html
+
+    <br />
+
+.. |yen|    unicode:: U+000A5 .. YEN SIGN
+
+.. role:: raw-html(raw)
+    :format: html
+
+.. contents::
+
+================================================================================
+vimスクリプトの実行方法
+================================================================================
+
+vimスクリプトを実行するには、
+
+- vimエディタでコマンドを入力する。
+
+.. parsed-literal::
+    :class: console
+
+    :echo "Hello World"
+
+- 「:source」コマンドでvimスクリプトを記述したファイル読み込む。
+
+.. parsed-literal::
+    :class: console
+
+    :source {vimスクリプトファイル}
+
+- vimエディタのpluginディレクトリに、vimスクリプトファイルを入れ、エディタ起動時に呼び出してもらう。
+- vimエディタの設定ファイルに書く、あるいは設定ファイルから呼び出す。
+- コマンドやキー入力から、あらかじめ定義しておいたファンクションや処理を呼び出す。
+- autocmdを設定し、イベント発生時にあらかじめ定義したファンクションや処理を呼び出す。
+
+.. parsed-literal::
+    :class: console
+
+    " see also
+    :help event
+
+
+

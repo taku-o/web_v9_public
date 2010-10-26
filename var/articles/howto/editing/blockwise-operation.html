@@ -1,0 +1,216 @@
+.. vim:set expandtab ff=unix ft=rest :
+
+..  矩形ビジュアルモードを利用した編集を使いこなす
+
+..  ノーマルモードか、ビジュアルモードで「Control-v」と押下すると、
+    矩形ビジュアルモードに入ります。
+    矩形ビジュアルモードには、Vimエディタの通常のビジュアルモードにはない、
+    矩形ビジュアルモードならではの、いくつかの特別な編集機能が用意されています。
+    このページでは、矩形ビジュアルモードを利用した編集機能を紹介します。
+    (Windows, Mac)
+
+.. |BR| raw:: html
+
+    <br />
+
+.. |yen|    unicode:: U+000A5 .. YEN SIGN
+
+.. role:: raw-html(raw)
+    :format: html
+
+.. contents::
+
+================================================================================
+概要
+================================================================================
+
+ノーマルモードか、ビジュアルモードで :raw-html:`<kbd>Control-v</kbd>` と押下すると、
+矩形ビジュアルモードに入ります。
+
+.. image:: /dist/img/howto/editing/blockwise-operation/blockwise-select.png
+    :alt:  矩形ビジュアルモードによる範囲選択
+
+|BR|
+矩形ビジュアルモードには、Vimエディタの通常のビジュアルモードにはない、 |BR|
+矩形ビジュアルモードならではの、いくつかの特別な編集機能が用意されています。
+
+このページでは、矩形ビジュアルモードを利用した編集機能を紹介します。
+
+
+
+================================================================================
+矩形挿入、矩形追加
+================================================================================
+
+矩形挿入
+--------------------------------------------------------------------------------
+
+矩形ビジュアルモードでテキストを選択してから、
+
+.. image:: /dist/img/howto/editing/blockwise-operation/blockwise-insert-select.png
+    :alt:  矩形ビジュアルモードで選択
+
+|BR|
+:raw-html:`<kbd>I</kbd>` キーを押下すると、入力モードに入ります。 |BR|
+この状態でテキストを入力し、
+
+.. image:: /dist/img/howto/editing/blockwise-operation/blockwise-insert-input.png
+    :alt:  テキストを入力する
+
+|BR|
+:raw-html:`<kbd>ESC</kbd>` キーか、 :raw-html:`<kbd>Control-[</kbd>` で入力モードを抜けると、 |BR|
+矩形ビジュアルモードの選択範囲の左端の列に、テキストが挿入されます。
+
+.. image:: /dist/img/howto/editing/blockwise-operation/blockwise-insert-done.png
+    :alt:  テキストが挿入される。
+
+
+矩形追加
+--------------------------------------------------------------------------------
+
+:raw-html:`<kbd>I</kbd>` キーの替わりに、 :raw-html:`<kbd>A</kbd>` キーで入力モードを開始した場合は、 |BR|
+選択範囲右端にテキストを挿入できます。
+
+.. image:: /dist/img/howto/editing/blockwise-operation/blockwise-append-select.png
+    :alt:  矩形ビジュアルモードで選択して
+
+|BR|
+↓ 入力中
+
+.. image:: /dist/img/howto/editing/blockwise-operation/blockwise-append-input.png
+    :alt:  入力して
+
+|BR|
+↓ 別の行の、同じ列にも、テキストが入力されました。
+
+.. image:: /dist/img/howto/editing/blockwise-operation/blockwise-append-done.png
+    :alt:  まとめて追加
+
+
+行末追加
+--------------------------------------------------------------------------------
+
+矩形ビジュアルモードでテキストを選択する時に、 :raw-html:`<kbd>$</kbd>` キーを押下すると、 |BR|
+選択範囲の行末までを選択したことになります。
+
+.. image:: /dist/img/howto/editing/blockwise-operation/blockwise-last-select.png
+    :alt:  行末まで選択
+
+|BR|
+この時に、 :raw-html:`<kbd>A</kbd>` キーを押下して入力モードに入り、テキストを入力すると、 |BR|
+入力したテキストは各行の行末に追加されます。
+
+.. image:: /dist/img/howto/editing/blockwise-operation/blockwise-last-input.png
+    :alt:  入力すると、
+
+|BR|
+↓ 行末に入力テキストが追加されました。
+
+.. image:: /dist/img/howto/editing/blockwise-operation/blockwise-last-done.png
+    :alt:  各行の行末に追加される
+
+|BR|
+この方法は、各行の行末にテキストを追加する場合の、
+もっとも簡単な方法の一つです。
+
+
+
+================================================================================
+矩形シフト
+================================================================================
+
+矩形ビジュアルモードでテキストを選択した状態で、
+:raw-html:`<kbd>&gt;</kbd>` キーや、 :raw-html:`<kbd>&lt;</kbd>` キーを押下すると、 |BR|
+選択範囲テキスト（と、選択範囲以降のテキスト）を右シフト、左シフトできます。
+
+.. image:: /dist/img/howto/editing/blockwise-operation/blockwise-right-shift-select.png
+    :alt:  選択して
+
+|BR|
+↓ 選択テキストが右シフトされました。
+
+.. image:: /dist/img/howto/editing/blockwise-operation/blockwise-right-shift-done.png
+    :alt:  右シフト
+
+|BR|
+左シフトは、右シフトと比べると、少しだけ制限があります。 |BR|
+移動先にテキストがあると、 選択テキストを移動できないためです。
+
+.. image:: /dist/img/howto/editing/blockwise-operation/blockwise-left-shift-select.png
+    :alt:  選択して
+
+|BR|
+↓ 空白文字を選択しての左シフト
+
+.. image:: /dist/img/howto/editing/blockwise-operation/blockwise-left-shift-done.png
+    :alt:  左シフト
+
+
+
+================================================================================
+矩形でヤンク、カット、そして、ペースト
+================================================================================
+
+矩形ビジュアルモードでテキストを選択して、ヤンク、カットを実行すると、 |BR|
+選択範囲のみのテキストをヤンク、もしくは、カットできます。
+
+.. image:: /dist/img/howto/editing/blockwise-operation/blockwise-cut-select.png
+    :alt:  選択して
+
+.. image:: /dist/img/howto/editing/blockwise-operation/blockwise-cut-done.png
+    :alt:  カット
+
+|BR|
+そして、矩形ビジュアルモードでヤンク、カットしたテキストをペーストすると、 |BR|
+ヤンク、カットした時の形のままに、テキストを貼り付けられます。
+
+.. image:: /dist/img/howto/editing/blockwise-operation/blockwise-paste-set.png
+    :alt:  カーソルをセットして
+
+|BR|
+↓ カーソル左上を基準に、テキスト集合が挿入されます。
+
+.. image:: /dist/img/howto/editing/blockwise-operation/blockwise-paste-done.png
+    :alt:  ペースト
+
+|BR|
+この特徴は、行頭や行中に、テキスト集合を挿入する時に役に立ちます。 |BR|
+うまく活用しましょう。
+
+.. image:: /dist/img/howto/editing/blockwise-operation/blockwise-paste-positions.png
+    :alt:  テキスト集合の挿入
+
+.. note::
+
+    貼り付け先のテキストが横位置がガタガタで、狙った箇所にうまく挿入できない場合は、 |BR|
+    Alignという整形用のスクリプトが役に立つかもしれません。
+
+    `高性能なテキスト整形ツールAlignの使い方 #1 インストールから設定まで`__
+
+    __ /articles/vim/align/align_vim.html
+
+
+
+================================================================================
+矩形置換
+================================================================================
+
+選択範囲のまとめての置換は、矩形ビジュアルモード特有の機能ではありませんが、 |BR|
+ビジュアルモードを活用するつもりであれば一緒に覚えておきましょう。
+
+ビジュアルモードでテキストを選択してから、
+:raw-html:`<kbd>r</kbd>` キーでリプレースモードに入りテキストを置換すると、 |BR|
+選択範囲の文字全てを置換できます。
+
+.. image:: /dist/img/howto/editing/blockwise-operation/blockwise-replace-select.png
+    :alt:  矩形ビジュアルモードで選択
+
+|BR|
+↓ 選択した範囲を一括で置換。
+
+.. image:: /dist/img/howto/editing/blockwise-operation/blockwise-replace-done.png
+    :alt:  リプレースモードで置換
+
+
+
+

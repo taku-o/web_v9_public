@@ -1,0 +1,196 @@
+.. vim:set expandtab ff=unix ft=rest :
+
+..  Docutils（Python Documentation Utilities） on cygwin
+
+..  「Docutils（Python Documentation Utilities）」とはプレーンなテキストをHTML、XML、LaTeXのような
+    役に立つ形式に変換することを目的とした、python製ツール群です。
+    
+    現在は構造化テキスト「reStructuredText」を中心にサポートしていますが、
+    将来的には他のフォーマットもサポートされる予定です。
+    
+    このページでは、この「Docutils」をcygwin環境にインストールし、
+    ツールを使用できるところまでを解説します。
+    (Windows)
+
+.. |BR| raw:: html
+
+    <br />
+
+.. |yen|    unicode:: U+000A5 .. YEN SIGN
+
+.. role:: raw-html(raw)
+    :format: html
+
+.. contents::
+
+================================================================================
+概要
+================================================================================
+
+「 `Docutils（Python Documentation Utilities）`__ 」とはプレーンなテキストを |BR|
+HTML、XML、LaTeXのような、役に立つ形式に変換することを目的とした、python製ツール群です。 |BR|
+現在は構造化テキスト「 `reStructuredText`__ 」を中心にサポートしていますが、
+将来的には他のフォーマットもサポートされる予定です。
+
+このページでは、この「 `Docutils`__ 」を `cygwin環境`__ にインストールし、
+ツールを使用できるところまでを解説します。
+
+__ http://docutils.sf.net/
+__ http://docutils.sf.net/rst.html
+__ http://docutils.sf.net/
+__ http://www.cygwin.com/
+
+
+.. note::
+
+    このドキュメント自体も `reStructuredText`__ 形式のファイルから生成されています。
+
+__ http://docutils.sf.net/rst.html
+
+
+
+================================================================================
+インストール方法
+================================================================================
+
+必要な環境を整える
+-------------------------------------------------------------------------------
+
+Docutilsツールのインストールを行う前に、必要となる環境の構築と必要となるファイルを用意します。 |BR|
+既に準備ができている場合には、この章は読み飛ばしてもかまいません。 |BR|
+慣れていない方は今回の場合、pythonはcygwinで一緒にインストールしてしまうと、楽でしょう。
+
+.. csv-table:: 必要な環境
+    :header: 環境, バージョン, URL
+
+    cygwin, , http://www.cygwin.com/
+    python, バージョン2.1以降, http://www.python.org/
+
+.. csv-table:: 必要なファイル
+    :header: ファイル, サイト, ダウンロード
+
+    Docutils, http://docutils.sf.net/, http://docutils.sf.net/docutils-snapshot.tgz
+
+
+インストール作業
+-------------------------------------------------------------------------------
+
+適当なディレクトリにダウンロードしてきたファイル「docutils-snapshot.tgz」をコピー後、 |BR|
+cygwinのターミナルで「docutils-snapshot.tgz」の置いてあるディレクトリまで移動、 |BR|
+tarコマンドで圧縮ファイルを解凍します。
+
+.. parsed-literal::
+    :class: console
+
+    tar xzf docutils-snapshot.tgz
+
+.. note::
+
+    適当なディレクトリと言っても、解凍後のファイルをツールとして使用するので、 |BR|
+    ターミナルでアクセスしやすいディレクトリにあった方が便利です。 |BR|
+    ディレクトリに迷ったら「/usr/local/docutils/」あたりに置くと良いのではないでしょうか。
+
+解凍後、生成された「docutils」ディレクトリに移動し、 |BR|
+スクリプト「setup.py」に、「install」パラメータを渡して実行すると、 |BR|
+インストール完了です。
+
+.. parsed-literal::
+    :class: console
+
+    **# Windowsの場合**
+    cd ./docutils
+    python setup.py install
+
+
+.. .. parsed-literal::
+    :class: console
+
+..  # Macの場合
+    # prefixパラメータではインストールするディレクトリを指定します。
+    cd ./docutils
+    sudo python setup.py install --prefix="/usr/local/docutils"
+
+
+Docutilsのドキュメントを生成する
+-------------------------------------------------------------------------------
+
+インストールが完了したら、toolsディレクトリにある「buildhtml.py」ツールを使用して、 |BR|
+Docutilsのドキュメント、マニュアルを生成します。
+
+.. parsed-literal::
+    :class: console
+
+    cd tools
+    python buildhtml.py ..
+
+このツール「buildhtml.py」は指定ディレクトリのファイルをまとめて変換するツールです。 |BR|
+「buildhtml.py」ツールの引数にdocutilsのルートディレクトリを指定すると、 |BR|
+Docutilsのドキュメント、マニュアルが、ツールによりHTML形式に変換、生成されます。
+
+
+
+================================================================================
+使用方法
+================================================================================
+
+toolsディレクトリに、Docutilsのツール群が入っているので、
+そのツールをターミナルで呼び出します。
+
+各ツールのコマンドの書式は、基本的には次の形式になっています。
+
+.. parsed-literal::
+    :class: console
+
+    python ツールまでのパス 入力ファイル 出力先ファイル
+
+.. parsed-literal::
+    :class: console
+
+    **# コマンドの例**
+    python rst2html.py source.txt output.html
+
+
+また、ツールの使い方が分からない時は、
+次のコマンドでヘルプを表示できます。
+
+.. parsed-literal::
+    :class: console
+
+    python ツールまでのパス --help
+
+.. parsed-literal::
+    :class: console
+
+    **# コマンドの例**
+    python rst2html.py --help
+
+
+Docutilsで用意されているツールには次のようなようなものがあります。 |BR|
+多数用意されていますが、実際に使うのは、1つ、2つに収まるはずです。
+
+.. csv-table::
+    :header: ツール, 説明
+
+    buildhtml.py, 指定ディレクトリ以下のファイルを一括で変換する。
+    rst2html.py, reStructuredTextをHTMLフォーマットに変換する。
+    rstpep2html.py, 新しいスタイルのPEP（Python Enhancement Proposal）をHTMLフォーマットに変換する。
+    rst2s5.py, reStructuredTextを「Simple Standards-based Slide Show System」と互換性のあるXHTMLフォーマットに変換する。reStructuredTextからプレゼンテーションを生成します。
+    rst2latex.py, reStructuredTextをLaTeX2eフォーマットに変換する。
+    rst2xml.py, DocutilsネイティブなXMLファイルとして出力する。
+    rst2pseudoxml.py, reStructuredTextをDocutilsがどのように解釈しているかのメッセージを出力する。デバッグ用。
+    quicktest.py, rst2pseudoxml.pyと似ているが、何らかのパイプを挟まずに直接入力を読み込む。デバッグ用。
+
+各ツールに関する詳しい説明は次のURLでも記述されています。 |BR|
+http://docutils.sourceforge.net/docs/user/tools.html
+
+
+
+================================================================================
+注意事項など
+================================================================================
+
+Docutilsの使い方、設定のカスタマイズなどの詳細は、
+膨大な量があるため、今回は説明を省かせていただきました。
+
+
+

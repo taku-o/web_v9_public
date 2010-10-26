@@ -1,0 +1,277 @@
+.. vim:set expandtab ff=unix ft=rest :
+
+..  Vimwiki : Vimベースの個人用Wiki環境 #4 設定・カスタマイズ
+
+..  このページでは、Vimwikiの設定・カスタマイズと、操作のマッピングの変更方法について説明します。
+    「Vimwiki : Vimベースの個人用Wiki環境 #1 インストールから基本的な使い方まで」の続きとなる記事です。
+    (Windows, Mac)
+
+.. |BR| raw:: html
+
+    <br />
+
+.. |yen|    unicode:: U+000A5 .. YEN SIGN
+
+.. role:: raw-html(raw)
+    :format: html
+
+.. contents::
+
+================================================================================
+概要
+================================================================================
+
+Vimwiki : Personal Wiki for Vim |BR|
+http://www.vim.org/scripts/script.php?script_id=2226
+
+このページでは、Vimwikiの設定・カスタマイズと、操作のマッピングの変更方法について説明します。 |BR|
+「 `Vimwiki : Vimベースの個人用Wiki環境 #1 インストールから基本的な使い方まで`_ 」の続きとなる記事です。
+
+
+
+================================================================================
+Wikiごとの設定
+================================================================================
+
+Vimwikiでは「g:vimwiki_list」変数で、管理するWikiの数と、それぞれのWikiの設定を管理します。 |BR|
+「g:vimwiki_list」はディクショナリのリストをとり、
+リストに入れられたディクショナリの数でWikiの数を、ディクショナリの属性でWikiの設定をコントロールします。
+
+.. parsed-literal::
+    :class: program
+
+    " Wiki 2つの場合の設定例
+    :let g:vimwiki_list = [{'path':'~/my_site/', 'path_html':'~/public_html/'}, {'path':'~/my_docs/', 'ext':'.mdox'}]
+
+.. note::
+
+    複数のWikiを作成した場合、
+    複数のWikiの中で、どのWikiを使用するかは「\\ws」で決定します。
+
+    .. parsed-literal::
+        :class: console
+
+        \\ws
+
+
+ディレクトリ
+--------------------------------------------------------------------------------
+
+Wikiページのファイルの置き場所、HTMLファイルの生成先ディレクトリは、「path」「public_html」で設定できます。
+
+.. parsed-literal::
+    :class: program
+
+    " Wikiページファイルのディレクトリ： ~/my_site/
+    " HTMLファイルの出力先ディレクトリ： ~/public_html/
+    :let g:vimwiki_list = [{'path':'~/my_site/', 'path_html':'~/public_html/'}]
+
+
+ファイル名
+--------------------------------------------------------------------------------
+
+インデックスページのファイル名、Wikiページの拡張子は「index」「ext」で設定できます。
+
+.. parsed-literal::
+    :class: program
+
+    " インデックスページのファイル名： welcome
+    " Wikiページの拡張子：             .viki
+    :let g:vimwiki_list = [{'path':'~/my_site/', 'index':'welcome', 'ext':'.viki'}]
+
+
+フォールディング
+--------------------------------------------------------------------------------
+
+Wikiページを開いた際に、Wikiページのフォールディングを有効な状態にするか、
+フォールディングを無効な状態にするかは「folding」で設定します。
+
+.. parsed-literal::
+    :class: program
+
+    " Wikiページのフォールディングを無効にする
+    :let g:vimwiki_list = [{'path':'~/my_site/', 'folding':0}]
+
+
+デザイン
+--------------------------------------------------------------------------------
+
+WikiページをHTMLとして出力する際に使用される、 |BR|
+HTMLページのヘッダ、フッタのテンプレート、スタイルシートを指定できます。
+
+.. parsed-literal::
+    :class: program
+
+    " ヘッダのテンプレート：   ~/public_html/header.tpl
+    " フッタのテンプレート：   ~/public_html/footer.tpl
+    " 参照するスタイルシート： css/style.css
+    :let g:vimwiki_list = [{'path':'~/my_site/', 'html_header':'~/public_html/header.tpl', 'html_footer':'~/public_html/footer.tpl', 'css_name':'css/style.css'}]
+
+
+起動時の状態
+--------------------------------------------------------------------------------
+
+Vimwikiを開くときに、ウィンドウを分割するか、タブで開くかを設定できます。
+
+.. parsed-literal::
+    :class: program
+
+    " 上下にウィンドウを分割して、Vimwikiを表示する。
+    :let g:vimwiki_list = [{'path':'~/my_site/', 'gohome':'split'}]
+    
+    " 左右にウィンドウを分割して、Vimwikiを表示する。
+    :let g:vimwiki_list = [{'path':'~/my_site/', 'gohome':'vsplit'}]
+    
+    " タブを開いて、Vimwikiを表示する。
+    :let g:vimwiki_list = [{'path':'~/my_site/', 'gohome':'tabe'}]
+
+
+未作成Wikiページリンクをハイライトする
+--------------------------------------------------------------------------------
+
+別のWikiページへのリンクがあり、そのリンク先Wikiページがまだ作られていない場合に、
+そのリンクをハイライト表示する機能があります。 |BR|
+デフォルトで有効になっていますが、処理が重くなるので、無効にすることもできます。
+
+.. parsed-literal::
+    :class: program
+
+    " 未作成Wikiページリンクのハイライトを無効にする
+    :let g:vimwiki_list = [{'path':'~/my_site/', 'maxhi':'0'}]
+
+リンク先が無い場合のハイライト表示（↓）を無効にできます。
+
+.. image:: /dist/img/vim/vimwiki_pre_link.png
+    :alt:  リンクのハイライト表示
+
+
+
+================================================================================
+Vimwiki全体の設定
+================================================================================
+
+VimwikiのGUIメニューを有効・無効にする
+--------------------------------------------------------------------------------
+
+GUI版Vimエディタで、Vimwikiのメニューを表示するかしないかは、
+「g:vimwiki_menu」で制御します。
+
+.. parsed-literal::
+    :class: program
+
+    " 「Vimwiki」メニューを表示しない。
+    :let g:vimwiki_menu = 0
+    
+    " 「Vimwiki」メニューを表示する。デフォルト設定。
+    :let g:vimwiki_menu = 1
+    
+    " 「Plugin」メニュー以下に「Vimwiki」メニューを表示する。
+    :let g:vimwiki_menu = 2
+
+.. image:: /dist/img/vim/vimwiki_menu.png
+    :alt:  Vimwikiメニュー
+
+
+マウスの有効化
+--------------------------------------------------------------------------------
+
+Vimエディタの設定ファイルで「g:vimwiki_use_mouse」を設定すると、
+Vimwikiの一部機能をマウス操作で呼び出せるようになります。
+
+.. parsed-literal::
+    :class: program
+
+    " マウスの機能を有効化
+    :let g:vimwiki_use_mouse = 1
+
+「g:vimwiki_use_mouse」を設定することで利用できるようになる機能は、下の表の通りです。
+
+.. csv-table::
+    :header: 操作, カーソル位置, 説明
+
+    左ダブルクリック,          Wikiワード上, カーソル下のWikiワード用のWikiページに遷移する。
+    Shift-左ダブルクリック,    Wikiワード上, 上下にウィンドウを分割して、カーソル下のWikiワード用のWikiページに遷移する。
+    Control-左ダブルクリック,  Wikiワード上, 左右にウィンドウを分割して、カーソル下のWikiワード用のWikiページに遷移する。
+    右クリック 左クリック,     どこでも可,   遷移元のWikiページに移動する。
+
+
+
+================================================================================
+マッピングの設定
+================================================================================
+
+Vimwikiに用意されている機能のマッピングのほとんどは、別のキーに設定できます。 |BR|
+もし、Vimwikiデフォルトのマッピングに不満があるような場合は、 |BR|
+代替のマッピングをVimエディタの設定ファイルに定義してください。
+
+
+グローバル
+--------------------------------------------------------------------------------
+
+.. parsed-literal::
+    :class: program
+
+    " Vimwikiのメインページを開く。
+    :map <Leader>w <Plug>VimwikiGoHome
+    
+    " Vimwikiのメインページを新しいタブで開く。
+    :map <Leader>t <Plug>VimwikiTabGoHome
+    
+    " 複数のWikiの中から開くWikiを選択する。
+    :map <Leader>wq <Plug>VimwikiUISelect
+
+
+Wikiページローカル
+--------------------------------------------------------------------------------
+
+.. parsed-literal::
+    :class: program
+
+    " カーソル下のWikiワード用のWikiページに遷移する。
+    :map <Leader>wf <Plug>VimwikiFollowWord
+    
+    " 上下にウィンドウを分割して、カーソル下のWikiワード用のWikiページに遷移する。
+    :map <Leader>we <Plug>VimwikiSplitWord
+    " 左右にウィンドウを分割して、カーソル下のWikiワード用のWikiページに遷移する。
+    :map <Leader>wq <Plug>VimwikiVSplitWord
+    
+    " 遷移元のWikiページに移動する。
+    :map <Leader>wb <Plug>VimwikiGoBackWord
+    
+    " Wikiページ上の、後方のWikiワードを検索し、移動する。
+    :map <Leader>wn <Plug>VimwikiNextWord
+    " Wikiページ上の、前方のWikiワードを検索し、移動する。
+    :map <Leader>wp <Plug>VimwikiPrevWord
+    
+    " カレントのWikiページを削除します。
+    :map <Leader>dd <Plug>VimwikiDeleteWord
+    " カレントのWikiページを別の名前に変更します。
+    :map <Leader>rr <Plug>VimwikiRenameWord
+    
+    " リスト項目をTODO項目にする。TODOリストのチェックをON／OFFする。
+    :map <leader>tt <Plug>VimwikiToggleListItem
+
+
+
+================================================================================
+ページリンク
+================================================================================
+
+#. `Vimwiki : Vimベースの個人用Wiki環境 #1 インストールから基本的な使い方まで`_
+#. `Vimwiki : Vimベースの個人用Wiki環境 #2 Vimwikiの操作`_
+#. `Vimwiki : Vimベースの個人用Wiki環境 #3 Wikiページ記法`_
+#. - `Vimwiki : Vimベースの個人用Wiki環境 #4 設定・カスタマイズ`_
+
+.. _`Vimwiki : Vimベースの個人用Wiki環境 #1 インストールから基本的な使い方まで`: `doc_vimwiki`_
+.. _`Vimwiki : Vimベースの個人用Wiki環境 #2 Vimwikiの操作`: `doc_vimwiki_usage`_
+.. _`Vimwiki : Vimベースの個人用Wiki環境 #3 Wikiページ記法`: `doc_vimwiki_syntax`_
+.. _`Vimwiki : Vimベースの個人用Wiki環境 #4 設定・カスタマイズ`: `doc_vimwiki_config`_
+
+.. _`Vimwiki`: http://www.vim.org/scripts/script.php?script_id=2226
+.. _`doc_vimwiki`: /articles/vim/vimwiki/vimwiki_vim.html
+.. _`doc_vimwiki_usage`: /articles/vim/vimwiki/vimwiki_vim_usage.html
+.. _`doc_vimwiki_syntax`: /articles/vim/vimwiki/vimwiki_vim_syntax.html
+.. _`doc_vimwiki_config`: /articles/vim/vimwiki/vimwiki_vim_config.html
+
+
+

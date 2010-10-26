@@ -1,0 +1,99 @@
+.. vim:set expandtab ff=unix ft=rest nowrap :
+
+..  ファイルの検索、ファイル一覧取得
+
+..  
+
+.. |BR| raw:: html
+
+    <br />
+
+.. |yen|    unicode:: U+000A5 .. YEN SIGN
+
+.. role:: raw-html(raw)
+    :format: html
+
+.. contents::
+
+================================================================================
+ファイルの検索、ファイル一覧取得
+================================================================================
+
+- globによるファイル検索
+
+.. parsed-literal::
+    :class: program
+
+    :let filelist = glob("\*\*/test\*")
+    :let splitted = split(filelist, "\\n")
+    :for file in splitted
+        :echo file
+    :endfor
+    "# => 発見されたファイルのリストを表示。
+
+- expandによる検索
+
+.. parsed-literal::
+    :class: program
+
+    :let filelist =  expand("\*\*/test\*")
+    :let splitted = split(filelist, "\\n")
+    :for file in splitted
+        :echo file
+    :endfor
+    "# => 発見されたファイルのリストを表示。
+
+- findfileによる検索
+
+.. parsed-literal::
+    :class: program
+
+    :echo findfile("file-search.html", "./")
+    "# => カレントと、その下層のディレクトリからfile-search.htmlを検索
+    "# => ファイルまでのパスを出力
+    
+    :echo findfile("file-search.html", "./path/\*\*")
+    "# => ファイルを検索して、file-search.htmlまでのパスを出力
+
+- findfileは検索ファイル名にワイルドカードを使用できない
+
+.. parsed-literal::
+    :class: program
+
+    :echo findfile("file-search.\*", "./")
+    "# => ファイルは見つからない
+
+- finddirによる検索
+
+.. parsed-literal::
+    :class: program
+
+    :echo finddir("test", "./")
+    "# => ディレクトリを検索して、testディレクトリまでのパスを出力
+
+- finddirは検索ディレクトリ名にワイルドカードを使用できない
+
+.. parsed-literal::
+    :class: program
+
+    :echo finddir("test\*", "./")
+    "# => ディレクトリは見つからない
+
+- :findによる検索
+
+.. parsed-literal::
+    :class: program
+
+    :find ./\*\*/test.\*
+    "# => ファイルを検索して、エディタで開く
+    
+    :let filename = "./\*\*/test.\*"
+    :execute ":find " . filename
+    "# => ファイルを検索して、エディタで開く
+    
+    :let filename = "./\*\*/test.\*"
+    :execute ":find ++enc=utf-8 " . filename
+    "# => ファイルを検索して、エディタで開く
+
+
+

@@ -1,0 +1,97 @@
+.. vim:set expandtab ff=unix ft=rest nowrap :
+
+..  現在の設定を出力する
+
+..  
+
+.. |BR| raw:: html
+
+    <br />
+
+.. |yen|    unicode:: U+000A5 .. YEN SIGN
+
+.. role:: raw-html(raw)
+    :format: html
+
+.. contents::
+
+================================================================================
+現在の設定を出力する
+================================================================================
+
+- 変数の状態
+
+.. parsed-literal::
+    :class: program
+
+    :let
+    "# => 変数の一覧を出力
+
+- vimエディタオプションの定義
+
+.. parsed-literal::
+    :class: program
+
+    :set
+    "# => オプションの設定の状態一覧を出力
+
+- レジスタの状態
+
+.. parsed-literal::
+    :class: program
+
+    :registers
+    "# => レジスタの状態の一覧を出力
+
+- バッファの状態
+
+.. parsed-literal::
+    :class: program
+
+    :buffers
+    "# => バッファの一覧を出力
+
+- ファンクションの定義
+
+.. parsed-literal::
+    :class: program
+
+    :function
+    "# => ファンクションの定義の一覧を出力
+
+- マッピングの定義
+
+.. parsed-literal::
+    :class: program
+
+    :map
+    "# => マッピングの定義の一覧を出力
+    
+    :nmap
+    "# => ノーマルモードのマッピングの定義の一覧を出力
+    
+    :vmap
+    "# => ビジュアルモードのマッピングの定義の一覧を出力
+
+- autocmdの定義
+
+.. parsed-literal::
+    :class: program
+
+    :autocmd
+    "# => autocmdの定義の一覧を出力
+    
+    :augroup
+    "# => autocmdのグループの定義の一覧を出力
+
+- コマンドの定義
+
+.. parsed-literal::
+    :class: program
+
+    :command
+    "# => コマンドの定義の一覧を出力
+
+
+
+

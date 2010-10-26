@@ -1,0 +1,339 @@
+.. vim:set expandtab ff=unix ft=rest :
+
+..  ttoc : 見出しの一覧を検索して表示（＋vimエディタをメモ用ツールとして活用する）
+
+..  vimエディタを簡易アウトライナーにするvimスクリプトです。
+    目次一覧の表示、リスト表示機能、および、目次位置へのカーソル移動機能があります。
+    ちょっとしたメモを取る用途にも向いていると思います。
+    (Windows, Mac)
+
+.. |BR| raw:: html
+
+    <br />
+
+.. |yen|    unicode:: U+000A5 .. YEN SIGN
+
+.. role:: raw-html(raw)
+    :format: html
+
+.. contents::
+
+================================================================================
+概要
+================================================================================
+
+ttoc : A regexp-based table of contents of the current buffer |BR|
+http://www.vim.org/scripts/script.php?script_id=2014
+
+vimエディタを簡易アウトライナーにするvimスクリプトです。 |BR|
+目次一覧の表示、リスト表示機能、および、目次位置へのカーソル移動機能があります。 |BR|
+ちょっとしたメモを取る用途にも向いていると思います。
+
+.. image:: /dist/img/vim/ttoc_vim.jpg
+    :alt:  ttocスクリプトで目次一覧の表示
+
+
+
+================================================================================
+インストール方法
+================================================================================
+
+スクリプトのダウンロード
+--------------------------------------------------------------------------------
+
+このスクリプトを使用するには、次の2つのスクリプトが必要です。 |BR|
+まず、必要なそれぞれのスクリプトをダウンロードしてください。
+
+- 「 `ttoc`__ 」スクリプト
+- 「ttoc」スクリプトで必要とする「 `tlib`__ 」スクリプト
+
+__ http://www.vim.org/scripts/script.php?script_id=2014
+__ http://www.vim.org/scripts/script.php?script_id=1863
+
+.. csv-table::
+    :header: ファイル, URL
+
+    ttoc.vba.gz, http://www.vim.org/scripts/script.php?script_id=2014
+    tlib.vba.gz, http://www.vim.org/scripts/script.php?script_id=1863
+
+
+Vimballからのインストール
+--------------------------------------------------------------------------------
+
+ダウンロードした各スクリプトは「Vimball」と呼ばれる形式で配布されています。 |BR|
+「Vimball」形式で配布されているスクリプトをインストールするには、
+
+- ファイルが圧縮されているなら解凍ツールで解凍し、
+- vimエディタで「.vba」拡張子のファイルを開き、
+- 「source」コマンドで、スクリプトを読み込みます。
+
+.. image:: /dist/img/howto/vimball/open_vimball.jpg
+    :alt:  vimballを開く
+
+↓（vimエディタで「vba」ファイルを開いたら、次のコマンドを入力）
+
+.. parsed-literal::
+    :class: console
+
+    :source %
+
+↓（「Vimball」形式のファイルが展開されます。）
+
+.. image:: /dist/img/howto/vimball/source_vimball.jpg
+    :alt:  vimballを読み込む
+
+この作業をスクリプト実行に必要な2つのファイル |BR|
+（ttoc.vba.gz、tlib.vba.gz）で行ってください。
+
+.. note::
+
+    vimエディタのコマンド中で「%」記号を使用すると、 |BR|
+    その「%」はコマンド実行時に、今、vimエディタで開いている
+    ファイルのパスに置き換わります。
+
+
+
+================================================================================
+使い方
+================================================================================
+
+一通りの操作を説明しますが、次の3つの操作だけ覚えれば、 |BR|
+このスクリプトを使う分には問題ないはずです。
+
+- 「TToC」コマンドで目次一覧を表示する
+- 目次を選択すると、その位置に移動する
+- 「?」キーで操作の説明が表示される
+
+
+目次の表示
+--------------------------------------------------------------------------------
+
+目次を検索、表示するには次のコマンドを実行します。 |BR|
+目次の一覧の検出定義はファイルタイプごとに決まっています。
+
+.. parsed-literal::
+    :class: console
+
+    :TToC
+
+.. note::
+
+    vimエディタの環境をそれほど変更していなければ、 |BR|
+    「:TT」コマンドだけでもスクリプトが動作します。
+
+    .. parsed-literal::
+        :class: console
+
+        :TT
+
+
+目次の選択
+--------------------------------------------------------------------------------
+
+.. csv-table:: 目次の選択
+    :header: 操作, 説明
+
+    マウスで目次を選択, 選択した目次の位置にカーソルを移動。目次一覧は閉じられる。
+    目次のインデックスの数字を入力, 指定した目次の位置にカーソルを移動。目次一覧は閉じられる。
+    <Enter>, カーソル下の目次の位置にカーソルを移動。目次一覧は閉じられる。
+    <C-g>, カーソル下の目次の位置にカーソルを移動。目次一覧は開いたまま。
+    "\<", カーソル下の目次の位置にカーソルを移動。目次一覧は開いたまま。
+    <C-p>, カーソル下の目次の場所を編集ウィンドウで表示。
+
+
+ウィンドウ、カーソルの操作
+--------------------------------------------------------------------------------
+
+.. csv-table:: ウィンドウ、カーソルの操作
+    :header: 操作, 説明
+
+    <Up>, カーソルを上に移動する。
+    <Down>, カーソルを下に移動する。
+    <C-r>, 目次一覧を閉じる。
+    <M-r>, 目次一覧を閉じる。
+    <ESC>, 目次一覧を閉じる。
+    <C-z>, ノーマルモードに移行して、カーソルが自由に動かせるようになる。カーソルの初期位置は目次一覧ウィンドウです。
+    <M-z>, ノーマルモードに移行して、カーソルが自由に動かせるようになる。カーソルの初期位置は目次一覧ウィンドウです。
+    <C-o>, ノーマルモードに移行して、カーソルが自由に動かせるようになる。カーソルの初期位置は編集ウィンドウです。
+
+
+目次一覧のフィルタリング
+--------------------------------------------------------------------------------
+
+.. csv-table:: 目次一覧のフィルタリング
+    :header: 操作, 説明
+
+    テキストの入力, 目次フィルタリング文字列に入力したテキストを追加します。
+    <BS>, 目次フィルタリング文字列を一文字削除します。
+    <C-q>, フィルタリング用文字列の編集を行います。
+    <M-q>, フィルタリング用文字列の編集を行います。
+
+.. note::
+
+    - 「 」（スペース）でAND、
+    - 「|」でOR、
+    - 「-」でNOTの
+
+    フィルタリング条件を追加できます。
+
+
+その他操作
+--------------------------------------------------------------------------------
+
+.. csv-table:: その他操作
+    :header: 操作, 説明
+
+    "\?", ヘルプ画面を表示する。何かキーを押すとヘルプ画面から戻れます。
+
+
+
+================================================================================
+設定
+================================================================================
+
+キーマップの設定
+--------------------------------------------------------------------------------
+
+このスクリプトを多用するなら、キーマップを設定すると楽になります。 |BR|
+設定するのであれば、例えば、次のように設定します。
+
+.. parsed-literal::
+    :class: program
+
+    :noremap <F3> :TToC<CR>
+    :noremap <F4> :TToC!<CR>
+    :inoremap <F3> <C-o>:TToC<CR>
+    :inoremap <F4> <C-o>:TToC!<CR>
+
+このマッピングをvimエディタの設定ファイルに追加すると、 |BR|
+「F3」キーでそのまま、「F4」キーで編集を破棄して目次一覧を表示します。
+
+
+ファイルタイプごとの目次検出の定義
+--------------------------------------------------------------------------------
+
+目次一覧の検出に使用されている変数の一覧はは次の表のとおりです。
+ファイルの種類ごとに異なる検出ルールが用いられます。 |BR|
+未知のファイルタイプの場合は、デフォルトの目次検出ルールが使用されます。
+
+.. csv-table:: 目次の検出ルールに使われている変数
+    :header: ファイルタイプ, 変数
+
+    デフォルト, g:ttoc_rx
+    bib, g:ttoc_rx_bib
+    html, g:ttoc_rx_html
+    perl, g:ttoc_rx_perl
+    php, g:ttoc_rx_php
+    python, g:ttoc_rx_python
+    rd, g:ttoc_rx_rd
+    ruby, g:ttoc_rx_ruby
+    scheme, g:ttoc_rx_scheme
+    sh, g:ttoc_rx_sh
+    tcl, g:ttoc_rx_tcl
+    tex, g:ttoc_rx_tex
+    viki, g:ttoc_rx_viki
+    vim, g:ttoc_rx_vim
+
+新しいルールを定義する、もしくは、新しいルールで古い定義を上書きする場合は、 |BR|
+vimエディタの設定ファイルで次のように指定します。
+
+.. parsed-literal::
+    :class: program
+
+    :let g:ttoc_rx_${ファイルタイプ} = '${目次の項目にマッチする正規表現}'
+    
+    **設定例（ファイルタイプ「txt」では数字で始まる行を目次の項目とする）**
+    :let g:ttoc_rx_txt = '^\\d.\*'
+
+
+
+================================================================================
+簡易メモツールとして使う
+================================================================================
+
+簡易な目次検索機能つきメモとして使うのなら、 |BR|
+`Kaoriya版vimエディタ`__ に添付する「memo.vim」スクリプトと組み合わせて、 |BR|
+vimエディタの設定ファイルで、次のように指定すると便利です。
+
+__ http://www.kaoriya.net/
+
+.. parsed-literal::
+    :class: program
+
+    " configuration for filetype memo
+    :autocmd BufNewFile,BufRead \*.memo :set filetype=memo
+    :let g:ttoc_rx_memo = '^\\k\\+\\>'
+
+上記の設定を行うと、 |BR|
+拡張子「.memo」のファイルを開くとシンタックス「memo」が適用され、 |BR|
+目次の項目を「ttoc」スクリプトで一覧表示できるようになります。
+
+.. image:: /dist/img/vim/ttoc_vim.jpg
+    :alt:  ttocスクリプトで目次一覧の表示
+
+.. note::
+
+    「memo.vim」は `Kaoriya`__ パッチに入っているメモ用シンタックス定義ファイルです。 |BR|
+    `Kaoriya`__ パッチがあたっていないvimエディタでもシンタックスファイルを入手すれば使用可能です。
+
+    __ http://www.kaoriya.net/
+    __ http://www.kaoriya.net/
+
+
+メモのサンプルは下（↓）になります。 |BR|
+「memo.vim」のシンタックス定義の確認にご利用ください。
+
+.. raw:: html
+
+    <div style="background-color: #333333; color: #ffffff" class="program literal-block"><span style="font-family: monospace">
+    <span style="color: #ffff00">&nbsp;1 </span><span style="color: #ff00ff"><b>ラベル</b></span><br>
+    <span style="color: #ffff00">&nbsp;2 </span><br>
+    <span style="color: #ffff00">&nbsp;3 </span><span style="color: #ffff60"><b>タイトル1</b></span>&nbsp;<span style="background-color: #0d0d0d"><span style="color: #ffa0a0">20-12-2007.</span></span><br>
+    <span style="color: #ffff00">&nbsp;4 </span>&nbsp;&nbsp;&nbsp;&nbsp;メモメモメモメモメモメモメモメモ<br>
+    <span style="color: #ffff00">&nbsp;5 </span>&nbsp;&nbsp;&nbsp;&nbsp;メモメモメモメモメモメモメモメモ<br>
+    <span style="color: #ffff00">&nbsp;6 </span><br>
+    <span style="color: #ffff00">&nbsp;7 </span><span style="color: #ffff60"><b>タイトル2</b></span>&nbsp;<span style="background-color: #0d0d0d"><span style="color: #ffa0a0">21-12-2007.</span></span><br>
+    <span style="color: #ffff00">&nbsp;8 </span>&nbsp;&nbsp;&nbsp;&nbsp;メモメモメモメモメモメモメモメモ<br>
+    <span style="color: #ffff00">&nbsp;9 </span>&nbsp;&nbsp;&nbsp;&nbsp;メモメモメモメモメモメモメモメモ<br>
+    <span style="color: #ffff00">10 </span><br>
+    <span style="color: #ffff00">11 </span><span style="color: #ffff60"><b>項目1</b></span><br>
+    <span style="color: #ffff00">12 </span>&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #80a0ff">■</span>&nbsp;項目<br>
+    <span style="color: #ffff00">13 </span>&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #80a0ff">□</span>&nbsp;項目<br>
+    <span style="color: #ffff00">14 </span>&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #80a0ff">◆</span>&nbsp;項目<br>
+    <span style="color: #ffff00">15 </span>&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #80a0ff">◇</span>&nbsp;項目<br>
+    <span style="color: #ffff00">16 </span><br>
+    <span style="color: #ffff00">17 </span><span style="color: #ffff60"><b>項目2</b></span><br>
+    <span style="color: #ffff00">18 </span>&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #ff0000">○</span>&nbsp;項目<br>
+    <span style="color: #ffff00">19 </span>&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #ff0000">●</span>&nbsp;項目<br>
+    <span style="color: #ffff00">20 </span>&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #ff0000">◎</span>&nbsp;項目<br>
+    <span style="color: #ffff00">21 </span>&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #ff0000">〇</span>&nbsp;項目<br>
+    <span style="color: #ffff00">22 </span><br>
+    <span style="color: #ffff00">23 </span><span style="color: #ffff60"><b>括弧書きや注意書きの書き方</b></span><br>
+    <span style="color: #ffff00">24 </span>&nbsp;&nbsp;&nbsp;&nbsp;メモメモメモメモ<br>
+    <span style="color: #ffff00">25 </span>&nbsp;&nbsp;&nbsp;&nbsp;メモメモメモメモ<br>
+    <span style="color: #ffff00">26 </span>&nbsp;&nbsp;&nbsp;&nbsp;<span style="background-color: #0d0d0d"><span style="color: #ffa500">(括弧書きの記述)</span></span><br>
+    <span style="color: #ffff00">27 </span>&nbsp;&nbsp;&nbsp;&nbsp;<span style="background-color: #ff0000"><span style="color: #ffffff">注意:</span></span>&nbsp;注意書きの記述<br>
+    <span style="color: #ffff00">28 </span><br>
+    <span style="color: #ffff00">29 </span><span style="color: #ffff60"><b>リストの書き方</b></span><br>
+    <span style="color: #ffff00">30 </span><span style="color: #40ffff">&nbsp;&nbsp;&nbsp;&nbsp;- リスト</span><br>
+    <span style="color: #ffff00">31 </span><span style="color: #40ffff">&nbsp;&nbsp;&nbsp;&nbsp;- リスト</span><br>
+    <span style="color: #ffff00">32 </span><span style="color: #40ffff">&nbsp;&nbsp;&nbsp;&nbsp;+ リスト</span><br>
+    <span style="color: #ffff00">33 </span><span style="color: #40ffff">&nbsp;&nbsp;&nbsp;&nbsp;+ リスト</span><br>
+    <span style="color: #ffff00">34 </span><span style="color: #40ffff">&nbsp;&nbsp;&nbsp;&nbsp;* リスト</span><br>
+    <span style="color: #ffff00">35 </span><span style="color: #40ffff">&nbsp;&nbsp;&nbsp;&nbsp;* リスト</span><br>
+    <span style="color: #ffff00">36 </span><br>
+    <span style="color: #ffff00">37 </span><span style="color: #ffff60"><b>リスト（順番つき）の書き方</b></span><br>
+    <span style="color: #ffff00">38 </span><span style="color: #40ffff">&nbsp;&nbsp;&nbsp;&nbsp;1: 順番つきリスト</span><br>
+    <span style="color: #ffff00">39 </span><span style="color: #40ffff">&nbsp;&nbsp;&nbsp;&nbsp;2: 順番つきリスト</span><br>
+    <span style="color: #ffff00">40 </span><span style="color: #40ffff">&nbsp;&nbsp;&nbsp;&nbsp;1. 順番つきリスト</span><br>
+    <span style="color: #ffff00">41 </span><span style="color: #40ffff">&nbsp;&nbsp;&nbsp;&nbsp;2. 順番つきリスト</span><br>
+    <span style="color: #ffff00">42 </span><span style="color: #40ffff">&nbsp;&nbsp;&nbsp;&nbsp;1) 順番つきリスト</span><br>
+    <span style="color: #ffff00">43 </span><span style="color: #40ffff">&nbsp;&nbsp;&nbsp;&nbsp;2) 順番つきリスト</span><br>
+    <span style="color: #ffff00">44 </span><br>
+    <span style="color: #ffff00">45 </span><span style="color: #ffff60"><b>コメントやvimの設定の記述</b></span><br>
+    <span style="color: #ffff00">46 </span><span style="color: #80a0ff">&nbsp;&nbsp;&nbsp;&nbsp;# コメント</span><br>
+    <span style="color: #ffff00">47 </span><span style="color: #80a0ff">&nbsp;&nbsp;&nbsp;&nbsp;# コメント</span><br>
+    <span style="color: #ffff00">48 </span><span style="color: #ff80ff">&nbsp;&nbsp;&nbsp;&nbsp;vim: set expandtab :</span><br>
+    <span style="color: #ffff00">49 </span><br>
+    </span></div>
+

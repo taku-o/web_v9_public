@@ -1,0 +1,86 @@
+.. vim:set expandtab ff=unix ft=rest nowrap :
+
+..  エラーハンドリング
+
+..  
+
+.. |BR| raw:: html
+
+    <br />
+
+.. |yen|    unicode:: U+000A5 .. YEN SIGN
+
+.. role:: raw-html(raw)
+    :format: html
+
+.. contents::
+
+================================================================================
+エラーハンドリング
+================================================================================
+
+- エラー処理のサンプル。全てのエラーに対応。
+
+.. parsed-literal::
+    :class: program
+
+    :try
+        :sleep 10
+    :catch
+        :echo "catch all error"
+    :endtry
+    "# => エラーが発生すると「catch all error」と表示。
+
+- 「:catch」にキャッチするエラーの種類を書ける
+
+.. parsed-literal::
+    :class: program
+
+    :try
+        :sleep 10
+    :catch /^Vim:Interrupt$/
+        :echo "catch CTRL-C"
+        :sleep 3
+    :endtry
+    "# => Ctrl-Cで中断すると「catch CTRL-C」と表示。
+
+- 「:catch」「:finally」を用いたエラー処理のサンプル。
+
+.. parsed-literal::
+    :class: program
+
+    :try
+        :throw "ERROR2"
+    :catch /ERROR1/
+        :echo "catch ERROR1"
+    :catch /ERROR2/
+        :echo "catch ERROR2"
+    :catch /ERROR3/
+        :echo "catch ERROR3"
+    :catch
+        :echo "catch all error"
+    :finally
+        :echo "in finally"
+    :endtry
+    "# => catch ERROR2
+    "# => in finally
+
+- 「:throw」でなく「:echoerr」を使用する方法
+
+.. parsed-literal::
+    :class: program
+
+    :try
+        :echoerr "ERROR"
+    :catch
+        :echo "catch ERROR"
+    :endtry
+    "# => catch ERROR
+
+.. parsed-literal::
+    :class: console
+
+    " see also
+    :help catch
+
+

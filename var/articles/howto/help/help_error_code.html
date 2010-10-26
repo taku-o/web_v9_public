@@ -1,0 +1,172 @@
+.. vim:set expandtab ff=unix ft=rest :
+
+..  vimエディタで発生したエラーを解決する
+
+..  vimエディタを使用していてエラーが発生した時、
+    そのエラーのコードさえ分かれば、即座に問題の解決がはかれる場合があります。
+    この記事では、そのエラーの原因の特定、解決の方法の調べ方を説明します。
+    (Windows, Mac)
+
+.. |BR| raw:: html
+
+    <br />
+
+.. |yen|    unicode:: U+000A5 .. YEN SIGN
+
+.. role:: raw-html(raw)
+    :format: html
+
+.. contents::
+
+================================================================================
+概要
+================================================================================
+
+vimエディタを使用していてエラーが発生した時、 |BR|
+そのエラーのコードさえ分かれば、即座に問題の解決がはかれる場合があります。 |BR|
+この記事では、そのエラーの原因の特定、解決の方法の調べ方を説明します。
+
+
+
+================================================================================
+「help」コマンドで、エラーの原因と解決策を調べる
+================================================================================
+
+最初にエラーのコードを特定する
+-------------------------------------------------------------------------------
+
+今回説明する方法で解決できるのは、エラーのコードが表示されている場合です。 |BR|
+まず、エラーのコードを特定してください。 |BR|
+エラーのコードは
+
+- vimエディタのウィンドウで表示されたり、（E97）
+
+.. image:: /dist/img/howto/diff/diff_error_spot.jpg
+    :alt:  vimエディタのウィンドウでエラーコード表示
+
+- ダイアログで表示されたり、（E174）
+
+.. image:: /dist/img/howto/help/vim_error_e174.jpg
+    :alt:  エラーコードをターミナルで表示
+
+- 起動時にターミナルで表示されたりします。（E492）
+
+.. image:: /dist/img/howto/help/vim_error_e492.jpg
+    :alt:  エラーコードをダイアログで表示
+
+これらの例の場合だと、 |BR|
+「E97」「E174」「E492」がエラーコードとなります。
+
+.. note::
+
+    エラーコードと一緒に表示される他のメッセージも
+    問題解決のための重要な情報となります。
+
+
+「help」コマンドで原因を検索
+-------------------------------------------------------------------------------
+
+エラーのコードを特定したら、
+そのコードを「help」コマンドで検索します。 |BR|
+エラーのコードを引数に「help」コマンドを実行してください。
+
+.. parsed-literal::
+    :class: console
+
+    :help エラーコード
+
+.. parsed-literal::
+    :class: console
+
+    **" コマンド例**
+    :help E97
+
+
+エラーの原因を修正する
+-------------------------------------------------------------------------------
+
+エラーコードが表示されるようなエラーの場合、
+「help」コマンドでエラーの原因が表示されると思います。 |BR|
+（運が良ければ解決方法も）
+
+表示されるメッセージを使って、問題の解決をはかってみてください。
+
+.. parsed-literal::
+    :class: console
+
+    **" コマンドの実行例と、表示されるメッセージ**
+    :help E97
+
+.. parsed-literal::
+    :class: program
+
+                            \*E97\*
+    Vim will do a test if the diff output looks alright.  If it doesn't, you will
+    get an error message.  Possible causes:
+    -  The "diff" program cannot be executed.
+    -  The "diff" program doesn't produce normal "ed" style diffs (see above).
+    -  The 'shell' and associated options are not set correctly.  Try if filtering
+       works with a command like ":!sort".
+    -  You are using 'diffexpr' and it doesn't work.
+    If it's not clear what the problem is set the 'verbose' option to one or more
+    to see more messages.
+
+    The self-installing Vim includes a diff program.  If you don't have it you
+    might want to download a diff.exe.  For example from
+    http://jlb.twu.net/code/unixkit.php.
+
+.. parsed-literal::
+    :class: console
+
+    **" コマンドの実行例と、表示されるメッセージ**
+    :help E174
+
+.. parsed-literal::
+    :class: program
+
+                                \*E174\* \*E182\*
+    :com[mand][!] [{attr}...] {cmd} {rep}
+                Define a user command.  The name of the command is
+                {cmd} and its replacement text is {rep}.  The command's
+                attributes (see below) are {attr}.  If the command
+                already exists, an error is reported, unless a ! is
+                specified, in which case the command is redefined.
+
+
+.. parsed-literal::
+    :class: console
+
+    **" コマンドの実行例と、表示されるメッセージ**
+    :help E492
+
+.. parsed-literal::
+    :class: program
+
+                                \*E492\*
+      Not an editor command
+
+    You tried to execute a command that is neither an Ex command nor
+    a user-defined command.
+
+
+
+================================================================================
+エラーコードが表示されないケース
+================================================================================
+
+この方法では解決できない、エラーコードが表示されないケースとしては、 |BR|
+次のような場合が考えられるでしょうか。
+
+- システムで起きたエラー（突然アプリケーションが落ちるとか）
+- スクリプトで表示しているエラー（エラーメッセージが表示されるが、コードは表示されないとか）
+
+前者を解決するのは難しいことが多いでしょう。 |BR|
+素直に開発者に連絡するのが良いのではないかと思います。 |BR|
+（システムログあたりを見ると原因が分かることもある。）
+
+後者の場合は、エラーを起こしているスクリプトを覗くと、 |BR|
+なぜエラーが起きたのか分かることがあります。 |BR|
+バージョンのチェックなどで、メッセージが出ていることが良くあります。
+
+
+

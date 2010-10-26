@@ -1,0 +1,55 @@
+.. vim:set expandtab ff=unix ft=rest nowrap :
+
+..  検索ダイアログ、置換ダイアログを表示する
+
+..  
+
+.. |BR| raw:: html
+
+    <br />
+
+.. |yen|    unicode:: U+000A5 .. YEN SIGN
+
+.. role:: raw-html(raw)
+    :format: html
+
+.. contents::
+
+================================================================================
+検索ダイアログ、置換ダイアログを表示する
+================================================================================
+
+- 検索ダイアログを表示。
+
+初期検索値をクリアする方法は無い模様。制御はユーザに渡る。
+
+.. parsed-literal::
+    :class: program
+
+    :promptfind
+
+- 初期値付き検索ダイアログ
+
+.. parsed-literal::
+    :class: program
+
+    :promptfind search-word
+
+- 置換ダイアログを表示。
+
+初期検索値をクリアする方法は無い模様。制御はユーザに渡る。
+
+.. parsed-literal::
+    :class: program
+
+    :promptrepl
+
+- 初期値付き置換ダイアログ
+
+.. parsed-literal::
+    :class: program
+
+    :promptrepl search-word
+
+
+

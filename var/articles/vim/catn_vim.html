@@ -1,0 +1,192 @@
+.. vim:set expandtab ff=unix ft=rest :
+
+..  catn.vim : 行先頭に連番を挿入するスクリプト
+
+..  選択した範囲の行の先頭に連番を挿入するスクリプトです。Unixの"cat -n"。
+    (Windows, Mac)
+
+.. |BR| raw:: html
+
+    <br />
+
+.. |yen|    unicode:: U+000A5 .. YEN SIGN
+
+.. role:: raw-html(raw)
+    :format: html
+
+.. contents::
+
+================================================================================
+概要
+================================================================================
+
+catn.vim : 行先頭に連番を挿入するスクリプト |BR|
+http://indefero.taku-o.net/index.php/p/download/source/file/master/catn.vim
+
+選択した範囲の行の先頭に連番を挿入するスクリプトです。
+
+
+
+================================================================================
+インストール方法
+================================================================================
+
+`スクリプト`__ をダウンロードして、 |BR|
+pluginディレクトリにコピーしてください。
+
+__ http://indefero.taku-o.net/index.php/p/download/source/file/master/catn.vim
+
+.. csv-table::
+    :header: "ファイル", "URL"
+
+    "catn.vim", "http://indefero.taku-o.net/index.php/p/download/source/file/master/catn.vim"
+
+
+
+================================================================================
+使用方法
+================================================================================
+
+コマンドのフォーマット
+--------------------------------------------------------------------------------
+
+スクリプトをインストールすると、「:Catn」コマンドを使用できるようになります。 |BR|
+「:Catn」コマンドのフォーマットは3通りあります。 |BR|
+どのフォーマットのコマンドを呼び出す場合にも、連番を挿入する範囲を指定する必要があります。
+
+.. parsed-literal::
+    :class: program
+
+    **" 指定した範囲の行の先頭に、1から始まる連番を挿入**
+    :'<,'>Catn
+    
+    **" 指定した範囲の行の先頭に、指定した番号からの連番を挿入**
+    :'<,'>Catn {開始値}
+    
+    **" 指定した範囲の行の先頭に、指定したフォーマットで指定した番号からの連番を挿入**
+    :'<,'>Catn {フォーマット} {開始値}
+
+
+指定した範囲の行の先頭に、1から始まる連番を挿入
+--------------------------------------------------------------------------------
+
+「:Catn」コマンドにパラメータを与えないと、1から始まる連番を、
+指定した範囲の行頭に挿入します。
+
+.. parsed-literal::
+    :class: program
+
+    public class Main {
+      public static void main(String[] args) {
+        System.out.println("Hello World");
+      }
+    }
+
+↑ 上のようなコードがある時に、連番を挿入したい範囲をビジュアルモードで選択するか、 |BR|
+コマンドラインモードで指定して、「:Catn」コマンドを実行すると、
+
+.. parsed-literal::
+    :class: console
+
+    **" ファイル全体を対象に「:Catn」コマンドを実行**
+    :%Catn
+
+↓ 次のように連番を埋め込みます。
+
+.. parsed-literal::
+    :class: program
+
+    1 public class Main {
+    2   public static void main(String[] args) {
+    3     System.out.println("Hello World");
+    4   }
+    5 }
+
+
+指定した範囲の行の先頭に、指定した番号からの連番を挿入
+--------------------------------------------------------------------------------
+
+「:Catn」コマンドにパラメータを1つ、数値を与えると、 |BR|
+その数値から始まる連番を、指定した範囲の行頭に挿入します。 |BR|
+（パラメータで指定した数値を含む）
+
+.. parsed-literal::
+    :class: program
+
+    public class Main {
+      public static void main(String[] args) {
+        System.out.println("Hello World");
+      }
+    }
+
+↑ 上のようなコードがある時に、連番を挿入したい範囲をビジュアルモードで選択するか、 |BR|
+コマンドラインモードで指定して、「:Catn」コマンドに連番開始値を与えて実行すると、
+
+.. parsed-literal::
+    :class: console
+
+    **" 1行目から5行目を対象に、連番開始値50を指定して「:Catn」コマンドを実行**
+    :1,5Catn 50
+
+↓ 次のように連番を埋め込みます。
+
+.. parsed-literal::
+    :class: program
+
+    50 public class Main {
+    51   public static void main(String[] args) {
+    52     System.out.println("Hello World");
+    53   }
+    54 }
+
+
+指定した範囲の行の先頭に、指定したフォーマットで指定した番号からの連番を挿入
+--------------------------------------------------------------------------------
+
+フォーマットを指定して、連番を挿入することもできます。
+
+.. parsed-literal::
+    :class: console
+
+    :'<,'>Catn {フォーマット} {開始値}
+
+フォーマットには、vimエディタのprintf()ファンクションで使用できるフォーマットを指定します。 |BR|
+例えば、次のようにコマンドを実行すると、
+
+.. parsed-literal::
+    :class: console
+
+    **" 数値8桁、0埋めのフォーマット**
+    :%Catn %08d: 500
+
+↓ 次のように連番を埋め込みます。
+
+.. parsed-literal::
+    :class: program
+
+    00000500:public class Main {
+    00000501:  public static void main(String[] args) {
+    00000502:    System.out.println("Hello World");
+    00000503:  }
+    00000504:}
+
+半角スペースを入れる場合は、「\\」でエスケープする必要があります。
+
+.. parsed-literal::
+    :class: console
+
+    **" 数値8桁、0埋めのフォーマット。間に1つスペースを入れる。**
+    :%Catn %08d:\\  500
+
+.. parsed-literal::
+    :class: program
+
+    00000500: public class Main {
+    00000501:   public static void main(String[] args) {
+    00000502:     System.out.println("Hello World");
+    00000503:   }
+    00000504: }
+
+
+
+

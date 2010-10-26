@@ -1,0 +1,144 @@
+.. vim:set expandtab ff=unix ft=rest :
+
+..  Visual Studio .NETから外部ツールとしてVimエディタを起動する。
+
+..  このページでは、Visual Studio .NETからVimエディタを、
+    外部ツールとして起動する場合の設定例を紹介します。
+    (Windows)
+
+.. |BR| raw:: html
+
+    <br />
+
+.. |yen|    unicode:: U+000A5 .. YEN SIGN
+
+.. role:: raw-html(raw)
+    :format: html
+
+.. contents::
+
+================================================================================
+概要
+================================================================================
+
+このページでは、Visual Studio .NETからVimエディタを、
+外部ツールとして起動する場合の設定例を紹介します。
+
+- 他のVimエディタが起動されていなければ、新規にVimエディタを立ち上げる。
+- 他のVimエディタが起動されていれば、そのVimエディタウィンドウでファイルを開く。
+- 新しく開かれるファイルであれば、タブで開く。
+- 開始時のカーソル行を指定。（開かれたファイルにフォーカスが当たっている場合）
+
+
+
+================================================================================
+設定方法
+================================================================================
+
+GVim起動用のバッチファイルをダウンロードする
+--------------------------------------------------------------------------------
+
+Vimエディタ起動用のバッチファイル「vim_vs_net.cmd」を用意してあるので、これを `ダウンロード`__ し、 |BR|
+適当なディレクトリに置きます。迷うようであれば、toolsディレクトリにでも置きましょう。
+
+__ http://indefero.taku-o.net/index.php/p/download/source/file/master/vim_vs_net.cmd
+
+`バッチファイル「vim_vs_net.cmd」ダウンロード`__
+
+__ http://indefero.taku-o.net/index.php/p/download/source/file/master/vim_vs_net.cmd
+
+
+外部ツールの設定パネルを開く
+--------------------------------------------------------------------------------
+
+Visual Studioを起動したら、メニューから
+
+- 「ツール」→「外部ツール...」（日本語メニュー）
+- 「Tools」→「External Tools...」（英語メニュー）
+
+と選択し、外部ツールの設定パネルを開きます。
+
+.. image:: /dist/img/howto/coding/vim_vs_net_cmd_menu.png
+    :alt:  エラーを確認する。
+
+
+外部ツールの登録
+--------------------------------------------------------------------------------
+
+外部ツールの設定パネルで、次のように設定してください。
+
+.. csv-table::
+    :header: 項目, 設定例, 備考
+
+     "タイトル"         , "Vim"                       , "好きな名前で登録してください。このページの説明では「Vim」を使用します。"
+     "コマンド"         , "C:\\path\\to\\vim_vs_net.cmd" , "「vim_vs_net.cmd」までのパスを登録します。"
+     "引数"             , "$(CurLine) $(ItemPath)"    , ""
+     "初期ディレクトリ" , ""                          , "空にします。"
+
+|BR|
+
+.. image:: /dist/img/howto/coding/vim_vs_net_cmd_dialog.png
+    :alt:  エラーを確認する。
+
+.. note::
+
+    このページで紹介している設定は、「gvim.exe」コマンドにPATHが通っていることが前提になっています。 |BR|
+    （gvim.exeコマンドを「vim_vs_net.cmd」が使用します。） |BR|
+    「gvim.exe」にPATHを通さない場合は「vim_vs_net.cmd」を編集してください。
+
+
+動作確認
+--------------------------------------------------------------------------------
+
+外部ツールの設定が完了したら、動作確認を行います。
+
+- Visual Studio .NETのエクスプローラでファイルを選択するか、
+- エディタでファイルを開いて、
+
+先のステップで登録した、外部ツールの「Vim」を選択してください。
+
+.. image:: /dist/img/howto/coding/vim_vs_net_cmd_select.png
+    :alt:  ファイル選択
+
+
+
+================================================================================
+カスタマイズ
+================================================================================
+
+「vim_vs_net.cmd」ファイルの中身は次のようになっています。 |BR|
+起動するVimをカスタマイズしたり、gvim.exeまでのパスをフルパスで指定したい場合は、 |BR|
+下コードのハイライトされている箇所を修正してください。
+
+.. raw:: html
+
+    <pre class="program">
+    @echo off
+    
+    IF "%~2" == "" (GOTO WITHOUT_LINE_NO) else GOTO WITH_LINE_NO
+    
+    :WITH_LINE_NO
+    <span class="code_high">start /b gvim.exe --servername VS_NET --remote-tab-silent +%1 %2</span>
+    GOTO END
+    
+    :WITHOUT_LINE_NO
+    <span class="code_high">start /b gvim.exe --servername VS_NET --remote-tab-silent %1</span>
+    GOTO END
+    
+    :END
+    </pre>
+
+
+.. note::
+
+    実はVimエディタ本体のランタイムのtoolsディレクトリには、 |BR|
+    この「vim_vs_net.cmd」と名前も目的も機能も同じファイル、「vim_vs_net.cmd」が入っています。 |BR|
+    このページで配布している「vim_vs_net.cmd」は、元ファイルを改変したものなのです。
+
+    .. parsed-literal::
+        :class: console
+
+        $VIM/runtime/tools/vim_vs_net.cmd
+
+
+

@@ -1,0 +1,393 @@
+.. vim:set expandtab ff=unix ft=rest :
+
+..  rst2html.py : reStructuredTextからのHTML生成
+
+..  「rst2html.py」は「Docutils」に含まれるツールの1つです。
+    「rst2html.py」ツールを使うと「reStructuredText」フォーマットのテキストから、
+    より可読性の高いHTMLフォーマットのファイルを生成できます。
+    (Windows)
+
+
+.. |BR| raw:: html
+
+    <br />
+
+.. |yen|    unicode:: U+000A5 .. YEN SIGN
+
+.. role:: raw-html(raw)
+    :format: html
+
+.. contents::
+
+================================================================================
+概要
+================================================================================
+
+「rst2html.py」は `Docutils`__ に含まれるツールの1つです。 |BR|
+「rst2html.py」ツールを使うと `reStructuredText`__ フォーマットのテキストから、 |BR|
+より可読性の高いHTMLフォーマットのファイルを生成できます。
+
+__ http://docutils.sf.net/
+__ http://docutils.sf.net/rst.html
+
+
+================================================================================
+reStructuredTextからHTMLを生成する利点
+================================================================================
+
+reStructuredTextフォーマットのテキストは、
+もともと他の構造化テキストに比べて可読性の高いドキュメントではありますが、 |BR|
+それでも、そのままでは誰にとっても読みやすい、とまでは言える状態ではありません。
+
+HTMLドキュメントに変換してしまうことにより、reStructuredText独自の書式を取り除き、 |BR|
+誰でも読みやすい形式に変換することには大きな利点があります。
+
+
+
+================================================================================
+インストール方法
+================================================================================
+
+「rst2html.py」は「 `Docutils`__ 」に含まれています。 |BR|
+Docutilsのインストール方法について書いた記事
+`Docutils（Python Documentation Utilities） on cygwin`__
+を参考に「Docutils」をインストールしてみてください。
+
+__ http://docutils.sf.net/
+__ /articles/others/docutils.html
+
+
+================================================================================
+rst2html.pyツールの使い方
+================================================================================
+
+rst2html.pyはどこにあるか
+-------------------------------------------------------------------------------
+
+「Docutils」がインストールされたディレクトリを「${DOCUTILS_HOME}」とすると、 |BR|
+下記の場所にあります。
+
+.. parsed-literal::
+    :class: console
+
+    ${DOCUTILS_HOME}/tools/rst2html.py
+
+
+基本的な使い方
+-------------------------------------------------------------------------------
+
+基本的には、「rst2html.py」のあるディレクトリにターミナルで移動した後、 |BR|
+次のようにコマンドを実行します。
+
+.. parsed-literal::
+    :class: console
+
+    python rst2html.py <source> <destination>
+    python rst2html.py 変換対象のファイル(reStructuredText) 出力先のファイル
+
+.. parsed-literal::
+    :class: console
+
+    **# コマンドの例**
+    python rst2html.py source.txt output.html
+
+「rst2html.py」ツールの使い方が分からない時は、 |BR|
+次のコマンドで「rst2html.py」のヘルプメッセージを表示できます。
+
+.. parsed-literal::
+    :class: console
+
+    **# コマンドの例**
+    python rst2html.py --help
+
+「rst2html.py」コマンドは、実際にはいくつかオプションをつけて、 |BR|
+例えば、次のように実行することになります。
+
+.. parsed-literal::
+    :class: console
+
+    **# コマンド実行の例。shift_jisのsource.txtファイルを変換。**
+    **# （\\マークを取り除いて、1行で入力しても良い）**
+    python rst2html.py \\
+        -i shift_jis -o shift_jis \\
+        -l ja \\
+        --no-generator \\
+        --no-datestamp \\
+        --no-source-link \\
+        --strip-comments \\
+        --no-xml-declaration \\
+        --embed-stylesheet \\
+        --title="ドキュメントのタイトル" \\
+        source.txt
+
+
+コマンドオプション
+-------------------------------------------------------------------------------
+
+「rst2html.py」ツールにコマンドのオプションを与えれば、ツールの挙動を変えることができます。
+
+.. parsed-literal::
+    :class: console
+
+    python rst2html.py [options] <source> <destination>
+    python rst2html.py オプション 変換対象のファイル 出力先のファイル
+
+「rst2html.py」にどのようなコマンドのオプションがあるかは、
+helpコマンドを使用すれば知ることができるでしょう。
+
+.. parsed-literal::
+    :class: console
+
+    **# ヘルプメッセージの表示**
+    python rst2html.py --help
+
+実際にhelpコマンドを実行してみればわかる事ですが、かなり多数のオプションがあります。 |BR|
+そこで、ここでは「rst2html.py」を使う上で重要になりそうなオプションのみ説明します。
+
+.. csv-table:: 生成されるHTMLに関わるオプション
+    :header: オプション, 説明, オプション指定の例
+
+    --title="<タイトル>", HTMLファイルのtitleタグの値。指定しないとHTMLタイトルが空になってしまう。, --title="HTMLのタイトル"
+    --no-source-link, フッタにソースコードへのリンクを表示しない。, --no-source-link
+    --no-generator, フッタに生成ツールの表記を表示しない。, --no-generator
+    --no-datestamp, フッタにHTMLファイルの生成時間を表示しない。, --no-datestamp
+    --no-xml-declaration, 生成するHTMLファイルの1行目にXML宣言を入れない。, --no-xml-declaration
+
+.. csv-table:: 文字コード関連のオプション
+    :header: オプション, 説明, オプション指定の例
+
+    --input-encoding=<文字コード>, 入力ファイルの文字コード。, --input-encoding=shift_jis
+    -i <文字コード>, --input-encodingオプションの短い形式の指定方法。, -i shift_jis
+    --output-encoding=<文字コード>, 出力ファイルの文字コード。未指定の時はUTF-8が使用される。, --output-encoding=shift_jis
+    -o <文字コード>, --output-encodingオプションの短い形式の指定方法。, -o shift_jis
+    --language=<言語環境>, HTMLのlangで使用する言語環境を2文字で指定します。デフォルトではenになる。, --language=ja
+    -l <言語環境>, --languageオプションの短い形式の指定方法。, -l ja
+
+.. csv-table:: スタイルシート関連のオプション
+    :header: オプション, 説明, オプション指定の例
+
+    --stylesheet="<URL>", HTMLからリンクするCSSのURLを指定する。, --stylesheet="`http://nanasi.jp/html4css1.css`"
+    --stylesheet-path="<ファイルパス>", CSS定義ファイルまでのファイルパスを指定する。, --stylesheet-path="html4css1.css"
+    --embed-stylesheet, CSS定義を生成するHTMLファイルに埋め込みます。「--stylesheet」、「--stylesheet-path」オプションを指定する場合、CSS定義ファイルを「rst2html.py」コマンド実行時に読み込める必要があります。, --embed-stylesheet
+    --link-stylesheet, CSSをHTMLからリンクするようにします。「rst2html.py」コマンド実行時にCSS定義ファイルを読み込めなくても、エラーにはなりません。, --link-stylesheet
+
+.. csv-table:: 設定ファイル関連のオプション
+    :header: オプション, 説明
+
+    --template="<ファイルパス>", 生成ファイルのテンプレートのパスを指定します。テンプレートはUTF-8エンコーディングで記述します。, --template="template.txt"
+    --config="<ファイルパス>", 設定ファイルのパスを指定します。コマンドのオプションを、指定した設定ファイルから読み込みます。, --config="html4css1.conf"
+
+
+文字化けしないオプション指定
+-------------------------------------------------------------------------------
+
+生成したHTMLファイルをブラウザで表示した時に、文字化けして見えないようにするために、 |BR|
+文字コード関連の「rst2html.py」コマンドオプションの指定は必須です。
+
+- ソースとなるreStructuredTextの文字コード指定（--input-encoding、-iで指定）
+- 出力するHTMLファイルの文字コード指定（--output-encoding、-oで指定）
+- 出力するHTMLファイルの言語環境指定（--language、-lオプションで指定）
+
+下のコマンドは、shift_jisのreStructuredTextを読み込み、 |BR|
+shift_jisのHTMLとして出力する場合のコマンド例です。
+
+.. parsed-literal::
+    :class: console
+
+    **# コマンド実行の例。shift_jisのファイルを変換。**
+    **# （\\マークを取り除いて、1行で入力しても良い）**
+    python rst2html.py \\
+        -i shift_jis \\
+        -o shift_jis \\
+        -l ja \\
+        source.txt
+
+
+スタイルシートの指定について
+-------------------------------------------------------------------------------
+
+スタイルシートは、スタイルシート定義をHTML内部に組み込んでしまう方式と、
+外にあるスタイルシートにリンクする方式が選択できます。 |BR|
+この選択は「rst2html.py」のコマンドオプションで指定します。
+
+- HTML内部に埋め込む（--embed-stylesheetで指定）
+- 外部のスタイルシートにリンクする（--link-stylesheetで指定）
+
+HTMLにスタイルシート定義を組み込む場合には、 |BR|
+「rst2html.py」コマンドでのHTML生成時にスタイルシートが読み込めないと、
+コマンドがエラーとなり失敗します。 |BR|
+スタイルシートへのパスを指定するには、
+「--stylesheet」「--stylesheet-path」コマンドオプションを使用します。
+
+「rst2html.py」コマンド時にスタイルシートへのパスを指定しなかった場合、
+デフォルトでは次のスタイルシートが使用されます。 |BR|
+（Docutilsがインストールされたディレクトリを「${DOCUTILS_HOME}」とする）
+
+.. parsed-literal::
+    :class: console
+
+    ${DOCUTILS_HOME}/docutils/writers/html4css1/html4css1.css
+
+
+
+================================================================================
+テンプレート
+================================================================================
+
+より自由なデザインのHTML生成
+-------------------------------------------------------------------------------
+
+HTML生成系ツールを使用する場合に、 |BR|
+そのツールから生成されるHTMLを、どの程度までコントロールできるか（デザインをいじれるか）？ |BR|
+というのは、最も大きな関心事のひとつであると思います。
+
+そういった状況に対応するため、多くの構造化テキストからのHTML生成ツールでは、 |BR|
+HTML出力以外にXML出力をサポートし、XSLTで変換する方法を提示しています。 |BR|
+
+これは「Docutils」も例外ではありません。
+「Docutils」にはXML出力する「rst2xml.py」ツールが用意されています。 |BR|
+（「rst2xml.py」についての詳細は「rst2xml.py」のヘルプを参照してください。）
+
+しかし「Docutils」の「rst2html.py」では、XML出力以外にも、 |BR|
+より自由度は下がってしまいますが、簡単で手間のかからない
+テンプレートを用いる方法も用意されています。
+
+
+テンプレートの指定方法
+-------------------------------------------------------------------------------
+
+テンプレートを指定するには、
+「rst2html.py」コマンドの「--template」オプションを使用してください。 |BR|
+テンプレートはUTF-8エンコーディングで記述しなければなりません。
+
+.. parsed-literal::
+    :class: console
+
+    **# コマンド実行の例。template.txtというテンプレートを使用する。**
+    python rst2html.py --template="template.txt" source.txt
+
+
+「rst2html.py」は、デフォルトでは下記の場所のテンプレートを使用して、HTMLの生成をします。 |BR|
+（Docutilsがインストールされたディレクトリを「${DOCUTILS_HOME}」とする）
+
+.. parsed-literal::
+    :class: console
+
+    ${DOCUTILS_HOME}/docutils/writers/html4css1/template.txt
+
+
+テンプレートの書き方
+-------------------------------------------------------------------------------
+
+どのようにテンプレートを書けば良いか学ぶ前に、現在のテンプレート定義を覗いて、 |BR|
+テンプレートの書式がどのようなものであるかを調べます。 |BR|
+私の環境では「rst2html.py」のテンプレートの定義は下のようになっています。
+
+.. parsed-literal::
+    :class: program
+
+    %(head_prefix)s
+    %(head)s
+    %(stylesheet)s
+    %(body_prefix)s
+    %(body_pre_docinfo)s
+    %(docinfo)s
+    %(body)s
+    %(body_suffix)s
+
+この定義を見ただけでわかる人はわかってしまう、と思いますが、 |BR|
+下のパーツが、それぞれ対応するreStructuredText変換後テキストと入れ替わる方式になっています。
+
+.. parsed-literal::
+    :class: console
+
+    %(定義名)s
+
+では、どのような定義が使用できるかと言うと、 |BR|
+「rst2html.py」では、下記の表のような定義が使用できます。
+
+.. csv-table:: 使用可能なテンプレート定義
+    :header: 定義名, 説明, どのようなデータが出力されるか
+
+    encoding, 出力ファイルのエンコーディング, shift_jis
+    version, Docutilsのバージョン, 0.5
+    body, ドキュメントの本体データ。「fragment」と同じ。,
+    fragment, ドキュメントの本体データ。「body」と同じ。,
+    body_prefix, ドキュメントの前に来るテキスト, </head> <body> <div class="document" ...>
+    body_suffix, ドキュメントの後に来るテキスト, </div> <div class="footer"> ... </div> </body> </html>
+    body_pre_docinfo, 本文の前に来るテキスト, <h1 class="title">...</h1> <h2 class="subtitle" id="...">...</h2>
+    docinfo, 脚注などのデータ,
+    head, <meta>タグと<title>タグ, <meta ... /> <title>...</title>.
+    head_prefix, XML宣言とDOCTYPE宣言, <?xml version="1.0" encoding="shift_jis" ?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "`http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd`">
+    meta, <meta>タグ定義,
+    stylesheet, HTMLに埋め込まれるスタイルシート定義、もしくはスタイルシートへのリンク,
+    header, ヘッダー。Webページで最も上に来るテキスト。,
+    footer, フッター,
+    html_body, HTMLのbodyタグの中身,
+    html_head, HTMLのheadタグの中身。スタイルシート定義は含まない。,
+    title, ドキュメントのタイトル,
+    subtitle, ドキュメントのサブタイトル
+    html_title, <h1>タグで囲まれたドキュメントのタイトル, <h1 class="title">のタイトル</h1>
+    html_subtitle, <h2>タグで囲まれたドキュメントのサブタイトル, <h2 class="title">サブタイトル</h1>
+
+どのようなテンプレート定義が使用できて、どのようなデータが出力されるかの詳細は、
+次のURLで知ることができます。
+
+The Docutils Publisher |BR|
+http://docutils.sourceforge.net/docs/api/publisher.html
+
+
+
+================================================================================
+設定ファイル
+================================================================================
+
+オプションを定義した設定ファイルを用意して、 |BR|
+その設定ファイルから、コマンドの設定を読み込むこともできます。
+
+
+読み込む設定ファイルの指定
+-------------------------------------------------------------------------------
+
+設定ファイルは、
+
+- 「rst2html.py」の「--config」オプションで設定ファイルを指定する
+
+か、
+
+- 「DOCUTILSCONFIG」環境変数で設定ファイルの位置を指定
+- 「/etc/docutils.conf」を用意して、そこに定義を書く
+- 「./docutils.conf」を用意して、そこに定義を書く
+- 「~/.docutils」を用意して、そこに定義を書く
+
+のどれかの方法で指定できます。
+
+
+設定ファイルの書き方
+-------------------------------------------------------------------------------
+
+設定ファイルの中身は、次のようなフォーマットで書きます。
+
+.. parsed-literal::
+    :class: program
+
+    **# 設定ファイルサンプル**
+    [general]
+    source-link: yes
+    datestamp: %Y-%m-%d %H:%M UTC
+    generator: on
+
+    [html4css1 writer]
+    stylesheet-path: ../docutils/writers/html4css1/html4css1.css
+    embed-stylesheet: no
+    field-name-limit: 20
+
+見ての通り、コマンドのオプションの指定方法と少し違うので、
+Docutils独自の設定ファイルを用意せずに、シェルスクリプトで代用してしまっても良いと思います。 |BR|
+設定ファイルの書き方についての詳細は、次のURLを参照すると良いでしょう。
+
+Docutils Configuration |BR|
+http://docutils.sourceforge.net/docs/user/config.html
+
+
+

@@ -1,0 +1,88 @@
+.. vim:set expandtab ff=unix ft=rest nowrap :
+
+..  日付、時間、曜日の表示
+
+..  
+
+.. |BR| raw:: html
+
+    <br />
+
+.. |yen|    unicode:: U+000A5 .. YEN SIGN
+
+.. role:: raw-html(raw)
+    :format: html
+
+.. contents::
+
+================================================================================
+日付、時間、曜日の表示
+================================================================================
+
+- 日付、時間、曜日表示のサンプル。
+
+.. parsed-literal::
+    :class: program
+
+    :echo strftime("%Y/%m/%d")
+    "# => 2008/02/21
+    :echo strftime("%H:%M:%S")
+    "# => 11:27:26
+    :echo strftime("%Y/%m/%d %H:%M:%S")
+    "# => 2008/02/21 11:27:26
+    
+    :echo strftime("%B")
+    "# => 2月
+    :echo strftime("%b")
+    "# => 2
+    
+    :echo strftime("%a")
+    "# => 木
+    :echo strftime("%A")
+    "# => 木曜日
+
+- 言語を切り替えて、日付、時間、曜日を表示、すぐ元に戻すコードのサンプル。
+
+.. parsed-literal::
+    :class: program
+
+    :let language =  v:lc_time
+    :execute ":silent! language time " . "Japanese_Japan.932"
+    :echo strftime("%B")
+    :execute ":silent! language time " . language
+    "# => 2月
+    
+    :let language =  v:lc_time
+    :execute ":silent! language time " . "C"
+    :echo strftime("%B")
+    :execute ":silent! language time " . language
+    "# => February
+
+- 「:try」文を使用すれば、より安全に環境を変更できる。
+
+.. parsed-literal::
+    :class: program
+
+    :let language =  v:lc_time
+    :try
+        :execute ":silent! language time " . "C"
+        :echo strftime("%B")
+    :finally
+        :execute ":silent! language time " . language
+    :endtry
+    "# => February
+
+- 曜日の取り方の別パターン。
+
+.. parsed-literal::
+    :class: program
+
+    :echo strftime("%w")
+    "# => 4
+    :let weeks = [ "Sun.", "Mon.", "Tue.", "Wed.", "Thu.", "Fri.", "Sat." ]
+    :let wday = strftime("%w")
+    :echo weeks[wday]
+    "# => Thu.
+
+
+

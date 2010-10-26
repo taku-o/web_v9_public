@@ -1,0 +1,112 @@
+.. vim:set expandtab ff=unix ft=rest nowrap :
+
+..  コマンドを定義する
+
+..  
+
+.. |BR| raw:: html
+
+    <br />
+
+.. |yen|    unicode:: U+000A5 .. YEN SIGN
+
+.. role:: raw-html(raw)
+    :format: html
+
+.. contents::
+
+================================================================================
+コマンドを定義する
+================================================================================
+
+- exコマンドを呼び出すコマンドを定義する
+
+.. parsed-literal::
+    :class: program
+
+    :command! WriteCommand :w test.txt
+    :WriteCommand
+    
+    ":command! AlignCommand :normal gg=G
+    :AlignCommand
+
+- ファンクションを呼び出すコマンドを定義する
+
+.. parsed-literal::
+    :class: program
+
+    :function! SimpleFunction()
+        :echo "SimpleFunction() is called."
+    :endfunction
+    :command! SimpleCommand :call SimpleFunction()
+    :SimpleCommand
+    "# => SimpleFunction() is called.
+
+- パラメータ数チェックつきのコマンドを定義する
+
+.. parsed-literal::
+    :class: program
+
+    :function! SimpleFunction()
+        :echo "SimpleFunction() is called."
+    :endfunction
+    :command! -nargs=0 SimpleCommand :call SimpleFunction()
+    :SimpleCommand
+    "# => SimpleFunction() is called.
+    
+    :SimpleCommand AAA BBB CCC
+    "# => エラーが発生する
+
+- パラメータの必要なファンクションを呼び出すコマンドを定義する
+
+.. parsed-literal::
+    :class: program
+
+    :function! ArgsFunction(var1, var2)
+        :echo "ArgsFunction() is called."
+        :echo "paramter 1 : " . a:var1
+        :echo "paramter 2 : " . a:var2
+        :sleep 2
+    :endfunction
+    :command! -nargs=+ ArgsCommand :call ArgsFunction(<f-args>)
+    :ArgsCommand AAA BBB
+    "# => ArgsFunction() is called.
+    "# => paramter 1 : AAA
+    "# => paramter 2 : BBB
+    
+    :function! MArgsFunction(...)
+        :echo "MArgsFunction() is called."
+        :echo "paramter 1 : " . a:1
+        :echo "paramter 2 : " . a:2
+        :echo "paramter 3 : " . a:3
+        :echo "paramter 4 : " . a:4
+        :echo "paramter 5 : " . a:5
+        :echo "paramter count : " . len(a:000)
+        :sleep 2
+    :endfunction
+    :command! -nargs=+ MArgsCommand :call MArgsFunction(<f-args>)
+    :MArgsCommand AAA BBB CCC DDD EEE
+    "# => MArgsFunction() is called.
+    "# => paramter 1 : AAA
+    "# => paramter 2 : BBB
+    "# => paramter 3 : CCC
+    "# => paramter 4 : DDD
+    "# => paramter 5 : EEE
+    "# => paramter count : 5
+
+- コマンドのパラメータの補完の種類を指定する。
+
+.. parsed-literal::
+    :class: program
+
+    :function! CompleteFunction(args)
+        :echo args
+    :endfunction
+    :command! -complete=file -nargs=1 CompleteFunction :call CompleteFunction(<f-args>)
+    "# => ファイル名で入力パラメータが補完される
+    
+    :command! -complete=help -nargs=1 CompleteFunction :call CompleteFunction(<f-args>)
+    "# => ヘルプのサブジェクトで入力パラメータが補完される。
+
+
+

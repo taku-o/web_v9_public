@@ -1,0 +1,266 @@
+.. vim:set expandtab ff=unix ft=rest :
+
+..  辞書ファイルで入力を補完する
+
+..  vimエディタの設定ファイルで「辞書ファイル」を指定しておくと、
+    その辞書ファイルを使用して、入力補完検索することができます。
+    (Windows, Mac)
+
+.. |BR| raw:: html
+
+    <br />
+
+.. |yen|    unicode:: U+000A5 .. YEN SIGN
+
+.. role:: raw-html(raw)
+   :format: html
+
+.. contents::
+
+================================================================================
+概要
+================================================================================
+
+vimエディタの設定ファイルで「辞書ファイル」を指定しておくと、
+その辞書ファイルを使用して、入力補完検索することができます。
+
+.. image:: /dist/img/vim/dictionary_search.jpg
+    :alt:  辞書ファイルからの検索の様子
+
+この記事ではこの辞書ファイルの使い方から、
+Java用の辞書ファイルの使い方までを扱います。
+
+
+
+================================================================================
+インストール方法
+================================================================================
+
+まず、辞書ファイルを用意します。 |BR|
+辞書ファイルの中身は、
+補完に使うキーワードを、改行で区切って入れたものです。
+
+.. parsed-literal::
+    :class: program
+
+    **辞書ファイルの中身の例**
+    const
+    continue
+    default
+    do
+    else
+    extends
+    false
+    final
+
+辞書ファイルを用意したら、Vimの設定ファイル_vimrcに
+以下のように設定を書きこんでください。
+辞書ファイルが「j2se131.dict」という名前である時の設定例です。
+
+.. parsed-literal::
+    :class: program
+
+    **" 設定例**
+    :set dictionary=j2se131.dict
+
+ファイルの種類に応じて、辞書ファイルを変えたいのであれば、
+以下のように設定します。
+
+.. parsed-literal::
+    :class: program
+
+    **" JavaとPHPで辞書ファイルを切りかえる例**
+    autocmd FileType java :set dictionary=j2se131.dict<CR>
+    autocmd FileType php :set dictionary=PHP.dict<CR>
+
+PHPの辞書ファイルは、 `vim online`__ にあります。
+
+__ http://www.vim.org/scripts/script.php?script_id=534
+
+.. note::
+
+    当サイトでは、 `Java2SE 1.3.1用`_ 、 `Java2SE 1.4.2用`_ のvim用辞書ファイルを用意しています。
+    こちらは圧縮ファイルになっているので、ダウンロードしたら解凍ツールで解凍してください。
+
+.. _`Java2SE 1.3.1用`: http://indefero.taku-o.net/index.php/p/download/source/file/master/vim_dictionary/j2se131dict.zip
+
+.. _`Java2SE 1.4.2用`: http://indefero.taku-o.net/index.php/p/download/source/file/master/vim_dictionary/j2se142dict.zip
+
+
+================================================================================
+使用方法
+================================================================================
+
+例えば、以下のようなJavaのクラス名の書きかけがあったとして、
+
+.. parsed-literal::
+    :class: program
+
+    Attribu
+
+.. parsed-literal::
+    :class: console
+
+    Ctrl-x Ctrl-k
+
+で、辞書ファイルからの検索を行い、
+
+.. parsed-literal::
+    :class: program
+
+    AttributeContext
+
+.. parsed-literal::
+    :class: console
+
+    Ctrl-n
+
+を入力するたびに辞書ファイルから、次の候補を補完していきます。 |BR|
+↓
+
+.. parsed-literal::
+    :class: program
+
+    AttributeInUseException
+
+↓
+
+.. parsed-literal::
+    :class: program
+
+    AttributeList
+
+
+
+================================================================================
+辞書ファイルの作り方 (Java)
+================================================================================
+
+では、新たにJavaの辞書ファイルを作成しましょう。 |BR|
+`RAFというサイト`__ から、perlスクリプトを拾ってきました。
+ここで入手したスクリプトを改造してあります。
+
+__ http://www.raf.org/
+
+このperlスクリプトを使用するので、
+このファイルを手元にダウンロードしてください。
+
+`Java用辞書ファイル作成スクリプト mkjdict.pl`__
+
+__ http://indefero.taku-o.net/index.php/p/download/source/file/master/vim_dictionary/mkjdict.pl
+
+このperlスクリプトはJava Jarファイルより、辞書の元になる情報を取り出すので、 |BR|
+辞書を作成するためにclassファイルの入ったJava Jarファイルが必要です。 |BR|
+また、このperlスクリプトの扱いに関して、
+Windowsの場合、Mac OSXの場合、共に注意する点があります。
+
+
+Windowsの場合の注意事項など
+-------------------------------------------------------------------------------
+
+perlがインストールされている必要があります。 |BR|
+私が動作確認したperl環境は、
+
+.. parsed-literal::
+    :class: console
+
+    perl v5.6.1 build for cygwin
+
+ですが、ActivePerlでも動作すると思われます。(未確認です)。 |BR|
+DOS プロンプトから、perlが実行できるようにしておいてください。
+
+
+Mac OSXの場合の注意事項など
+-------------------------------------------------------------------------------
+
+私が用意したperlスクリプトですが、そのままでは動作しません。
+Mac OSXの環境に合わせて、perlスクリプトを一部変更します。 |BR|
+perlスクリプトの9から16行目をご覧下さい。
+
+.. parsed-literal::
+    :class: program
+
+    **# mkjdict.pl 9 ～ 16行目**
+    # file.separator
+    # line.separator
+    # Windows
+    my $FS = ";";
+    my $LS = "\\r\\n";
+    # OSX
+    #my $FS = ":";
+    #my $LS = "\\n";
+
+この部分を
+
+.. parsed-literal::
+    :class: program
+
+    **# mkjdict.pl 9 ～ 16行目 変更後**
+    # file.separator
+    # line.separator
+    # Windows
+    #my $FS = ";";
+    #my $LS = "\\r\\n";
+    # OSX
+    my $FS = ":";
+    my $LS = "\\n";
+
+この通り、変更してください。
+
+
+辞書ファイルの作成
+-------------------------------------------------------------------------------
+
+では、実際にJavaの辞書ファイルを作成してみます。 |BR|
+Terminal(Mac OSX)もしくは、MS-DOS プロンプトを(Windows)を立ち上げてください。 |BR|
+辞書ファイルを作成したい対象のJava Jarファイルを引数に指定して、perlスクリプトを実行します。
+
+.. parsed-literal::
+    :class: console
+
+    perl mkjdict.pl JavaJarファイル JavaJarファイル ..... > 作成したいJava辞書ファイル名
+
+次のコマンドは、作成に使用するJava Jarファイルが |BR|
+「/System/Library/Frameworks/JavaWebObjects.framework/Resources/Java/javawebobjects.jar」で、 |BR|
+「java_dictionary」が生成される辞書ファイルの時の例です。
+
+.. parsed-literal::
+    :class: console
+
+    **# 使用例**
+    perl mkjdict.pl /System/Library/Frameworks/JavaWebObjects.framework/Resources/Java/javawebobjects.jar > java_dictionary
+
+同時に複数のJava Jarファイルも指定できます。
+
+.. parsed-literal::
+    :class: console
+
+    perl mkjdict.pl jarfile1 jarfile2 jarfile3 > java_dictionary
+
+
+
+================================================================================
+注意事項など
+================================================================================
+
+perlスクリプトでエラーが出る時は、
+
+- Jarファイルにクラスが含まれていない。
+- Jarファイルが参照しているクラスがCLASSPATHに無い。
+
+などが原因として考えられます。
+
+このサイトでは `Java2SE 1.3.1用のvim用辞書ファイル`_ 、
+`Java2SE 1.4用のvim用辞書ファイル`_ を用意しています。
+
+.. _`Java2SE 1.3.1用のvim用辞書ファイル`: http://indefero.taku-o.net/index.php/p/download/source/file/master/vim_dictionary/j2se131dict.zip
+
+.. _`Java2SE 1.4用のvim用辞書ファイル`: http://indefero.taku-o.net/index.php/p/download/source/file/master/vim_dictionary/j2se142dict.zip
+
+また、PHPの辞書ファイルが `vim online`__ に用意されています。
+
+__ http://www.vim.org/scripts/script.php?script_id=534
+
+
+
+

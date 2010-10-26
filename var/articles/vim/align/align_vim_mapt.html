@@ -1,0 +1,607 @@
+.. vim:set expandtab ff=unix ft=rest :
+
+..  高性能なテキスト整形ツールAlignの使い方 #2 組み込みマッピングでテーブル構造を整形する
+
+..  この記事では、整形ツールAlignに組み込みまれているマッピングを使用して、
+    CSV、TSVやHTML構造などの整形処理を行う方法を説明します。
+    (Windows, Mac)
+
+.. |BR| raw:: html
+
+    <br />
+
+.. |yen|    unicode:: U+000A5 .. YEN SIGN
+
+.. role:: raw-html(raw)
+    :format: html
+
+.. contents::
+
+================================================================================
+概要
+================================================================================
+
+Align : Provides commands and maps to help produce aligned text, eqns, declarations, etc |BR|
+http://www.vim.org/scripts/script.php?script_id=294
+
+この記事では、整形ツールAlignに組み込みまれているマッピングを使用して、
+CSV、TSVやHTML構造などの整形処理を行う方法を説明します。
+
+「 `高性能なテキスト整形ツールAlignの使い方 #1 インストールから設定まで`_ 」の続きとなる記事です。
+
+
+
+================================================================================
+テーブル構造の整形機能の使い方
+================================================================================
+
+`Align`_ にはテーブル構造の整形用に、いくつかのキーマッピングがあらかじめ用意されています。 |BR|
+この `Align`_ に用意されたキーマッピングを使用するには、次のような手順を踏みます。
+
+#. まず整形処理の対象となる範囲を指定する。
+#. 実行する種類のキーマッピングを入力する。
+
+この時、処理の範囲の指定方法には、ビジュアルモードで範囲を指定する方法と、 |BR|
+「a」のマークを使用する方法で、2種類の方法が用意されています。
+
+.. note::
+
+    キーマッピングで整形処理を呼び出す方法以外に、
+    GUIのメニューで整形処理を呼び出す方法も用意されています。 |BR|
+    このメニューはAlignをインストールすると追加されます。
+
+    .. image:: /dist/img/vim/align/align_menu.jpg
+        :alt:  メニュー
+
+
+ビジュアルモードで範囲指定して整形処理を行う
+--------------------------------------------------------------------------------
+
+整形処理の処理対象範囲をビジュアルモードする場合は、
+まず、整形処理の対象としたい範囲をビジュアルモードで選択します。
+
+.. raw:: html
+
+    <pre class="program">ビジュアルモードで整形処理の範囲を選択する。
+    <span class="code_high">one two three four five</span>
+    <span class="code_high">six seven eight nine ten</span>
+    <span class="code_high">eleven twelve thirteen fourteen fifteen</span>
+    </pre>
+
+.. image:: /dist/img/vim/align/align_vselectt.jpg
+    :alt:  ビジュアルモードで範囲指定
+
+次に実行する整形処理のキーマッピングを入力します。 |BR|
+例えば、空白文字で区切られた各フィールドの位置を整形する場合は次のように入力します。 |BR|
+（どのキーを押すと、どの整形処理が実行されるかは後述。）
+
+.. parsed-literal::
+    :class: console
+
+    \\tsp
+
+整形処理実行のキーを入力すると、このように整形処理が実行されます。
+
+.. raw:: html
+
+    <pre class="program">整形処理後
+    one    two    three    four     five
+    six    seven  eight    nine     ten
+    eleven twelve thirteen fourteen fifteen
+    </pre>
+
+.. image:: /dist/img/vim/align/align_l_tsp_result.jpg
+    :alt:  整形処理実行後
+
+
+「a」のマークで範囲指定して整形処理を行う
+--------------------------------------------------------------------------------
+
+マークを利用して、 `Align`_ の機能を呼び出す場合は次のようにします。
+
+まず、整形処理を実行する範囲の先頭位置にカーソルを移動します。
+
+.. raw:: html
+
+    <pre class="program">整形範囲の先頭行の位置にカーソルを移動します。
+    <span class="code_high">o</span>ne two three four five
+    six seven eight nine ten
+    eleven twelve thirteen fourteen fifteen
+    </pre>
+
+ノーマルモードで「ma」と入力し、カーソル位置に「a」のマークを設定します。
+
+.. parsed-literal::
+    :class: console
+
+    ma
+
+次に、今度は整形処理の対象としたい範囲の最後の行にカーソルを移動します。
+
+.. raw:: html
+
+    <pre class="program">整形範囲の最後の行の位置にカーソルを移動します。
+    one two three four five
+    six seven eight nine ten
+    <span class="code_high">e</span>leven twelve thirteen fourteen fifteen
+    </pre>
+
+最後に実行する整形処理のキーマップを入力します。 |BR|
+今回の例の場合も、先ほどの例と同じく、空白文字で区切られた各フィールドの位置を調節したいので、
+次のように入力することになります。
+
+.. parsed-literal::
+    :class: console
+
+    \\tsp
+
+整形処理実行のキーを入力すると、整形処理が実行されます。
+
+.. raw:: html
+
+    <pre class="program">整形処理後
+    one    two    three    four     five
+    six    seven  eight    nine     ten
+    eleven twelve thirteen fourteen fifteen
+    </pre>
+
+
+
+================================================================================
+用意されている整形機能のマッピングの一覧
+================================================================================
+
+`Align`_ に用意されている、キーの入力による、テーブル関連構造の整形機能はこれだけあります。 |BR|
+上でも説明していますが、整形処理の範囲を指定して、
+下の表のキーを入力すると、選択した整形処理が実行されます。
+
+.. csv-table::
+
+    `<Leader>tsp`_, 空白文字で分割して整形。各フィールドは左揃え。
+    `<Leader>Tsp`_, 空白文字で分割して整形。各フィールドは右揃え。
+    `<Leader>tsq`_, 空白文字で分割して整形。ダブルクォートで囲まれたフィールドをサポート。各フィールドは左揃え。
+    `<Leader>tab`_, TSVの整形。タブ文字で分割して整形。タブ文字は半角スペースに変換される。
+    `<Leader>t{セパレータ}`_, 指定したセパレータで分割して整形。各フィールドは左揃え。
+    `<Leader>T{セパレータ}`_, 指定したセパレータで分割して整形。各フィールドは右揃え。
+    `<Leader>tml`_, 行末のバックスラッシュの位置の整形。シェルスクリプト用。
+    `<Leader>Htd`_, HTMLのテーブルの整形。
+    `<Leader>tt`_, LaTexのテーブルの整形。
+
+.. _`<Leader>tsp`: `<Leader>tsp、<Leader>Tsp`_
+..  .. _`<Leader>Tsp`: `<Leader>tsp、<Leader>Tsp`_
+.. _`<Leader>t{セパレータ}`: `<Leader>t{セパレータ}、<Leader>T{セパレータ}`_
+..  .. _`<Leader>T{セパレータ}`: `<Leader>t{セパレータ}、<Leader>T{セパレータ}`_
+
+.. note::
+
+    「<Leader>」は、特に特別な設定を行っていなければ、
+    「\\（バックスラッシュ、もしくは円マーク）」になります。 |BR|
+    例えば、「<Leader>tsp」となっている時は、 |BR|
+    「\\tsp」と実行すれば、「<Leader>tsp」の整形処理を実行できます。
+
+.. <Leader>m=
+.. "`<Leader>ts,`_", "CSVの整形。「,（カンマ）」で分割して整形。「<Leader>t{セパレータ}」で「,」をセパレータに指定した場合と結果は似ているが、整形後のコンマの位置がフィールドの直後に置かれる。各フィールドは左揃え。"
+.. "`<Leader>Ts,`_", "CSVの整形。「,（カンマ）」で分割して整形。「<Leader>t{セパレータ}」で「,」をセパレータに指定した場合と結果は似ているが、整形後のコンマの位置がフィールドの直後に置かれる。各フィールドは右揃え。"
+
+
+
+================================================================================
+<Leader>tsp、<Leader>Tsp
+================================================================================
+
+「<Leader>tsp」、または「<Leader>Tsp」と実行すると、
+文章を空白文字で区切って、複数のフィールドに分割し、
+それぞれのフィールドの位置揃えを行います。 |BR|
+「<Leader>tsp」「<Leader>Tsp」には、各フィールドを左寄せにするか、右寄せにするか、
+という違いがあります。
+
+--------------------------------------------------------------------------------
+
+次の文章に対して、
+
+.. parsed-literal::
+    :class: program
+
+    one two three four five
+    six seven eight nine ten
+    eleven twelve thirteen fourteen fifteen
+
+「<Leader>tsp」と実行すると、
+
+.. parsed-literal::
+    :class: console
+
+    <Leader>tsp
+
+.. parsed-literal::
+    :class: program
+
+    one    two    three    four     five
+    six    seven  eight    nine     ten
+    eleven twelve thirteen fourteen fifteen
+
+「<Leader>Tsp」と実行すると、
+
+.. parsed-literal::
+    :class: console
+
+    <Leader>Tsp
+
+.. parsed-literal::
+    :class: program
+
+       one    two    three     four    five
+       six  seven    eight     nine     ten
+    eleven twelve thirteen fourteen fifteen
+
+と整形します。
+
+
+
+================================================================================
+<Leader>tsq
+================================================================================
+
+「<Leader>tsq」は、整形範囲の文章を空白文字で区切って各フィールドに分割し、
+それぞれのフィールドの位置を整えます。 |BR|
+「<Leader>tsp」「<Leader>Tsp」と似た整形処理ですが、
+ダブルクォートに囲まれた空白文字入りのテキストを、
+1つのフィールドとして扱える、という特徴があります。
+
+--------------------------------------------------------------------------------
+
+次の文章に対して、
+
+.. parsed-literal::
+    :class: program
+
+    "one two" three
+    four "five six"
+
+「<Leader>tsq」と実行すると、
+
+.. parsed-literal::
+    :class: console
+
+    <Leader>tsq
+
+.. parsed-literal::
+    :class: program
+
+    "one two" three
+    four      "five six"
+
+と整形する。
+
+
+
+================================================================================
+<Leader>tab
+================================================================================
+
+「<Leader>tab」を実行すると、タブ文字で文章をフィールドに分割し、各フィールドの位置を揃えます。
+TSVフォーマットのファイルを見やすく整形する機能です。
+各フィールド間のタブ文字は、半角スペースに置換されます。
+
+--------------------------------------------------------------------------------
+
+もとのテキスト
+
+.. raw:: html
+
+    <pre class="program">    aa<span class="tab_char">&gt;-</span>bbb<span class="tab_char">&gt;</span>cccc<span class="tab_char">&gt;---</span>ddddd<span class="tab_char">&gt;--</span>ee
+        1111<span class="tab_char">&gt;---</span>22<span class="tab_char">&gt;-</span>33<span class="tab_char">&gt;-</span>4444<span class="tab_char">&gt;---</span>5</pre>
+
+「<Leader>tab」と実行すると、
+
+.. parsed-literal::
+    :class: console
+
+    <Leader>tab
+
+.. parsed-literal::
+    :class: program
+
+    aa     bbb   cccc   ddddd   ee
+    1111   22    33     4444    5
+
+と整形されます。
+タブ文字はスペースで置き換えられます。
+
+
+
+================================================================================
+<Leader>t{セパレータ}、<Leader>T{セパレータ}
+================================================================================
+
+一部の記号だけですが、各フィールドを区切るセパレータを自分で指定することもできます。
+指定できるのは、「,」「:」「<」「=」「@」「|」の6種類です。 |BR|
+<Leader>t{セパレータ}と指定した場合は各フィールド左寄せで、
+<Leader>T{セパレータ}と指定した場合は各フィールドを右寄せで整形します。
+
+--------------------------------------------------------------------------------
+
+<Leader>t=、<Leader>T=
+--------------------------------------------------------------------------------
+
+もとの文章
+
+.. parsed-literal::
+    :class: program
+
+    aa=bb=cc=1;
+    a=b=c=1;
+    aaa=bbb=ccc=1;
+
+「<Leader>t=」と実行
+
+.. parsed-literal::
+    :class: console
+
+    <Leader>t=
+
+.. parsed-literal::
+    :class: program
+
+    aa  = bb  = cc  = 1;
+    a   = b   = c   = 1;
+    aaa = bbb = ccc = 1;
+
+「<Leader>T=」と実行
+
+.. parsed-literal::
+    :class: console
+
+    <Leader>T=
+
+.. parsed-literal::
+    :class: program
+
+     aa =  bb =  cc = 1;
+      a =   b =   c = 1;
+    aaa = bbb = ccc = 1;
+
+
+<Leader>t\|、<Leader>T\|
+--------------------------------------------------------------------------------
+
+もとの文章
+
+.. parsed-literal::
+    :class: program
+
+    one\|two\|three
+    four\|five\|six
+    seven\|eight\|nine
+
+「<Leader>t|」と実行
+
+.. parsed-literal::
+    :class: console
+
+    <Leader>t|
+
+.. parsed-literal::
+    :class: program
+
+    one  \|two  \|three
+    four \|five \|six
+    seven\|eight\|nine
+
+「<Leader>T|」と実行
+
+.. parsed-literal::
+    :class: console
+
+    <Leader>T|
+
+.. parsed-literal::
+    :class: program
+
+      one\|  two\|three
+     four\| five\|  six
+    seven\|eight\| nine
+
+
+<Leader>t:、<Leader>T:
+--------------------------------------------------------------------------------
+
+もとの文章
+
+.. parsed-literal::
+    :class: program
+
+    one:two:three
+    four:five:six
+    seven:eight:nine
+
+「<Leader>t:」と実行
+
+.. parsed-literal::
+    :class: console
+
+    <Leader>t:
+
+.. parsed-literal::
+    :class: program
+
+    one   : two   : three
+    four  : five  : six
+    seven : eight : nine
+
+「<Leader>T:」と実行
+
+.. parsed-literal::
+    :class: console
+
+    <Leader>T:
+
+.. parsed-literal::
+    :class: program
+
+      one :   two : three
+     four :  five :   six
+    seven : eight :  nine
+
+と、それぞれ、指定したセパレータで区切って、整形します。
+
+
+
+================================================================================
+<Leader>tml
+================================================================================
+
+「<Leader>tml」は行末のバックスラッシュの位置を揃えます。 |BR|
+この機能は、シェルスクリプトの次の行に続くことを意味するバックスラッシュ位置の
+整形などで利用できます。
+
+--------------------------------------------------------------------------------
+
+もとの文章
+
+.. parsed-literal::
+    :class: program
+
+    one \\
+    two three \\
+    four five six \\
+    seven \\\\ \\
+    eight \\nine \\
+    ten \\
+
+「<Leader>tml」と実行
+
+.. parsed-literal::
+    :class: console
+
+    <Leader>tml
+
+.. parsed-literal::
+    :class: program
+
+    one           \\
+    two three     \\
+    four five six \\
+    seven \\\\      \\
+    eight \\nine   \\
+    ten           \\
+
+と整形される。
+
+
+
+================================================================================
+<Leader>Htd
+================================================================================
+
+「<Leader>Htd」はHTMLテーブルのソース上のカラム位置を揃えます。
+
+--------------------------------------------------------------------------------
+
+もとの文章
+
+.. parsed-literal::
+    :class: program
+
+    <TR><TD>...field one...</TD><TD>...field two...</TD></TR>
+    <TR><TD>...field three...</TD><TD>...field four...</TD></TR>
+
+「<Leader>Htd」と実行
+
+.. parsed-literal::
+    :class: console
+
+    <Leader>Htd
+
+.. parsed-literal::
+    :class: program
+
+    <TR><TD> ...field one...   </TD><TD> ...field two...  </TD></TR>
+    <TR><TD> ...field three... </TD><TD> ...field four... </TD></TR>
+
+と整形。
+
+
+================================================================================
+<Leader>tt
+================================================================================
+
+「<Leader>tt」はLatexのテーブルのカラムのソース上での位置を揃えます。
+
+--------------------------------------------------------------------------------
+
+次のような文章がある場合に
+
+.. parsed-literal::
+    :class: program
+
+    \\begin{tabular}{||c|l|r||}
+    \\hline\\hline
+      one&two&three\\\\ \\hline
+      four&five&six\\\\
+      seven&eight&nine\\\\
+    \\hline\\hline
+    \\end{tabular}
+
+テーブルのカラムの行を選択して、
+
+.. raw:: html
+
+    <pre class="program">\begin{tabular}{||c|l|r||}
+    \hline\hline
+    <span class="code_high">  one   & two   & three \\ \hline</span>
+    <span class="code_high">  four  & five  & six   \\</span>
+    <span class="code_high">  seven & eight & nine  \\</span>
+    \hline\hline
+    \end{tabular}</pre>
+
+「<Leader>tt」と実行すると、
+
+.. parsed-literal::
+    :class: console
+
+    <Leader>tt
+
+.. parsed-literal::
+    :class: program
+
+    \\begin{tabular}{||c|l|r||}
+    \\hline\\hline
+      one   & two   & three \\\\ \\hline
+      four  & five  & six   \\\\
+      seven & eight & nine  \\\\
+    \\hline\\hline
+    \\end{tabular}
+
+というように整形されます。
+
+
+
+================================================================================
+ページリンク
+================================================================================
+
+#. `高性能なテキスト整形ツールAlignの使い方 #1 インストールから設定まで`_
+#. - `高性能なテキスト整形ツールAlignの使い方 #2 組み込みマッピングでテーブル構造を整形する`_
+#. `高性能なテキスト整形ツールAlignの使い方 #3 組み込みマッピングでプログラムのソースを整形する`_
+#. `高性能なテキスト整形ツールAlignの使い方 #4 「:Align」コマンドを使用して整形処理を行う`_
+#. `高性能なテキスト整形ツールAlignの使い方 #5 ここまで紹介していない残りの機能の紹介`_
+#. `高性能なテキスト整形ツールAlignの使い方 #6 Alignの使い方を簡潔に説明`_
+
+.. _`高性能なテキスト整形ツールAlignの使い方 #1 インストールから設定まで`: `doc_align`_
+.. _`高性能なテキスト整形ツールAlignの使い方 #2 組み込みマッピングでテーブル構造を整形する`: `doc_align_mapt`_
+.. _`高性能なテキスト整形ツールAlignの使い方 #3 組み込みマッピングでプログラムのソースを整形する`: `doc_align_mapa`_
+.. _`高性能なテキスト整形ツールAlignの使い方 #4 「:Align」コマンドを使用して整形処理を行う`: `doc_align_ctrl`_
+.. _`高性能なテキスト整形ツールAlignの使い方 #5 ここまで紹介していない残りの機能の紹介`: `doc_align_ext`_
+.. _`高性能なテキスト整形ツールAlignの使い方 #6 Alignの使い方を簡潔に説明`: `doc_align_summary`_
+
+.. _`Align`: http://www.vim.org/scripts/script.php?script_id=294
+.. _`doc_align`: /articles/vim/align/align_vim.html
+.. _`doc_align_mapt`: /articles/vim/align/align_vim_mapt.html
+.. _`doc_align_mapa`: /articles/vim/align/align_vim_mapa.html
+.. _`doc_align_ctrl`: /articles/vim/align/align_vim_ctrl.html
+.. _`doc_align_ext`: /articles/vim/align/align_vim_ext.html
+.. _`doc_align_summary`: /articles/vim/align/align_vim_summary.html
+
+
+

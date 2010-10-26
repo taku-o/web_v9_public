@@ -1,0 +1,146 @@
+.. vim:set expandtab ff=unix ft=rest nowrap :
+
+..  設定ファイルにデータを逃がして、次回の起動時に利用する。
+
+..  
+
+.. |BR| raw:: html
+
+    <br />
+
+.. |yen|    unicode:: U+000A5 .. YEN SIGN
+
+.. role:: raw-html(raw)
+    :format: html
+
+.. contents::
+
+================================================================================
+設定ファイルにデータを逃がして、次回の起動時に利用する。
+================================================================================
+
+「$HOME/.viminfo」ファイルに変数の値を記録する。
+--------------------------------------------------------------------------------
+
+vimエディタの「viminfo」オプションに「!」をセットすると、
+全て英大文字な変数名の変数の値が「$HOME/.viminfo」に記録される。
+「$HOME/.viminfo」に記録された変数は、次回の起動時に自動的に読み込まれる。
+
+- vimエディタの設定ファイルで、「viminfo」オプションに「!」をセット
+
+.. parsed-literal::
+    :class: program
+
+    " .vimrcで設定
+    :set viminfo+=!
+
+- 英大文字のみで構成された変数に値をセット
+
+.. parsed-literal::
+    :class: program
+
+    :let KEEP_VAR1 = "this variables 1 is kept."
+    :let KEEP_VAR2 = "this variables 2 is kept."
+    :let KEEP_VAR3 = "this variables 3 is kept."
+
+- 次回の起動時に変数は自動的に再現されるので、即、変数を使用できる。
+
+.. parsed-literal::
+    :class: program
+
+    :echo KEEP_VAR1
+    :echo KEEP_VAR2
+    :echo KEEP_VAR3
+    "# => this variable 1 is kept.
+    "# => this variable 2 is kept.
+    "# => this variable 3 is kept.
+
+
+セッションファイルに変数の値を記録する。
+--------------------------------------------------------------------------------
+
+vimエディタの「sessionoptions」オプションに「globals」をセットすると、
+「:mksession」コマンドで生成できるセッションファイルに、
+英大文字から始まる変数の値を記録できる。
+セッションファイルはvimスクリプトファイルなので、
+「:source」ファイルで読み込むと記録した変数を再現できる。
+
+- セッションファイルを生成する。
+
+.. parsed-literal::
+    :class: program
+
+    " 「sessionoptions」オプションは退避しておく
+    :let old_session_opt = &sessionoptions
+    " 「sessionoptions」オプションに「globals」をセット
+    :set sessionoptions=globals
+    
+    " 英大文字から始まる変数に値をセット
+    :let Kept1 = "this value 1 is saved in session.vim"
+    :let Kept2 = "this value 2 is saved in session.vim"
+    :let Kept3 = "this value 3 is saved in session.vim"
+    :let Kept4 = "this value 4 is saved in session.vim"
+    
+    " セッションファイルを出力
+    " セッションファイルはvimスクリプトファイルです。
+    :mksession! session.vim
+    
+    " 「sessionoptions」オプションをリカバリー
+    :let &sessionoptions = old_session_opt
+
+- 次回起動時にセッションファイルを読み込むと、記録した変数を使用できる。
+
+.. parsed-literal::
+    :class: program
+
+    " セッションファイルを読み込む。
+    " セッションファイルはvimスクリプト構文のファイルです。
+    :source session.vim
+    
+    :echo Kept1
+    :echo Kept2
+    :echo Kept3
+    :echo Kept4
+    "# => this value 1 is saved in session.vim
+    "# => this value 2 is saved in session.vim
+    "# => this value 3 is saved in session.vim
+    "# => this value 4 is saved in session.vim
+
+
+vimスクリプト構文の設定ファイルを生成し、そのファイルにデータを記録する。
+--------------------------------------------------------------------------------
+
+vimスクリプト形式の設定ファイルを生成する。
+手間はかかってしまうが、スクリプトのテストがやりやすい、
+ユーザーがカスタマイズがしやすい、という利点がある。
+vimスクリプトでは割と良く見られる手法。
+
+- vimスクリプトの形式でファイルを生成
+
+.. parsed-literal::
+    :class: program
+
+    :redir! > properties.vim
+        :silent echo ":let var1 = 'this is recoveried value 1'"
+        :silent echo ":let var2 = 'this is recoveried value 2'"
+        :silent echo ":let var3 = 'this is recoveried value 3'"
+        :silent echo ":let var4 = 'this is recoveried value 4'"
+    :redir END
+
+- 次回起動時に、生成したファイルを読み込むと、変数を利用できる。
+
+.. parsed-literal::
+    :class: program
+
+    :source properties.vim
+    :echo var1
+    :echo var2
+    :echo var3
+    :echo var4
+    "# => this is recoveried value 1
+    "# => this is recoveried value 2
+    "# => this is recoveried value 3
+    "# => this is recoveried value 4
+
+
+

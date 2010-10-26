@@ -1,0 +1,33 @@
+.. vim:set expandtab ff=unix ft=rest nowrap :
+
+..  vimエディタのコマンドの結果を読み込む
+
+..  
+
+.. |BR| raw:: html
+
+    <br />
+
+.. |yen|    unicode:: U+000A5 .. YEN SIGN
+
+.. role:: raw-html(raw)
+    :format: html
+
+.. contents::
+
+================================================================================
+vimエディタのコマンドの結果を読み込む
+================================================================================
+
+.. parsed-literal::
+    :class: program
+
+    :redir => var
+        :silent version
+    :redir END
+    :echo var
+    "# => 「:version」コマンドの結果を出力
+    "# => silentを付けないと、コマンド結果がコンソールに出力される。
+
+
+

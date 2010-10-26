@@ -1,0 +1,36 @@
+.. vim:set expandtab ff=unix ft=rest nowrap :
+
+..  連番のリストを使用する
+
+..  
+
+.. |BR| raw:: html
+
+    <br />
+
+.. |yen|    unicode:: U+000A5 .. YEN SIGN
+
+.. role:: raw-html(raw)
+    :format: html
+
+.. contents::
+
+================================================================================
+連番のリストを使用する
+================================================================================
+
+.. parsed-literal::
+    :class: program
+
+    :for i in range(1, 50)
+        :echo "current number : " . i
+    :endfor
+    "# => current number : 1
+    "# => current number : 2
+    "# => current number : 3
+    "# => current number : 4
+    "# => current number : 5
+    "# => ...
+
+
+

@@ -1,0 +1,150 @@
+.. vim:set expandtab ff=unix ft=rest :
+
+..  Windows環境のvimエディタでdiff機能を使うには
+
+..  vimエディタのdiff機能は「diff」コマンドが実行できる状態でないと使用できません。
+    Windows環境に「diff」コマンドはインストールされていないので、
+    vimエディタで「diffsplit」などの機能を使用するには、
+    何らかの方法で「diff」コマンドが使えるようにする必要があります。
+    この記事では、その「diff」コマンドの入手方法を説明します。
+    (Windows)
+
+.. |BR| raw:: html
+
+    <br />
+
+.. |yen|    unicode:: U+000A5 .. YEN SIGN
+
+.. role:: raw-html(raw)
+    :format: html
+
+.. contents::
+
+================================================================================
+概要
+================================================================================
+
+vimエディタのdiff機能は「diff」コマンドが実行できる状態でないと使用できません。 |BR|
+Windows環境に「diff」コマンドはインストールされていないので、 |BR|
+vimエディタで「diffsplit」などの機能を使用するには、
+何らかの方法で「diff」コマンドが使えるようにする必要があります。 |BR|
+この記事では、その「diff」コマンドの入手方法を説明します。
+
+.. note::
+
+    「diff」コマンドのインストールされていないvimエディタで
+    「VDSplit」コマンドを実行したところ、 |BR|
+    次のようなエラーが表示されました。
+
+    .. parsed-literal::
+        :class: console
+
+        E97: 差分を作成できません。
+
+    .. image:: /dist/img/howto/diff/diff_error.jpg
+        :alt:  「VDSplit」コマンドの実行エラー
+
+    ↓
+
+    .. image:: /dist/img/howto/diff/diff_error_spot.jpg
+        :alt:  「VDSplit」コマンドの実行エラー（拡大）
+
+    エラーが発生した時は「help」コマンドを使用すれば、
+    その原因が分かるときがあります。 |BR|
+    vimエディタを使いつづけていくのであれば、
+    必ず役に立つので覚えておきましょう。
+
+    .. parsed-literal::
+        :class: console
+
+        :help E97
+
+    .. image:: /dist/img/howto/diff/view_e97_help.jpg
+        :alt:  「help E97」の実行結果
+
+    .. parsed-literal::
+        :class: console
+
+                                                        \*E97\*
+        Vim will do a test if the diff output looks alright.  If it doesn't, you will
+        get an error message.  Possible causes:
+        -  The "diff" program cannot be executed.
+        -  The "diff" program doesn't produce normal "ed" style diffs (see above).
+        -  The 'shell' and associated options are not set correctly.  Try if filtering
+          works with a command like ":!sort".
+        -  You are using 'diffexpr' and it doesn't work.
+        If it's not clear what the problem is set the 'verbose' option to one or more
+        to see more messages.
+
+        The self-installing Vim includes a diff program.  If you don't have it you
+        might want to download a diff.exe.  For example from
+        http://jlb.twu.net/code/unixkit.php.
+
+
+
+================================================================================
+「diff」コマンドを入手する方法
+================================================================================
+
+Windows環境で「diff」コマンドを使えるようにするには、次のような方法が考えられます。
+
+- 「diff」コマンドの実行ファイルを入手する
+- cygwinをインストールする
+
+この記事では、上の方法、「diff」コマンドの実行用のバイナリを入手し、 |BR|
+それをvimエディタから参照できる場所にコピーする方法を説明します。
+
+.. note::
+
+    cygwinをインストールする場合はcygwinのサイトに行き、
+    setup.exeをダウンロード、実行してください。 |BR|
+    http://www.cygwin.com/
+
+
+
+================================================================================
+「diff」コマンドのインストール
+================================================================================
+
+「diff」の実行用バイナリを入手する
+-------------------------------------------------------------------------------
+
+Windows用の「diff」コマンドのバイナリは、次のサイトで入手できます。 |BR|
+このサイトから「Binaries」「Dependencies」の2つのファイルをダウンロードしてください。
+
+「DiffUtils for Windows」 |BR|
+http://gnuwin32.sourceforge.net/packages/diffutils.htm
+
+.. image:: /dist/img/howto/diff/win_diffutils_download.jpg
+    :alt:  「DiffUtils for Windows」から必要な」ファイルをダウンロードする
+
+ダウンロードしたファイルを解凍すると、 |BR|
+それぞれの「bin」ディレクトリに「diff」コマンドに必要な
+実行ファイルとライブラリが入っています。
+
+- cmp.exe
+- diff.exe
+- diff3.exe
+- sdiff.exe
+- libiconv2.dll
+- libintl3.dll
+
+
+「diff」の実行用バイナリをvimエディタから参照できる場所にコピーする
+-------------------------------------------------------------------------------
+
+vimエディタから「diff」実行ファイルを参照するには、
+次のような方法があります。
+
+- PATHの通った場所にコピーする
+- vimエディタのインストールディレクトリにコピーする
+
+お勧めは後者です。 |BR|
+vimエディタのインストールディレクトリに、
+「diff」の実行ファイルとライブラリをコピーしてください。
+
+.. image:: /dist/img/howto/diff/copy_diffutils_to_vim_dir.jpg
+    :alt:  「diff」の実行ファイルとライブラリをコピー
+
+
+

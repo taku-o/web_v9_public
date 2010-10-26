@@ -1,0 +1,43 @@
+.. vim:set expandtab ff=unix ft=rest nowrap :
+
+..  パス中のバックスラッシュを回避する
+
+..  
+
+.. |BR| raw:: html
+
+    <br />
+
+.. |yen|    unicode:: U+000A5 .. YEN SIGN
+
+.. role:: raw-html(raw)
+    :format: html
+
+.. contents::
+
+================================================================================
+パス中のバックスラッシュを回避する
+================================================================================
+
+- shellslashオプションを変更し、スラッシュにしてしまう。
+
+.. parsed-literal::
+    :class: program
+
+    :let filepath = "file-path.html"
+    :let usr_ss_opt = &shellslash
+    :set shellslash
+    :echo fnamemodify(filepath, ":p")
+    :let &shellslash = usr_ss_opt
+    "# => C:/var/articles/code/io/file-path.html
+
+- 「escape」でエスケープ処理する。
+
+.. parsed-literal::
+    :class: program
+
+    :let filepath = "C:\\\\var\\\\articles\\\\code\\\\io\\\\file-path.html"
+    :echo escape(filepath, "\\\\")
+    "# => C:\\\\var\\\\articles\\\\code\\\\io\\\\file-path.html
+
+

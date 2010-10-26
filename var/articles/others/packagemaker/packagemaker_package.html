@@ -1,0 +1,81 @@
+.. vim:set expandtab ff=unix ft=rest :
+
+..  Package Maker #7 （パッケージの作成）
+
+..  この記事では「Package Maker」の設定が終わった状態から、
+    インストーラーのパッケージを作成するまでを説明をします。
+    (Mac)
+
+.. |BR| raw:: html
+
+    <br />
+
+.. |yen|    unicode:: U+000A5 .. YEN SIGN
+
+.. role:: raw-html(raw)
+    :format: html
+
+.. contents::
+
+================================================================================
+概要
+================================================================================
+
+この記事では「Package Maker」の設定が終わった状態から、
+インストーラーのパッケージを作成するまでを説明をします。
+
+
+
+================================================================================
+「Package Maker」の設定完了後の作業
+================================================================================
+
+パッケージの作成
+-------------------------------------------------------------------------------
+
+「Package Maker」の各設定画面で、インストールするアプリケーションの設定を行ったら、
+いよいよパッケージを作成します。 |BR|
+「Package Maker」のメニューから「Create Package」を選択すると、
+新規のインストールパッケージを作成できます。
+
+.. image:: /dist/img/others/packagemaker/create_package.jpg
+    :alt:  Package Maker パッケージ作成
+
+
+「Package Maker」の設定の保存
+-------------------------------------------------------------------------------
+
+過去に作成したパッケージを修正して、再リリースすることは良くあることだと思います。 |BR|
+「Package Maker」の設定は「File」メニューから「Save」を選択すると保存できます。
+
+.. image:: /dist/img/others/packagemaker/save_config.jpg
+    :alt:  Package Maker 設定保存
+
+この保存した設定ファイルをダブルクリックすると、
+「Package Maker」が起動するので、 |BR|
+設定を修正し、再度、パッケージを作成できるでしょう。
+
+
+
+================================================================================
+ページリンク
+================================================================================
+
+#. `Package Maker #1 （インストーラー作成までの流れ）`__
+#. `Package Maker #2 （Filesタブ）`__
+#. `Package Maker #3 （インストール中に実行されるスクリプト）`__
+#. `Package Maker #4 （インストールの必須条件のチェック）`__
+#. `Package Maker #5 （ドキュメント）`__
+#. `Package Maker #6 （Infoタブ）`__
+#. - `Package Maker #7 （パッケージの作成）`__
+
+__ /articles/others/packagemaker/packagemaker.html
+__ /articles/others/packagemaker/packagemaker_files.html
+__ /articles/others/packagemaker/packagemaker_script.html
+__ /articles/others/packagemaker/packagemaker_validate.html
+__ /articles/others/packagemaker/packagemaker_document.html
+__ /articles/others/packagemaker/packagemaker_info.html
+__ /articles/others/packagemaker/packagemaker_package.html
+
+
+

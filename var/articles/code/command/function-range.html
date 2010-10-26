@@ -1,0 +1,52 @@
+.. vim:set expandtab ff=unix ft=rest nowrap :
+
+..  範囲指定可能なファンクションを定義する
+
+..  
+
+.. |BR| raw:: html
+
+    <br />
+
+.. |yen|    unicode:: U+000A5 .. YEN SIGN
+
+.. role:: raw-html(raw)
+    :format: html
+
+.. contents::
+
+================================================================================
+範囲指定可能なファンクションを定義する
+================================================================================
+
+- 指定された範囲を取得する。
+
+.. parsed-literal::
+    :class: program
+
+    :function! RangeFunction() range
+        :echo "from:" . a:firstline
+        :echo "to  :" . a:lastline
+    :endfunction
+    
+    :1,10:call RangeFunction()
+    "# => from:1
+    "# => to  :10
+
+- 指定された範囲のテキストを取得する。
+
+.. parsed-literal::
+    :class: program
+
+    :function! RangeFunction() range
+        :let lines = getline(a:firstline, a:lastline)
+        :for i in lines
+            :echo i
+        :endfor
+    :endfunction
+    
+    :1,10:call RangeFunction()
+    "# => 1から10行目のテキストを出力
+
+
+

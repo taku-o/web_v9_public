@@ -1,0 +1,165 @@
+.. vim:set expandtab ff=unix ft=rest :
+
+..  vimエディタ・スターターマニュアル #3 （カーソルの移動）
+
+..  vimエディタをはじめて扱う人が、だましだましvimエディタでの作業を開始できるようにするための、チュートリアルよりも小さな、しかし必要な情報は盛り込んだ、最小のユーザマニュアルを目指して作成したドキュメントです。
+    このページでは、
+    単語単位のカーソルの移動～
+    行頭、行末、テキストの先頭にカーソルを移動する～
+    ページ送り～
+    ファイルの先頭行、最後の行にカーソルを移動
+    までを扱います。
+    (Windows, Mac)
+
+.. |BR| raw:: html
+
+    <br />
+
+.. |yen| unicode:: U+000A5 .. YEN SIGN
+
+.. role:: raw-html(raw)
+    :format: html
+
+.. contents::
+
+================================================================================
+単語単位のカーソルの移動
+================================================================================
+
+:raw-html:`<kbd>h</kbd>` :raw-html:`<kbd>j</kbd>` :raw-html:`<kbd>k</kbd>` :raw-html:`<kbd>l</kbd>`
+の入力によるカーソル移動では一度に一文字ずつしか移動できませんが、 |BR|
+:raw-html:`<kbd>w</kbd>` :raw-html:`<kbd>b</kbd>` キーを使用すると単語単位で前後にカーソルを移動できます。 |BR|
+この :raw-html:`<kbd>w</kbd>` :raw-html:`<kbd>b</kbd>` キーによる移動も
+:raw-html:`<kbd>h</kbd>` :raw-html:`<kbd>j</kbd>` :raw-html:`<kbd>k</kbd>` :raw-html:`<kbd>l</kbd>`
+と同じく、ノーマルモードでのみ使用できます。
+
+.. csv-table::
+    :header: キー, カーソルの移動する方向
+
+    w, 前方に一単語分、カーソルを移動します。
+    b, 後方に一単語分、カーソルを移動します。
+
+例えば、次のようなテキストがあり、 |BR|
+「make sure Vim」の「s」の位置にカーソルがあるとして、
+
+.. raw:: html
+
+    <pre class="console">    The extra arguments make <span class="code_high">s</span>ure Vim is started in a good mood.</pre>
+
+:raw-html:`<kbd>w</kbd>` を押すと「V」の位置に、
+
+.. raw:: html
+
+    <pre class="console">    The extra arguments make sure <span class="code_high">V</span>im is started in a good mood.</pre>
+
+:raw-html:`<kbd>b</kbd>` を押すと「m」の位置にカーソルが移動します。
+
+.. raw:: html
+
+    <pre class="console">    The extra arguments <span class="code_high">m</span>ake sure Vim is started in a good mood.</pre>
+
+.. image:: /dist/img/howto/user-manual/move_cursor_wb.jpg
+    :alt:  単語単位で前後にカーソル移動
+    :class: image-border
+
+
+
+================================================================================
+行頭、行末、テキストの先頭にカーソルを移動する
+================================================================================
+
+ノーマルモードで、
+:raw-html:`<kbd>0</kbd>` :raw-html:`<kbd>$</kbd>` :raw-html:`<kbd>^</kbd>` キーを使用すると、 |BR|
+それぞれ行頭、行末、テキストの先頭にカーソルを移動できます。
+
+.. csv-table::
+    :header: キー, カーソルの移動する方向
+
+    "0", 行頭にカーソルを移動します。
+    "\$", 行末にカーソルを移動します。
+    "\^", その行のテキストの先頭にカーソルを移動します。
+
+次のテキストで、「make sure Vim」の「s」の位置にカーソルがある場合、
+
+.. raw:: html
+
+    <pre class="console">    The extra arguments make <span class="code_high">s</span>ure Vim is started in a good mood.</pre>
+
+:raw-html:`<kbd>0</kbd>` を押すと行の先頭に、
+
+.. raw:: html
+
+    <pre class="console"><span class="code_high"> </span>   The extra arguments make sure Vim is started in a good mood.</pre>
+
+:raw-html:`<kbd>$</kbd>` を押すと行の最後に、
+
+.. raw:: html
+
+    <pre class="console">    The extra arguments make sure Vim is started in a good mood<span class="code_high">.</span></pre>
+
+:raw-html:`<kbd>^</kbd>` を押すと、その行のテキストの先頭位置にカーソルを移動します。
+
+.. raw:: html
+
+    <pre class="console">    <span class="code_high">T</span>he extra arguments make sure Vim is started in a good mood.</pre>
+
+.. image:: /dist/img/howto/user-manual/move_cursor_0td.jpg
+    :alt:  カーソルを行頭、行末、テキスト先頭位置に移動
+    :class: image-border
+
+
+
+===============================================================
+ページ送り
+===============================================================
+
+カーソルをページ単位で大きく進めるには、ノーマルモードで :raw-html:`<kbd>Control-f</kbd>` を使用します。 |BR|
+逆に、戻るには :raw-html:`<kbd>Control-b</kbd>` を使います。
+
+.. csv-table::
+    :header: キー, 説明
+
+    <C-f>, 1ページ分、下にスクロールする
+    <C-b>, 1ページ分、上にスクロールする
+
+
+
+===============================================================
+ファイルの先頭行、最後の行にカーソルを移動
+===============================================================
+
+カーソルをファイルの先頭位置にカーソルを移動するには、ノーマルモードで :raw-html:`<kbd>gg</kbd>` と入力します。 |BR|
+ファイルの最終行にカーソルを移動するには :raw-html:`<kbd>G</kbd>` を使用します。
+
+.. csv-table::
+    :header: キー, 説明
+
+    gg, ファイルの先頭行にカーソルを移動する
+    G, ファイルの最終行にカーソルを移動する
+
+
+
+================================================================================
+ページリンク
+================================================================================
+
+#. `vimエディタ・スターターマニュアル #1 （ドキュメントの表記）`__
+#. `vimエディタ・スターターマニュアル #2 （モードの切替）`__
+#. - `vimエディタ・スターターマニュアル #3 （カーソルの移動）`__
+#. `vimエディタ・スターターマニュアル #4 （テキスト編集）`__
+#. `vimエディタ・スターターマニュアル #5 （検索、置換）`__
+#. `vimエディタ・スターターマニュアル #6 （複数のバッファの管理）`__
+#. `vimエディタ・スターターマニュアル #7 （ホームディレクトリのファイル構成）`__
+#. `vimエディタ・スターターマニュアル #8 （設定ファイル）`__
+
+__ /articles/howto/user-manual/user-manual-description.html
+__ /articles/howto/user-manual/user-manual-mode.html
+__ /articles/howto/user-manual/user-manual-motion.html
+__ /articles/howto/user-manual/user-manual-editing.html
+__ /articles/howto/user-manual/user-manual-search.html
+__ /articles/howto/user-manual/user-manual-buffer.html
+__ /articles/howto/user-manual/user-manual-user-dir.html
+__ /articles/howto/user-manual/user-manual-config.html
+
+
+

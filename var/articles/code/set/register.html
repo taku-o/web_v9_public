@@ -1,0 +1,41 @@
+.. vim:set expandtab ff=unix ft=rest nowrap :
+
+..  レジスタの値を操作する
+
+..  
+
+.. |BR| raw:: html
+
+    <br />
+
+.. |yen|    unicode:: U+000A5 .. YEN SIGN
+
+.. role:: raw-html(raw)
+    :format: html
+
+.. contents::
+
+================================================================================
+レジスタの値を操作する
+================================================================================
+
+- レジスタの値を参照。
+
+.. parsed-literal::
+    :class: program
+
+    :echo @%
+    "# => カレントファイルのパスを表示
+
+- レジスタの値を変更。
+
+.. parsed-literal::
+    :class: program
+
+    :let @a = ":echo 'Hello World'"
+    :execute "@a"
+    "# => Hello World
+
+
+
+

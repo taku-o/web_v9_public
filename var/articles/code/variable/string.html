@@ -1,0 +1,143 @@
+.. vim:set expandtab ff=unix ft=rest nowrap :
+
+..  文字列型
+
+..  
+
+.. |BR| raw:: html
+
+    <br />
+
+.. |yen|    unicode:: U+000A5 .. YEN SIGN
+
+.. role:: raw-html(raw)
+    :format: html
+
+.. contents::
+
+================================================================================
+文字列型
+================================================================================
+
+- 「"(ダブルクォート)」か「'(シングルクォート)」で囲むと、文字列として扱われる。
+
+.. parsed-literal::
+    :class: program
+
+    :echo "Hello World"
+    "# => Hello World
+    
+    :echo 'Hello World'
+    "# => Hello World
+
+- 「"(ダブルクォート)」「'(シングルクォート)」では、文字列中の「\\」の扱いが違う。
+
+.. parsed-literal::
+    :class: program
+
+    :echo "Hello\\ World"
+    "# => Hello World
+    
+    :echo 'Hello\\ World'
+    "# => Hello\\ World
+
+- 正規表現を含む文字列を扱う場合、「\\」が頻出するので「'(シングルクォート)」を使うと良い。
+
+.. parsed-literal::
+    :class: program
+
+    :let str = 'Hello Hello Hello'
+    :let found = match(str, '\\( Hello\\)\\{2}', '')
+    :echo found
+    "# => 5
+
+
+文字列の操作
+--------------------------------------------------------------------------------
+
+- 文字列を連結する。
+
+.. parsed-literal::
+    :class: program
+
+    :echo "AAA" . "BBB"
+    "# => AAABBB
+
+- 文字列の長さを調べる。
+
+.. parsed-literal::
+    :class: program
+
+    :echo strlen("AAA")
+    "# => 3
+    :echo strlen("マルチバイトな日本語文字列")
+    "# => 26
+    :echo strlen(substitute("マルチバイトな日本語文字列", ".", "x", "g"))
+    "# => 13
+
+- 部分文字列の抜き出し。
+
+.. parsed-literal::
+    :class: program
+
+    :echo "ABCDEFGHIJ"[3]
+    "# => D
+    :echo "ABCDEFGHIJ"[3:]
+    "# => DEFGHIJ
+    :echo "ABCDEFGHIJ"[3:6]
+    "# => DEFG
+    
+    :echo strpart("ABCDEFGHIJ", 3, 1)
+    "# => D
+    :echo strpart("ABCDEFGHIJ", 3)
+    "# => DEFGHIJ
+    :echo strpart("ABCDEFGHIJ", 3, 4)
+    "# => DEFG
+    
+    :echo "マルチバイトな日本語文字列"[7:8]
+    "# => 文字化け
+    
+    :let splitted = split("マルチバイトな日本語文字列", '\\zs')
+    :echo join(splitted[4:6], "")
+    "# => イトな
+
+- 文字列の検索。
+
+.. parsed-literal::
+    :class: program
+
+    :echo stridx("ABCDEFGABCDEFG", "CDE")
+    "# => 2
+    :echo strridx("ABCDEFGABCDEFG", "CDE")
+    "# => 9
+    
+    :echo match("ABCDEFGABCDEFG", "CDE")
+    "# => 2
+    :echo match("ABCABCABC", "ABC$")
+    "# => 6
+
+- 文字列の分割。
+
+.. parsed-literal::
+    :class: program
+
+    :echo split("AAA,BBB,CCC,DDD,EEE", ",")
+    "# => ['AAA', 'BBB', 'CCC', 'DDD', 'EEE']
+
+- 文字列の置換。
+
+.. parsed-literal::
+    :class: program
+
+    :echo substitute("ABCDEFGABCDEFG", "AB", "HIJ", "g")
+    "# => HIJCDEFGHIJCDEFG
+    
+    :let var = "ABCDEFGABCDEFG"
+    :let replaced = substitute(var, "AB", "HIJ", "g")
+    :echo var
+    "# => ABCDEFGABCDEFG
+    :echo replaced
+    "# => HIJCDEFGHIJCDEFG
+
+
+

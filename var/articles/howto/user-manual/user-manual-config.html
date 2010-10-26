@@ -1,0 +1,176 @@
+.. vim:set expandtab ff=unix ft=rest :
+
+..  vimエディタ・スターターマニュアル #8 （設定ファイル）
+
+..  vimエディタをはじめて扱う人が、だましだましvimエディタでの作業を開始できるようにするための、チュートリアルよりも小さな、しかし必要な情報は盛り込んだ、最小のユーザマニュアルを目指して作成したドキュメントです。
+    このページでは、
+    vimエディタの設定ファイル
+    を扱います。
+    (Windows, Mac)
+
+.. |BR| raw:: html
+
+    <br />
+
+.. |yen| unicode:: U+000A5 .. YEN SIGN
+
+.. role:: raw-html(raw)
+    :format: html
+
+.. contents::
+
+================================================================================
+vimエディタの設定ファイル
+================================================================================
+
+設定ファイルのサンプル
+-------------------------------------------------------------------------------
+
+vimエディタの設定ファイルはプレーンなテキストファイルで、 |BR|
+ファイルがあればvimエディタ起動時に読み込まれ、無ければアプリケーションデフォルトの設定のまま、
+vimエディタが起動します。 |BR|
+設定ファイルのサンプルは、次のようになります。
+
+.. parsed-literal::
+    :class: program
+
+    **" _vimrc（.vimrc）設定ファイルサンプル**
+    " 検索パターンにおいて大文字と小文字を区別しない。（有効:ignorecase/無効:noignorecase）
+    :set noignorecase
+    " 検索パターンが大文字を含んでいたらオプション 'ignorecase' を上書きする。（有効:smartcase/無効:nosmartcase）
+    :set smartcase
+    
+    " ファイル内の <Tab> が対応する空白の数。
+    :set tabstop=4
+    " <Tab> の挿入や <BS> の使用等の編集操作をするときに、<Tab> が対応する空白の数。
+    :set softtabstop=4
+    " インデントの各段階に使われる空白の数。
+    :set shiftwidth=4
+    " Insertモードで <Tab> を挿入するとき、代わりに適切な数の空白を使う。（有効:expandtab/無効:noexpandtab）
+    :set noexpandtab
+    
+    " 入力されているテキストの最大幅。行がそれより長くなると、この幅を超えないように空白の後で改行される。値を 0 に設定すると無効になる。
+    :set textwidth=0
+    " 新しい行を開始したとき (Insertモードで <CR> を打ち込むか、コマンド "o"や "O" を使ったとき)、新しい行のインデントを現在行と同じくする。（有効:autoindent/無効:noautoindent）
+    :set autoindent
+    
+    " オンのときは、ウィンドウの幅より長い行は折り返され、次の行に続けて表示される。（有効:wrap/無効:nowrap）
+    :set wrap
+    
+    " 検索がファイル末尾まで進んだら、ファイル先頭から再び検索する。（有効:wrapscan/無効:nowrapscan）
+    :set wrapscan
+    " オンのとき、コマンドライン補完が拡張モードで行われる。（有効:wildmenu/無効:nowildmenu）
+    :set wildmenu
+    
+    " 閉じ括弧が入力されたとき、対応する開き括弧にわずかの間ジャンプする。（有効:showmatch/無効:noshowmatch）
+    :set showmatch
+    
+    " 毎行の前に行番号を表示する。（有効:number/無効:nonumber）
+    :set number
+    " カーソルが何行目の何列目に置かれているかを表示する。（有効:ruler/無効:noruler）
+    :set ruler
+    " タブ文字を CTRL-I で表示し、行末に $ で表示する。（有効:list/無効:nolist）
+    :set list
+    " Listモード (訳注: オプション 'list' がオンのとき) に使われる文字を設定する。
+    :set listchars=tab:>-,extends:<,trail:-,eol:<
+    
+    " 最下ウィンドウにいつステータス行が表示されるかを設定する。
+    "               0: 全く表示しない
+    "               1: ウィンドウの数が2以上のときのみ表示
+    "               2: 常に表示
+    :set laststatus=2
+    " コマンド (の一部) を画面の最下行に表示する。（有効:showcmd/無効:noshowcmd）
+    :set showcmd
+    
+    " ファイルを上書きする前にバックアップを作る。書き込みが成功してもバックアップはそのまま取っておく。（有効:backup/無効:nobackup）
+    :set nobackup
+    " ファイルの上書きの前にバックアップを作る。オプション 'backup' がオンでない限り、バックアップは上書きに成功した後削除される。（有効:writebackup/無効:nowritebackup）
+    :set writebackup
+
+.. parsed-literal::
+    :class: program
+
+    **" _gvimrc（.gvimrc）設定ファイルサンプル**
+    " カラースキーマをロードする。
+    :colorscheme torte
+    
+    " VimのGUI版で使われるフォントのリストである。
+    :set guifont=MS_Gothic:h12:cSHIFTJIS
+    
+    " 画面上の列幅を設定する。
+    :set columns=100
+    " 画面上の行数。
+    :set lines=32
+    
+    " コマンドラインに使われる画面上の行数。
+    :set cmdheight=2
+    
+    " このオプションは、いつタブページのラベルを表示するかを指定する。
+    "                0: 表示しない
+    "                1: 2個以上のタブページがあるときのみ表示
+    "                2: 常に表示
+    :set showtabline=2
+    
+    " 前回の検索パターンが存在するとき、それにマッチするテキストを全て強調表示する。（有効:hlsearch/無効:nohlsearch）
+    :set hlsearch
+    
+    " Visual選択で選択されたテキストが、自動的にクリップボードレジスタ "*" にコピーされる。
+    :set guioptions+=a
+
+
+設定ファイルの書き方
+-------------------------------------------------------------------------------
+
+vimエディタの設定ファイルには、vimエディタのオプションと、vimエディタのコマンドを書けます。
+
+|BR|
+vimエディタのオプションには、 |BR|
+・ON、OFFで切替えられるもの |BR|
+・値を設定するもの（数値を設定するオプションと、文字列を設定するオプションがある） |BR|
+があります。
+
+|BR|
+ON、OFFで切替えられるオプションは、 |BR|
+
+.. parsed-literal::
+    :class: program
+
+    :set {オプション名}
+
+と記述するとオプションが有効に、
+
+.. parsed-literal::
+    :class: program
+
+    :set no{オプション名}
+
+と記述するとオプションが無効になります。
+
+|BR|
+「"」で始まる行は、コメント行として、vimエディタからは無視されます。
+
+
+
+================================================================================
+ページリンク
+================================================================================
+
+#. `vimエディタ・スターターマニュアル #1 （ドキュメントの表記）`__
+#. `vimエディタ・スターターマニュアル #2 （モードの切替）`__
+#. `vimエディタ・スターターマニュアル #3 （カーソルの移動）`__
+#. `vimエディタ・スターターマニュアル #4 （テキスト編集）`__
+#. `vimエディタ・スターターマニュアル #5 （検索、置換）`__
+#. `vimエディタ・スターターマニュアル #6 （複数のバッファの管理）`__
+#. `vimエディタ・スターターマニュアル #7 （ホームディレクトリのファイル構成）`__
+#. - `vimエディタ・スターターマニュアル #8 （設定ファイル）`__
+
+__ /articles/howto/user-manual/user-manual-description.html
+__ /articles/howto/user-manual/user-manual-mode.html
+__ /articles/howto/user-manual/user-manual-motion.html
+__ /articles/howto/user-manual/user-manual-editing.html
+__ /articles/howto/user-manual/user-manual-search.html
+__ /articles/howto/user-manual/user-manual-buffer.html
+__ /articles/howto/user-manual/user-manual-user-dir.html
+__ /articles/howto/user-manual/user-manual-config.html
+
+

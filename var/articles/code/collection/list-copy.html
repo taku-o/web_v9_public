@@ -1,0 +1,96 @@
+.. vim:set expandtab ff=unix ft=rest nowrap :
+
+..  リストのコピー
+
+..  
+
+.. |BR| raw:: html
+
+    <br />
+
+.. |yen|    unicode:: U+000A5 .. YEN SIGN
+
+.. role:: raw-html(raw)
+    :format: html
+
+.. contents::
+
+================================================================================
+リストのコピー
+================================================================================
+
+- 単純な代入。変数var1、var2は同じリストを参照している。
+
+.. parsed-literal::
+    :class: program
+
+    :let var1 = \[ "aaa", "bbb", "ccc", "ddd" ]
+    :let var2 = var1
+    :echo var1
+    :echo var2
+    "# => \['aaa', 'bbb', 'ccc', 'ddd']
+    "# => \['aaa', 'bbb', 'ccc', 'ddd']
+    :let var2\[1] = "XXXX"
+    :echo var1
+    "# => \['aaa', 'XXXX', 'ccc', 'ddd']
+
+- copy()、deepcopy()でリストの複製を作成できる。
+
+.. parsed-literal::
+    :class: program
+
+    :let var1 = \[ "aaa", "bbb", "ccc", "ddd" ]
+    :let var2 = copy(var1)
+    :echo var1
+    :echo var2
+    "# => \['aaa', 'bbb', 'ccc', 'ddd']
+    "# => \['aaa', 'bbb', 'ccc', 'ddd']
+    :let var2\[1] = "XXXX"
+    :echo var1
+    :echo var2
+    "# => \['aaa', 'bbb', 'ccc', 'ddd']
+    "# => \['aaa', 'XXXX', 'ccc', 'ddd']
+    
+    :let var1 = \[ "aaa", "bbb", "ccc", "ddd" ]
+    :let var2 = deepcopy(var1)
+    :echo var1
+    :echo var2
+    "# => \['aaa', 'bbb', 'ccc', 'ddd']
+    "# => \['aaa', 'bbb', 'ccc', 'ddd']
+    :let var2\[1] = "XXXX"
+    :echo var1
+    :echo var2
+    "# => \['aaa', 'bbb', 'ccc', 'ddd']
+    "# => \['aaa', 'XXXX', 'ccc', 'ddd']
+
+- copy()はネストしたリスト、ディクショナリまでは複製しない。deepcopy()は複製する。
+
+.. parsed-literal::
+    :class: program
+
+    :let var1 = \[ \["aaa", 11], \["bbb",22], \["ccc",33], \["ddd",44] ]
+    :let var2 = copy(var1)
+    :echo var1
+    :echo var2
+    "# => \[\['aaa', 11], \['bbb', 22], \['ccc', 33], \['ddd', 44]]
+    "# => \[\['aaa', 11], \['bbb', 22], \['ccc', 33], \['ddd', 44]]
+    :let var2\[1]\[0] = "XXXX"
+    :echo var1
+    :echo var2
+    "# => \[\['aaa', 11], \['XXXX', 22], \['ccc', 33], \['ddd', 44]]
+    "# => \[\['aaa', 11], \['XXXX', 22], \['ccc', 33], \['ddd', 44]]
+    
+    :let var1 = \[ \["aaa", 11], \["bbb",22], \["ccc",33], \["ddd",44] ]
+    :let var2 = deepcopy(var1)
+    :echo var1
+    :echo var2
+    "# => \[\['aaa', 11], \['bbb', 22], \['ccc', 33], \['ddd', 44]]
+    "# => \[\['aaa', 11], \['bbb', 22], \['ccc', 33], \['ddd', 44]]
+    :let var2\[1]\[0] = "XXXX"
+    :echo var1
+    :echo var2
+    "# => \[\['aaa', 11], \['bbb', 22], \['ccc', 33], \['ddd', 44]]
+    "# => \[\['aaa', 11], \['XXXX', 22], \['ccc', 33], \['ddd', 44]]
+
+
+

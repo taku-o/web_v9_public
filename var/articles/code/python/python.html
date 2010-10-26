@@ -1,0 +1,53 @@
+.. vim:set expandtab ff=unix ft=rest nowrap :
+
+..  pythonのコードを実行する
+
+..  
+
+.. |BR| raw:: html
+
+    <br />
+
+.. |yen|    unicode:: U+000A5 .. YEN SIGN
+
+.. role:: raw-html(raw)
+    :format: html
+
+.. contents::
+
+================================================================================
+pythonのコードを実行する
+================================================================================
+
+ワンライナー。1行のコードを実行する。
+--------------------------------------------------------------------------------
+
+.. parsed-literal::
+    :class: program
+
+    " python のコードを「:python」コマンド後に記述する。
+    :python print "Hello Python"
+    "# => Hello Python
+
+
+ヒアドキュメント。複数の行に渡るコードを実行する。
+--------------------------------------------------------------------------------
+
+.. parsed-literal::
+    :class: program
+
+    " 終了の「EOF」の行には他に文字を入れないこと（「:」も駄目です）。
+    :python << EOF
+    i=0
+    while i < 10:
+        print "current no : " + str(i)
+        i += 1
+    EOF
+    "# => current no : 0
+    "# => current no : 1
+    "# => current no : 2
+    "# => current no : 3
+    "# => ....
+
+
+
